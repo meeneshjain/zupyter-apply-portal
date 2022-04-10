@@ -2629,39 +2629,39 @@ select.form-control:not([size]):not([multiple]):not(.form-control-sm) {
 }
 
 .bg-secondary {
-  background-color: #6c757d !important;
+  background-color: #6c757d ;
 }
 
 .text-primary, .btn-light, .btn-outline-light:hover, .btn-link {
-  color: #2dbe60 !important;
+  color: #2dbe60 ;
 }
 
 .btn-link:hover {
-  color: #22b355 !important;
+  color: #22b355;
 }
 
 .text-secondary {
-  color: #6c757d !important;
+  color: #6c757d ;
 }
 
 .text-muted {
-  color: #8e9a9d !important;
+  color: #8e9a9d ;
 }
 
 .text-light {
-  color: #dee3e4 !important;
+  color: #dee3e4 ;
 }
 
 .text-body {
-  color: #4c4d4d !important;
+  color: #4c4d4d ;
 }
 
 a.bg-primary:focus, a.bg-primary:hover, button.bg-primary:focus, button.bg-primary:hover {
-  background-color: #22b355 !important;
+  background-color: #22b355 ;
 }
 
 .border-primary {
-  border-color: #2dbe60 !important;
+  border-color: #2dbe60 ;
 }
 
 .border-secondary {
