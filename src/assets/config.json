@@ -5,8 +5,8 @@
 	"product_code":"payment-portal",
 	"product_code_short":"pp",
 	"service_url_chris":"https://apps.christopherlena-cloud.com/zupyter/api",
-	"service_url_main":"http://54.177.178.8/mainapp/api",
-	"service_url":"http://54.177.178.8/zuTestAPI/api",
+	"service_url":"http://54.177.178.8/mainapp/api",
+	"service_url_test":"http://54.177.178.8/zuTestAPI/api",
 	"service_url_local":"http://localhost/mainapp/api",
 	"live_stock_link":"http://54.177.178.8/livestock-portal/app/",
 	"version":"1.0.0"

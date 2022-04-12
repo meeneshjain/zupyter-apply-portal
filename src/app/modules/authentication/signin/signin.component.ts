@@ -54,7 +54,9 @@ export class SigninComponent implements OnInit {
           this.shared_service.GeneralValue(true);
         }
         this.service.get_payment_portal().subscribe(response => {
+          sessionStorage.removeItem('pay_portal_setting')
           sessionStorage.setItem("pay_portal_setting", JSON.stringify(response));
+          this.shared_service.PayPortalValue(true);
         }, error => {
           this.show_loader = false;
         this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);

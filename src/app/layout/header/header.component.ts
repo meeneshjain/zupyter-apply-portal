@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from "src/app/core/services/shared.service";
+import { MainService } from "src/app/core/services/main.service";
 import { CommonService } from "src/app/core/services/common.service";
 import { CommonFunctions } from "src/app/core/helpers/common.functions";
 
@@ -15,7 +16,8 @@ export class HeaderComponent implements OnInit {
   public login_logo = '';
   constructor(
     public shared_service: SharedService,
-    public common_service: CommonService
+    public common_service: CommonService,
+    public service: MainService
   ) { 
     setTimeout(() => {
       this.load_menu = true;
@@ -48,6 +50,14 @@ export class HeaderComponent implements OnInit {
       if (general!= undefined){
         this.login_logo = general.LoginScrLogo;
       }
+      
+      this.service.get_payment_portal().subscribe(response => {
+        sessionStorage.removeItem('pay_portal_setting')
+        sessionStorage.setItem("pay_portal_setting", JSON.stringify(response));
+        this.shared_service.PayPortalValue(true);
+      }, error => {
+        this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
+      });
     }
     
     setTimeout(() => {
