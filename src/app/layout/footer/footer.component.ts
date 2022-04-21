@@ -28,7 +28,6 @@ export class FooterComponent implements OnInit {
     public shared_service: SharedService
   ) { 
     this.shared_service.loginValueData.subscribe((obj) => {
-      console.log("obj ", obj, " is logged in   ",  sessionStorage['is_logged_in'])
       this.service.get_config((config_data) => {
         this.config_data = JSON.parse(config_data);
         this.owner = this.config_data['owner'];
@@ -50,10 +49,7 @@ export class FooterComponent implements OnInit {
     
     this.shared_service.payPortalValueData.subscribe((obj) => {
       if (obj == true){
-        console.log(`jQuery version: ${$.fn.jquery}`);
         this.apply_settings()
-        
-    
       }
      
     })
@@ -81,7 +77,6 @@ export class FooterComponent implements OnInit {
   
   apply_settings(){
     let theme_data = JSON.parse(sessionStorage.pay_portal_setting);
-    console.log("theme_data ", theme_data);
     $(".flyout_css").html(` 
         .btn-primary {
             background: `+ theme_data['btn_Back_Color'] +` !important;

@@ -39,4 +39,7 @@
     left:0;
     width: 100%;
 }
-
+ 
+.btn-sm {
+    padding: 0.3rem 0.6rem !important;
+}

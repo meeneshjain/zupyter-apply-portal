@@ -5,12 +5,14 @@ import { CommonFunctions } from "src/app/core/helpers/common.functions";
 import { CommonService } from "src/app/core/services/common.service";
 import { MainService } from "src/app/core/services/main.service";
 
+
+
 @Component({
-  selector: 'app-transactions',
-  templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss']
+  selector: 'app-pay-confirm',
+  templateUrl: './pay-confirm.component.html',
+  styleUrls: ['./pay-confirm.component.scss']
 })
-export class TransactionsComponent implements OnInit {
+export class PayConfirmComponent implements OnInit {
 
   public common_params = new CommonFunctions();
   public show_loader = false;
@@ -31,10 +33,6 @@ export class TransactionsComponent implements OnInit {
       this.show_loader = false;
       this.show_profile_loader = false;
     }, 2500);
-  }
-  
-  pay_now(invoice_id){
-    this.common_service.change_route('transaction/pay-now/11');
   }
 
 }

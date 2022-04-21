@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SendRequestMoneyRoutingModule } from './send-request-money-routing.module';
 import { SendMoneyComponent } from './send-money/send-money.component';
 import { RequestMoneyComponent } from './request-money/request-money.component';
+import { ModalModule } from "ngx-bootstrap/modal";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { RequestMoneyComponent } from './request-money/request-money.component';
   ],
   imports: [
     CommonModule,
-    SendRequestMoneyRoutingModule
+    SendRequestMoneyRoutingModule,
+    ModalModule.forRoot()
   ]
 })
 export class SendRequestMoneyModule { }

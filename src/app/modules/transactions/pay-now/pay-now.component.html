@@ -1,0 +1,81 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+<div id="content" class="py-4">
+   <div class="container">
+      <h2 class="font-weight-400 text-center mt-3">Pay Now</h2>
+      <p class="text-4 text-center mb-4">Pay the following invoice now quickly with small form.</p>
+      <div class="row">
+         <div class="col-md-8 col-lg-6 col-xl-5 mx-auto">
+            <div class="bg-light shadow-sm rounded p-3 p-sm-4 mb-4">
+               <h3 class="text-5 font-weight-400 mb-3"> Invoice Details </h3>
+               <!-- Send Money Form ============================================= -->
+                  <form id="payNowportal" method="post" #payNowportal="ngForm" (ngSubmit)="PayNowSubmit(payNowportal.valid)">
+                  <div class="" [ngClass]="{'row mt-1': form_data.paymentMode != undefined && form_data.paymentMode!=''}">
+                     <div class="" [ngClass]="{'col-12 col-md-12': form_data.paymentMode == undefined && form_data.paymentMode=='', 'col-6 col-md-6' : form_data.paymentMode != undefined && form_data.paymentMode!= ''}">
+                        <div class="form-group">
+                           <label for="input-zone">Select Payment method </label>
+                           <select class="custom-select" id="payment_mode" name="payment_mode" required [(ngModel)]="form_data.paymentMode"
+                              #payment_mode_obj="ngModel"
+                              [ngClass]="{'validation-error':!payment_mode_obj.valid && (payment_mode_obj.touched || payNowportal.submitted)}">
+                              <option value=""> --- Please Select --- </option>
+                              <option value="CC">Credit Card </option>
+                              <option value="BA">Bank Account </option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-6 col-md-6">
+                        <div class="form-group" *ngIf="form_data.paymentMode == 'CC'">
+                           <label for="input-zone">Select Credit Card </label>
+                           <select class="custom-select" id="creditcardlist" name="creditcardlist" required [(ngModel)]="form_data.selected_card"
+                              #creditcardlist_obj="ngModel"
+                              [ngClass]="{'validation-error':!creditcardlist_obj.valid && (creditcardlist_obj.touched || payNowportal.submitted)}">
+                              <option value=""> --- Please Select --- </option>
+                              <option value="Individual">Credit Card 1 </option>
+                              <option value="Individual">Credit Card 2 </option>
+                           </select>
+                        </div>
+                        <div class="form-group" *ngIf="form_data.paymentMode == 'BA'">
+                           <label for="input-zone">Select Bank Account </label>
+                           <select class="custom-select" id="bank_account" name="bank_account" required [(ngModel)]="form_data.selected_bank"
+                              #bank_account_obj="ngModel"
+                              [ngClass]="{'validation-error':!bank_account_obj.valid && (bank_account_obj.touched || payNowportal.submitted)}">
+                              <option value=""> --- Please Select --- </option>
+                              <option value="Business">Bank Account 1</option>
+                              <option value="Business">Bank Account 2</option>
+                           </select>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <div class="form-group">
+                     <label for="emailID">Invoice Number</label>
+                     <input type="text" value="FDX-1234555" class="form-control" data-bv-field="emailid" id="emailID" required
+                        placeholder="Enter Invoice Number" readonly>
+                  </div>
+                  <div class="form-group">
+                     <label for="youSend">Due Date</label>
+                     <div class="input-group">
+                        <input type="text" value="21-03-2022" class="form-control"   placeholder="Enter Due Date" readonly>
+                        
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="recipientGets">Total amount</label>
+                     <div class="input-group">
+                        <div class="input-group-prepend"> <span class="input-group-text">$</span> </div>
+                        <input type="text" class="form-control" data-bv-field="recipientGets" id="recipientGets"
+                           value="1,410.06" placeholder="" readonly>
+                     </div>
+                  </div>
+                  <hr>
+                  <p class="mb-1">Total fees <span class="text-3 float-right">7.21 USD</span></p>
+                  <p class="font-weight-500">Total To Pay <span class="text-3 float-right">1,000.00 USD</span></p>
+                  <button class="btn btn-primary btn-block" (click)="continue_pay()">Continue</button>
+               </form>
+               <!-- Send Money Form end -->
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

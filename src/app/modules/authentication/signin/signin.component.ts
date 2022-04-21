@@ -17,6 +17,9 @@ export class SigninComponent implements OnInit {
   public form_data: any = {};
   public config_data;
   public module_id = 0;
+  public password_field_type = 'password';
+  public pass_icon = 'fa fa-eye';
+  public login_logo = '';
 
   constructor(
     private router: Router,
@@ -25,25 +28,36 @@ export class SigninComponent implements OnInit {
     public service: MainService,
     public shared_service: SharedService
 
-  ) { }
+  ) { 
+    
+    this.shared_service.generalValueData.subscribe((obj) => {
+      if (obj === true) {
+        let general = JSON.parse(sessionStorage.general_setting);
+        this.login_logo = general.LoginScrLogo;
+      }
+    });
+  }
 
   ngOnInit() {
     this.show_loader = true;
     this.common_service.signout();
     this.shared_service.loginValue(false);
-    setTimeout(() => {
-    }, 300);
-
+    
+    this.login_logo = this.common_params.default_login_image
+    if (sessionStorage.general_setting != undefined) {
+      let general = JSON.parse(sessionStorage.general_setting);
+      if (general != undefined) {
+        this.login_logo = general.LoginScrLogo;
+      }
+    }
+    
     this.service.get_config((config_data) => {
       this.config_data = JSON.parse(config_data);
-      this.show_loader = false;
-
       this.service.get_mod_list().subscribe(mod_response => {
-        this.show_loader = false;
         let module_list = (mod_response['data'] !== undefined) ? mod_response['data'] : [];
         sessionStorage.setItem("module_list", JSON.stringify(module_list));
         this.module_id = this.common_params.get_module_id('Customer Portal');
-      }, error => {
+     }, error => {
         this.show_loader = false;
 
       });
@@ -57,6 +71,9 @@ export class SigninComponent implements OnInit {
           sessionStorage.removeItem('pay_portal_setting')
           sessionStorage.setItem("pay_portal_setting", JSON.stringify(response));
           this.shared_service.PayPortalValue(true);
+          setTimeout(() => {
+            this.show_loader = false;
+          }, 150);
         }, error => {
           this.show_loader = false;
         this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
@@ -70,7 +87,6 @@ export class SigninComponent implements OnInit {
 
   onSubmit(isValid: Boolean) {
     console.log('isValid ', isValid)
-    console.log('this.form_data ', this.form_data );
     if (isValid) {
       this.show_loader = true;
       this.service.check_login(this.form_data.email_address, this.form_data.user_password).subscribe(user_id => {
@@ -78,8 +94,7 @@ export class SigninComponent implements OnInit {
 
           this.service.get_user_details(user_id, this.module_id).subscribe(response => {
             if (response[0]['Active'] == true ) {
-              console.log("user details - ", response[0]);
-              this.set_session_redirect(response, user_id);
+                this.set_session_redirect(response, user_id);
             } else {
               this.common_service.show_sweet_alert_adv('e', 'Your account is on hold', "Contact Om Produce accounting Team at accounting@omproduce.com or call us at +1 (214) 233-3500. We truly appreciate your business and want to resume shipments as soon as possible.", () => {
 
@@ -110,10 +125,21 @@ export class SigninComponent implements OnInit {
       sessionStorage.setItem("is_logged_in", '1');
       sessionStorage.setItem("user_id", user_id);
       sessionStorage.setItem("AccessType", response[0]['AccessType']);
+     
       sessionStorage.setItem("user_details", JSON.stringify(response[0]));
       /* this.common_service.show_sweet_alert('s', '', `Welcome ${response[0]['FirstName']}`); */
       this.shared_service.loginValue(true);
       this.common_service.change_route('/dashboard');
+    }
+  }
+  
+  change_field_visibility(){
+    if (this.password_field_type == 'password'){
+      this.password_field_type = 'text';
+      this.pass_icon = 'fa fa-eye-slash'; 
+    } else {
+      this.password_field_type = 'password'; 
+      this.pass_icon = 'fa fa-eye'; 
     }
   }
 

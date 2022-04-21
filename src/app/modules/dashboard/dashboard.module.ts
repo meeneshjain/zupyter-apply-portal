@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { SharedModules } from '../../core/shared.module';
 import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
 
+import { ModalModule } from "ngx-bootstrap/modal";
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -14,7 +15,8 @@ import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
     DashboardRoutingModule,
     CommonModule,
     SharedModules,
-    SharedSidebarModule
+    SharedSidebarModule,
+  ModalModule.forRoot()
   ],
   exports: []
 })

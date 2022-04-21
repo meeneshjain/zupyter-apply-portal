@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModules } from './core/shared.module';
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 //import { SiderbarComponent } from 'src/app/layout/siderbar/siderbar.component';
+import { ModalModule } from "ngx-bootstrap/modal";
 import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
     NgxSkeletonLoaderModule.forRoot(),
     AppRoutingModule,
     SharedModules,
+    ModalModule.forRoot()
   //  SharedSidebarModule
   ],
   exports: [SharedModules],

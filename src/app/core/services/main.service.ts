@@ -27,6 +27,14 @@ export class MainService {
 		}
 	}
 	
+	async get_contry_list(callback) {
+		let config_call = await fetch(this.common_params.get_current_url() + "/assets/country.json");
+		let country_data = await config_call.json();
+		if (callback != undefined && callback !== "") {
+			callback(country_data);
+		}
+	}
+	
 	check_login(username, password) : Observable<any> {
 		this.config_file_data =  JSON.parse(sessionStorage.getItem('system_config'));
 		let data_object = {
@@ -165,7 +173,7 @@ export class MainService {
 		return this.httpclient.post(this.config_file_data.service_url + "/pp", data_object);
 	}
 	
-	get_accounts(Custid, SearchString, page_no, record_in_page): Observable<any> {
+	get_payment_profile(CardCode): Observable<any> {
 		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
 		this.mod_id = this.common_params.get_module_id("CRM");
 		let data_object = {
@@ -173,13 +181,73 @@ export class MainService {
 			"ModID": this.mod_id,
 			"UserID": parseInt(sessionStorage.user_id),
 			"Mode": "F",
-			"Custid": Custid,
-			"SearchString": SearchString,
-			"PageNumber": page_no,
-			"RecordInPage": record_in_page
-
+			"CardCode": CardCode,
 		};
-		return this.httpclient.post(this.config_file_data.service_url + "/crm/account", data_object); // this.common_params.httpOptions
+		return this.httpclient.post(this.config_file_data.service_url + "/pp/payprofile", data_object); // this.common_params.httpOptions
 	}	
+	
+	
+	create_payment_profile(mode, dataset): Observable<any> {
+		let user_details = JSON.parse(sessionStorage.user_details);
+		let data_object = {
+			"SysID": this.sys_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"ModID": this.mod_id,
+			"Mode": mode,
+			"Custid": dataset.Custid,
+			"CardCode": user_details.CardCode,
+			"CardName": user_details.CardName,
+			"Email_ID": user_details.EmailID,
+			"customerProfileId": dataset.customerProfileId,
+			"PaymentProfiles": [
+				{
+					"Mode": mode,
+					"UserID": parseInt(sessionStorage.user_id),
+					"PayProfileID": dataset.PayProfileID,
+					"Custid": dataset.Custid,
+					"CustomerType": dataset.CustomerType,
+					"FirstName": dataset.FirstName,
+					"LastName": dataset.LastName,
+					"Company": dataset.Company,
+					"Address": dataset.Address,
+					"City": dataset.City,
+					"State": dataset.State,
+					"Zip": dataset.Zip,
+					"Country": dataset.Country,
+					"Phone": dataset.Phone,
+					"Fax": dataset.Fax,
+					"PayType": dataset.PayType,
+					"CardType": dataset.CardType,
+					"CardNumber": dataset.CardNumber,
+					"CardExpiry": dataset.CardExpiry,
+					"CVV": dataset.CVV,
+					"ACName": dataset.ACName,
+					"ACTypeID": dataset.ACTypeID,
+					"ACTypeName": dataset.ACTypeName,
+					"ACABRouteNo": dataset.ACABRouteNo,
+					"ACNumber": dataset.ACNumber,
+					"ACBank": dataset.ACBank,
+					"Active": dataset.Active,
+					"DefltPayProfile": true,
+					"customerPaymentProfileId": dataset.customerPaymentProfileId
+				}
+			]
+		};
+		
+		
+		if (mode == "A") {
+			return this.httpclient.post(this.config_file_data.service_url + "/pp/payprofile/add", data_object); // this.common_params.httpOptions
+		} else if (mode == "M") {
+			return this.httpclient.post(this.config_file_data.service_url + "/pp/payprofile/edit", data_object); // this.common_params.httpOptions
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

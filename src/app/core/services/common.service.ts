@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable,  Subject, BehaviorSubject } from 'rxjs';
 import { CommonFunctions } from "../helpers/common.functions";
 import Swal from 'sweetalert2/dist/sweetalert2';
-
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { SharedService } from "src/app/core/services/shared.service";
 
 
@@ -18,17 +18,26 @@ export class CommonService {
 	public default_snack_time   = 4000;
 	public long_snack_time      = 6000;
 	public default_loading_time = 2000;
-	
+	public modalRef: BsModalRef;
 	constructor(
 		private ActivatedRouter: ActivatedRoute,
 		private route: Router,
 		private httpclient: HttpClient,
-		public shared_service: SharedService
+		public shared_service: SharedService,
+    private modalService: BsModalService
 
 		) { }
 	
 	change_route(router_link){
 		this.route.navigate([router_link])
+	}
+	
+	openModal(modal_id: TemplateRef<any>, classname) {
+		this.modalRef = this.modalService.show(modal_id, { class: classname });
+	}
+
+	closeModal(value) {
+		this.modalRef.hide();
 	}
 	
 	show_sweet_confirm_box(msg, sub_msg, callback, error_callback){
