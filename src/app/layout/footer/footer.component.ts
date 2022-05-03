@@ -78,10 +78,14 @@ export class FooterComponent implements OnInit {
   apply_settings(){
     let theme_data = JSON.parse(sessionStorage.pay_portal_setting);
     $(".flyout_css").html(` 
-        .btn-primary {
+        .btn-primary, .swal2-styled.swal2-confirm {
             background: `+ theme_data['btn_Back_Color'] +` !important;
             border-color: `+ theme_data['btn_Border_Color'] +` !important;
             color:  `+ theme_data['btn_Text_Color'] +` !important;
+        }
+        
+        .swal2-styled.swal2-confirm:focus {
+            box-shadow: 0 0 0 3px `+ theme_data['btn_Back_Color'] +` !important;
         }
 
         .primary-menu ul.navbar-nav>li>a:not(.btn),
@@ -116,7 +120,7 @@ export class FooterComponent implements OnInit {
         .btn-light,
         .btn-outline-light:hover,
         .btn-link {
-            color: `+ theme_data['mnu_Activelink_Color'] +` !important;
+            color: `+ theme_data['ovrall_Systemlink_Color'] +` !important;
         }
 
         .secondary-nav.nav .nav-link{
@@ -165,6 +169,10 @@ export class FooterComponent implements OnInit {
         #preloader [data-loader="dual-ring"] {
             border: 5px solid `+ theme_data['pageload_Sppiner_Color'] +` !important;
             border-color: `+ theme_data['pageload_Sppiner_Color'] +` transparent `+ theme_data['pageload_Sppiner_Color'] +` transparent !important;
+        }
+        
+        .theme-green .bs-datepicker-head {
+            background-color: `+ theme_data['input_Buttonback_Color'] +` !important;
         }
     
     `);

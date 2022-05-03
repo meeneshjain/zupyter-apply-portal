@@ -1,18 +1,15 @@
 <div id="preloader" *ngIf="show_loader">
    <div data-loader="dual-ring"></div>
 </div>
-<div class=" zupyter-bg-primary" >
+<div class=" zupyter-bg-primary">
    <div class="container d-flex justify-content-center">
       <ul class="nav secondary-nav">
          <li class="nav-item"> <a class="nav-link active" href="javascript:;"
                [routerLink]="['/settings/profile']">Account</a></li>
-         <li class="nav-item"> <a class="nav-link" href="javascript:;" [routerLink]="['/settings/profile']">Cards & Bank
-               Accounts</a>
+         <li class="nav-item"> <a class="nav-link" href="javascript:;" [routerLink]="['/cards-banking']">Cards & Bank Accounts</a>
          </li>
-         <li class="nav-item"> <a class="nav-link" href="javascript:;"
-               [routerLink]="['/settings/profile']">Notifications</a></li>
-         <li class="nav-item"> <a class="nav-link" href="javascript:;" [routerLink]="['/settings/general']">General
-               Settings</a>
+         <!-- <li class="nav-item"> <a class="nav-link" href="javascript:;" [routerLink]="['/settings/profile']">Notifications</a></li> -->
+         <li class="nav-item"> <a class="nav-link" href="javascript:;" [routerLink]="['/settings/general']">General Settings</a>
          </li>
       </ul>
    </div>
@@ -25,143 +22,180 @@
    <div class="container">
       <div class="row">
 
-      <app-siderbar fxLayout="column" class="col-lg-3" ></app-siderbar> 
-      
+         <app-siderbar fxLayout="column" class="col-lg-3"></app-siderbar>
+
 
          <!-- Middle Panel ============================================= -->
          <div class="col-lg-9">
 
-            <!-- Personal Details
-          ============================================= -->
+            <!-- Personal Details ============================================= -->
             <div class="bg-light shadow-sm rounded p-4 mb-4">
-               <h3 class="text-5 font-weight-400 mb-3">Account Details <a href="javascript:;" (click)="this.common_service.openModal(accountDetailpopup, 'modal-md')" class="float-right text-1 text-uppercase text-muted btn-link"><i
-                        class="fas fa-eye mr-1"></i> View </a></h3>
+               <h3 class="text-5 font-weight-400 mb-3">Account Details <a href="javascript:;"
+                     (click)="this.common_service.openModal(accountDetailpopup, 'modal-md')"
+                     class="float-right text-1 text-uppercase text-muted btn-link"><i class="fas fa-eye mr-1"></i> View
+                  </a></h3>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Name</p>
-                  <p class="col-sm-9"><ng-container *ngIf="this.form_data.CardName!= undefined"> {{this.form_data.CardName}} </ng-container> </p>
+                  <p class="col-sm-9">
+                     <ng-container *ngIf="this.form_data.CardName!= undefined"> {{this.form_data.CardName}}
+                     </ng-container>
+                  </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Company</p>
-                  <p class="col-sm-9"> <ng-container *ngIf="this.form_data.PayProfiles!= undefined"> {{this.form_data.PayProfiles[0]['Company']}} </ng-container> </p>
+                  <p class="col-sm-9">
+                     <ng-container *ngIf="this.form_data.PayProfiles!= undefined && this.form_data.PayProfiles.length > 0">
+                        {{this.form_data.PayProfiles[0]['Company']}} </ng-container>
+                  </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Email ID</p>
-                  <p class="col-sm-9"> <ng-container *ngIf="this.form_data.Email_ID!= undefined"> {{this.form_data.Email_ID}} </ng-container> </p>
+                  <p class="col-sm-9">
+                     <ng-container *ngIf="this.form_data.Email_ID!= undefined"> {{this.form_data.Email_ID}}
+                     </ng-container>
+                  </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Address</p>
-                  <p class="col-sm-9"> <ng-container *ngIf="this.form_data.Addresses!= undefined"> {{this.form_data.Addresses[0]['Address']}} </ng-container></p>
+                  <p class="col-sm-9">
+                     <ng-container *ngIf="this.form_data.Addresses!= undefined"> {{this.form_data.address_full}}
+                     </ng-container>
+                  </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Account Status</p>
-                  <p class="col-sm-9"><span class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
-                           class="fas fa-check-circle"></i> Active</span></p>
+                  <p class="col-sm-9">
+                     <span *ngIf="this.form_data.Active == 'Y'"
+                        class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
+                           class="fas fa-check-circle"></i> Active</span>
+                     <span *ngIf="this.form_data.Active == 'N'"
+                        class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i class="fas fa-times"></i>
+                        Inactive</span>
+                  </p>
                </div>
             </div>
             <!-- Edit Details Modal
           ================================== -->
-         <ng-template #accountDetailpopup>
-            <div class="modal-header">
-               <h5 class="modal-title font-weight-400">Personal Details</h5>
-               <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal(accountDetailpopup)">
-                  <span aria-hidden="true">&times;</span> </button>
-            </div>
-            <div class="modal-body p-4">
-               <form id="personaldetails" method="post">
-                  <div class="row">
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="firstName">First Name</label>
-                           <input type="text" value="Smith" disabled class="form-control" data-bv-field="firstName" id="firstName"
-                              required placeholder="First Name">
+            <ng-template #accountDetailpopup>
+               <div class="modal-header">
+                  <h5 class="modal-title font-weight-400">Account Details</h5>
+                  <button type="button" class="close font-weight-400"
+                     (click)="this.common_service.closeModal(accountDetailpopup)">
+                     <span aria-hidden="true">&times;</span> </button>
+               </div>
+               <div class="modal-body p-4">
+                  <form id="personaldetails" method="post">
+                     <div class="row">
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="firstName">Account ID</label>
+                              <input type="text" value="{{this.form_data.CardCode}}" disabled class="form-control" data-bv-field="firstName"
+                                 id="firstName" required placeholder="First Name">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="fullName">Account Name</label>
+                              <input type="text" value="{{this.form_data.CardName}}" disabled class="form-control" data-bv-field="fullName"
+                                 id="fullName" required placeholder="Full Name">
+                           </div>
+                        </div>
+
+                        <div class="col-12">
+                           <h3 class="text-5 font-weight-400 mt-3">Address</h3>
+                           <hr>
+                        </div>
+                        <div class="col-12">
+                           <div class="form-group">
+                              <label for="address">Address</label>
+                              <input type="text" disabled value="{{this.form_data.address_full}}"
+                                 class="form-control" data-bv-field="address" id="address" required
+                                 placeholder="Address 1">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="city">City</label>
+                              <input id="city" disabled value="{{this.form_data.bill_to_address.City}}" type="text" class="form-control" required
+                                 placeholder="City">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="input-zone">State</label>
+                              <input id="input-zone" disabled value="{{this.form_data.bill_to_address.State}}" type="text" class="form-control"
+                                 required placeholder="input-zone">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="zipCode">Zip Code</label>
+                              <input id="zipCode" disabled value="{{this.form_data.bill_to_address.ZipCode}}" type="text" class="form-control" required
+                                 placeholder="zipCode">
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label for="inputCountry">Country</label>
+                              <input id="inputCountry" disabled value="{{this.form_data.bill_to_address.Country}}" type="text" class="form-control"
+                                 required placeholder="inputCountry">
+                           </div>
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="fullName">Last Name</label>
-                           <input type="text" value="Rhodes" disabled class="form-control" data-bv-field="fullName" id="fullName"
-                              required placeholder="Full Name">
-                        </div>
-                     </div>
-            
-                     <div class="col-12">
-                        <h3 class="text-5 font-weight-400 mt-3">Address</h3>
-                        <hr>
-                     </div>
-                     <div class="col-12">
-                        <div class="form-group">
-                           <label for="address">Address</label>
-                           <input type="text" disabled value="4th Floor, Plot No.22, Above Public Park" class="form-control"
-                              data-bv-field="address" id="address" required placeholder="Address 1">
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="city">City</label>
-                           <input id="city" disabled value="San Ditego" type="text" class="form-control" required
-                              placeholder="City">
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="input-zone">State</label>
-                           <input id="input-zone" disabled value="San Ditego" type="text" class="form-control" required
-                              placeholder="input-zone">
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="zipCode">Zip Code</label>
-                           <input id="zipCode" disabled value="San Ditego" type="text" class="form-control" required
-                              placeholder="zipCode">
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label for="inputCountry">Country</label>
-                           <input id="inputCountry" disabled value="San Ditego" type="text" class="form-control" required
-                              placeholder="inputCountry">
-                        </div>
-                     </div>
-                  </div>
-            
-               </form>
-            </div>
-         </ng-template>
-            
+
+                  </form>
+               </div>
+            </ng-template>
+
             <!-- Personal Details End -->
 
             <!-- Payment Profile  Settings ============================================= -->
             <div class="bg-light shadow-sm rounded p-4 mb-4">
-               <h3 class="text-5 font-weight-400 mb-3">Payment Profile Settings <a href="javascript:;" (click)="this.common_service.openModal(paymentprofilePopup, 'modal-xl')"
-                      class="float-right text-1 text-uppercase text-muted btn-link"><i
-                        class="fas fa-edit mr-1"></i>Edit</a></h3>
+               <h3 class="text-5 font-weight-400 mb-3">Payment Profile Settings 
+                  <a href="javascript:;" (click)="this.common_service.openModal(paymentprofilePopup, 'modal-xl')"
+                     class="float-right text-1 text-uppercase text-muted btn-link" *ngIf="this.form_data.PayProfiles!= undefined && this.form_data.PayProfiles.length == 0">
+                     <i class="fas fa-edit mr-1"></i>Edit
+                  </a>
+                  <a href="javascript:;" (click)="this.common_service.openModal(paymentprofilePopup, 'modal-xl')"
+                     class="float-right text-1 text-uppercase text-muted btn-link" *ngIf="this.form_data.PayProfiles != undefined && this.form_data.PayProfiles.length > 0 && this.form_data.PayProfiles[0].PayProfileID">
+                     <i class="fas fa-eye mr-1"></i>View
+                  </a>
+                  </h3>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Account Type</p>
-                  <p class="col-sm-9"> Customer </p>
+                  <p class="col-sm-9">  <span *ngIf="this.form_data.pay_profile!= undefined"> {{this.form_data.pay_profile['CustomerType']}} </span> </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Address</p>
-                  <p class="col-sm-9"> (United States)</p>
+                  <p class="col-sm-9">  <span *ngIf="this.form_data.pay_profile!= undefined"> {{this.form_data.pay_profile['Address']}}</span> </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Phone</p>
-                  <p class="col-sm-9">(+91) 999-375-5651</p>
+                  <p class="col-sm-9"> <span *ngIf="this.form_data.pay_profile!= undefined"> {{this.form_data.pay_profile['Phone']}}</span> </p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Payment Type</p>
-                  <p class="col-sm-9">Bank Account</p>
+                  <p class="col-sm-9" *ngIf="this.form_data.pay_profile!= undefined && this.form_data.pay_profile['PayType'] == 'CC'">Credit Card</p>
+                  <p class="col-sm-9" *ngIf="this.form_data.pay_profile!= undefined && this.form_data.pay_profile['PayType'] == 'BA'">Bank Account</p>
                </div>
                <div class="row">
                   <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Sync. On Authorise.net</p>
-                  <p class="col-sm-9"><span class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
-                           class="fas fa-check-circle"></i> Active</span></p>
+                  <p class="col-sm-9">
+                     <span class="bg-success text-white rounded-pill d-inline-block px-2 mb-0" *ngIf="this.form_data.pay_profile!= undefined && this.form_data.pay_profile['Active'] == 'True'">
+                        <i class="fas fa-check-circle"></i> Active
+                     </span>
+                     
+                     <span class="bg-error text-white rounded-pill d-inline-block px-2 mb-0" *ngIf="this.form_data.pay_profile!= undefined && this.form_data.pay_profile['Active'] == 'False'">
+                        <i class="fas fa-times"></i> Inactive
+                     </span>
+                  </p>
                </div>
             </div>
-            <ng-template #paymentprofilePopup >
+            <ng-template #paymentprofilePopup>
                <div class="modal-header">
                   <h5 class="modal-title font-weight-400">Payment Profile Settings</h5>
-                  <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal(paymentprofilePopup)">
+                  <button type="button" class="close font-weight-400"
+                     (click)="this.common_service.closeModal(paymentprofilePopup)">
                      <span aria-hidden="true">&times;</span> </button>
                </div>
                <div class="modal-body p-4">
@@ -175,7 +209,7 @@
                                  <div class="form-group">
                                     <label for="input-zone">Customer Type </label>
                                     <select class="custom-select" id="customer_type" name="customer_type" required
-                                       [(ngModel)]="form_data.CustomerType" #customer_type_obj="ngModel"
+                                       [(ngModel)]="form_data.pay_profile.CustomerType" #customer_type_obj="ngModel"
                                        [ngClass]="{'validation-error':!customer_type_obj.valid && (customer_type_obj.touched || paymentportalsettings.submitted)}">
                                        <option value=""> --- Please Select --- </option>
                                        <option value="Individual">Individual </option>
@@ -187,10 +221,11 @@
                                  <div class="form-group">
                                     <label for="firstName">First Name <span class="text-danger mt-1">*</span></label>
                                     <input type="text" class="form-control" id="first_name" name="first_name" required
-                                       [(ngModel)]="form_data.FirstName" #fname_o="ngModel"
+                                       [(ngModel)]="form_data.pay_profile.FirstName" #fname_o="ngModel"
                                        [ngClass]="{'validation-error':!fname_o.valid && (fname_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="First Name">
-                                    <div class="invalid-error" *ngIf="fname_o.touched && !fname_o.valid && fname_o.value!=''"> First
+                                    <div class="invalid-error"
+                                       *ngIf="fname_o.touched && !fname_o.valid && fname_o.value!=''"> First
                                        name is required </div>
                                  </div>
                               </div>
@@ -198,21 +233,25 @@
                                  <div class="form-group">
                                     <label for="fullName">Last Name <span class="text-danger mt-1">*</span></label>
                                     <input type="text" class="form-control" id="last_name" name="last_name" required
-                                       [(ngModel)]="form_data.LastName" #lname_o="ngModel"
+                                       [(ngModel)]="form_data.pay_profile.LastName" #lname_o="ngModel"
                                        [ngClass]="{'validation-error':!lname_o.valid && (lname_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="Last Name">
-                                    <div class="invalid-error" *ngIf="lname_o.touched && !lname_o.valid && lname_o.value!=''"> Last
+                                    <div class="invalid-error"
+                                       *ngIf="lname_o.touched && !lname_o.valid && lname_o.value!=''"> Last
                                        Name is required </div>
                                  </div>
                               </div>
                               <div class="col-12 col-sm-6">
                                  <div class="form-group">
-                                    <label for="company_name">Company Name <span class="text-danger mt-1">*</span></label>
-                                    <input type="text" class="form-control" id="company_name" name="company_name" required
-                                       [(ngModel)]="form_data.Company" #companyname_o="ngModel"
+                                    <label for="company_name">Company Name <span
+                                          class="text-danger mt-1">*</span></label>
+                                    <input type="text" class="form-control" id="company_name" name="company_name"
+                                       required [(ngModel)]="form_data.pay_profile.Company" #companyname_o="ngModel"
                                        [ngClass]="{'validation-error':!companyname_o.valid && (companyname_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="Company Name">
-                                    <div class="invalid-error" *ngIf="companyname_o.touched && !companyname_o.valid && companyname_o.value!=''"> Company
+                                    <div class="invalid-error"
+                                       *ngIf="companyname_o.touched && !companyname_o.valid && companyname_o.value!=''">
+                                       Company
                                        Name is required </div>
                                  </div>
                               </div>
@@ -220,57 +259,59 @@
                                  <div class="form-group">
                                     <label for="phone_number">Phone </label>
                                     <input type="text" class="form-control" id="phone_number" name="phone"
-                                       [(ngModel)]="form_data.Phone" #phone_o="ngModel" placeholder="Phone Number">
+                                       [(ngModel)]="form_data.pay_profile.Phone" #phone_o="ngModel" placeholder="Phone Number">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
                                     <label for="Address">Address</label>
-                                    <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="form_data.Address"
-                                       #Address_o="ngModel" placeholder="Address">
+                                    <input type="text" class="form-control" id="Address" name="Address"
+                                       [(ngModel)]="form_data.pay_profile.Address" #Address_o="ngModel" placeholder="Address">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
                                     <label for="City">City</label>
-                                    <input type="text" class="form-control" id="City" name="City" [(ngModel)]="form_data.City"
-                                       #City_o="ngModel" placeholder="City">
+                                    <input type="text" class="form-control" id="City" name="City"
+                                       [(ngModel)]="form_data.pay_profile.City" #City_o="ngModel" placeholder="City">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
-                                    <label for="State">State / Provision</label>
-                                    <input type="text" class="form-control" id="State" name="State" [(ngModel)]="form_data.State"
-                                       #State_o="ngModel" placeholder="State / Provision ">
+                                    <label for="State">State</label>
+                                    <input type="text" class="form-control" id="State" name="State"
+                                       [(ngModel)]="form_data.pay_profile.State" #State_o="ngModel"
+                                       placeholder="State ">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
                                     <label for="Zip">Fax </label>
-                                    <input type="text" class="form-control" id="fax" name="fax" [(ngModel)]="form_data.Fax"
-                                       #Zip_o="ngModel" placeholder="Fax ">
+                                    <input type="text" class="form-control" id="fax" name="fax"
+                                       [(ngModel)]="form_data.pay_profile.Fax" #Zip_o="ngModel" placeholder="Fax ">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
-                                    <label for="Zip">Zip / Postal Code </label>
-                                    <input type="text" class="form-control" id="Zip" name="Zip" [(ngModel)]="form_data.Zip" #Zip_o="ngModel"
-                                       placeholder="Zip / Provision ">
+                                    <label for="Zip">Zip Code </label>
+                                    <input type="text" class="form-control" id="Zip" name="Zip"
+                                       [(ngModel)]="form_data.pay_profile.Zip" #Zip_o="ngModel" placeholder="Zip Code ">
                                  </div>
                               </div>
                               <div class="col-12 col-sm-4">
                                  <div class="form-group">
                                     <label for="state_provision">Country</label>
-                                    <select class="custom-select" id="country_id" name="country_id" [(ngModel)]="form_data.Country"
-                                       #Country_o="ngModel" placeholder="Country">
+                                    <select class="custom-select" id="country_id" name="country_id"
+                                       [(ngModel)]="form_data.pay_profile.Country" #Country_o="ngModel" placeholder="Country">
                                        <option> --- Please Select --- </option>
-                                       <option *ngFor="let country of this.country_list" value="{{country.country_name}}">
+                                       <option *ngFor="let country of this.country_list"
+                                          value="{{country.country_name}}">
                                           {{country.country_name}}</option>
                                     </select>
                                  </div>
                               </div>
-               
-                              <div class="col-12">
+
+                              <!-- <div class="col-12">
                                  <div class="form-check custom-control custom-checkbox">
                                     <input type="checkbox" id="createshipping" name="shipping_profile_check"
                                        class="custom-control-input">
@@ -278,115 +319,124 @@
                                        Profile
                                        from the information above</label>
                                  </div>
-                              </div>
+                              </div> -->
                            </div>
-               
+
                         </div>
                         <div class="col-sm-6">
                            <div class="row">
                               <div class="col-sm-6">
                                  <div class="form-group">
-                                    <label for="input-zone">Account Stats <span class="text-danger mt-1">*</span></label>
-                                    <select class="custom-select" id="accont_type" name="accont_type" [(ngModel)]="form_data.Active"
-                                       #AccountStatus="ngModel"
+                                    <label for="input-zone">Account Status <span
+                                          class="text-danger mt-1">*</span></label>
+                                    <select class="custom-select" id="account_Status" name="account_Status"
+                                       [(ngModel)]="form_data.pay_profile.Active" #AccountStatus="ngModel"
                                        [ngClass]="{'validation-error':!AccountStatus.valid && (AccountStatus.touched || paymentportalsettings.submitted)}"
                                        required>
                                        <option value=""> --- Please Select --- </option>
-                                       <option value="true">Active </option>
-                                       <option value="false">Inactive</option>
+                                       <option value="True">Active </option>
+                                       <option value="False">Inactive</option>
                                     </select>
                                  </div>
                               </div>
-               
+
                               <div class="col-sm-6">
                                  <div class="form-group">
-                                    <label for="input-zone">Default Account <span class="text-danger mt-1">*</span></label>
+                                    <label for="input-zone">Default Account <span
+                                          class="text-danger mt-1">*</span></label>
                                     <select class="custom-select" id="default_acc" name="default_acc"
-                                       [(ngModel)]="form_data.DefltPayProfile" #defaultAcc="ngModel"
+                                       [(ngModel)]="form_data.pay_profile.DefltPayProfile" #defaultAcc="ngModel"
                                        [ngClass]="{'validation-error':!defaultAcc.valid && (defaultAcc.touched || paymentportalsettings.submitted)}"
                                        required>
                                        <option value=""> --- Please Select --- </option>
-                                       <option value="true">Yes </option>
-                                       <option value="false">No</option>
+                                       <option value="True">Yes </option>
+                                       <option value="False">No</option>
                                     </select>
                                  </div>
                               </div>
                            </div>
-                           <h6> <b>Payment Information</b> </h6>
+                           <h6> <b>Payment Method</b> </h6>
                            <div class="row">
                               <div class="col-12">
                                  <div class="btn-group d-flex btn-group-toggle mb-3">
-                                    <label class="btn btn-outline-secondary btn-sm shadow-none w-100 " [ngClass]="{'active': form_data.PayType == 'CC'}">
-                                       <input type="radio" name="PayType" value="CC" id="CC" (change)="change_pay_typ('CC')"
-                                          [checked]="form_data.PayType == 'CC'">
-                                       Credit Card </label>
-                                    <label class="btn btn-outline-secondary btn-sm shadow-none w-100" [ngClass]="{'active': form_data.PayType == 'BA'}"> 
-                                       <input type="radio" name="PayType" value="CC" id="BA" (change)="change_pay_typ('BA')" 
-                                       [checked]="form_data.PayType == 'BA'">
+                                    <label class="btn btn-outline-secondary btn-sm shadow-none w-100"
+                                       [ngClass]="{'active': form_data.pay_profile.PayType == 'BA'}">
+                                       <input type="radio" name="PayType" value="CC" id="BA" (change)="change_pay_typ('BA')"
+                                          [checked]="form_data.pay_profile.PayType == 'BA'">
                                        Bank Account </label>
+                                    <label class="btn btn-outline-secondary btn-sm shadow-none w-100 "
+                                       [ngClass]="{'active': form_data.pay_profile.PayType == 'CC'}">
+                                       <input type="radio" name="PayType" value="CC" id="CC"
+                                          (change)="change_pay_typ('CC')" [checked]="form_data.pay_profile.PayType == 'CC'">
+                                       Credit Card </label>
+                                    
                                  </div>
                               </div>
                            </div>
                            <div class="row">
                               <div class="col-12">
-                                 <div class=" text-muted mb-0 mb-sm-1"><b> Accepted Method </b> - American Express, Discover, JCB ,
+                                 <div class=" text-muted mb-0 mb-sm-1"><b> Accepted Method </b> - American Express,
+                                    Discover, JCB ,
                                     Master Card, Visa</div>
                               </div>
                            </div>
                            <!-- card details  -->
-                     
-                           <div class="row mt-2" *ngIf="form_data.PayType == 'CC'">
-               
+
+                           <div class="row mt-2" *ngIf="form_data.pay_profile.PayType == 'CC'">
+
                               <div class="col-sm-4">
                                  <div class="form-group">
                                     <label for="cardNumber">Card Number <span class="text-danger mt-1">*</span></label>
-                                    <input type="text" class="form-control" id="card_name" name="card_name" data-bv-field="card_name"
-                                       required [(ngModel)]="form_data.CardNumber" #CardNumber_o="ngModel"
+                                    <input type="text" class="form-control" id="card_name" name="card_name"
+                                       data-bv-field="card_name" required [(ngModel)]="form_data.pay_profile.CardNumber"
+                                       #CardNumber_o="ngModel"
                                        [ngClass]="{'validation-error':!CardNumber_o.valid && (CardNumber_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="xxxx-xxxx-xxxx-xxxx">
                                     <div class="invalid-error"
-                                       *ngIf="CardNumber_o.touched && !CardNumber_o.valid && CardNumber_o.value!=''"> Card Number is
+                                       *ngIf="CardNumber_o.touched && !CardNumber_o.valid && CardNumber_o.value!=''">
+                                       Card Number is
                                        required
                                     </div>
                                  </div>
                               </div>
-               
+
                               <div class="col-sm-4">
                                  <div class="form-group">
                                     <label for="expiryDate">Expiry Date<span class="text-danger mt-1">*</span></label>
                                     <input type="text" class="form-control" id="CardExpiry" name="CardExpiry"
-                                       data-bv-field="CardExpiry" required [(ngModel)]="form_data.CardExpiry" #CardExpiry_o="ngModel"
+                                       data-bv-field="CardExpiry" required [(ngModel)]="form_data.pay_profile.CardExpiry"
+                                       #CardExpiry_o="ngModel"
                                        [ngClass]="{'validation-error':!CardExpiry_o.valid && (CardExpiry_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="MM/YY">
                                     <div class="invalid-error"
-                                       *ngIf="CardExpiry_o.touched && !CardExpiry_o.valid && CardExpiry_o.value!=''"> Expiry Date is
+                                       *ngIf="CardExpiry_o.touched && !CardExpiry_o.valid && CardExpiry_o.value!=''">
+                                       Expiry Date is
                                        required
                                     </div>
                                  </div>
                               </div>
                               <div class="col-sm-4">
                                  <div class="form-group">
-                                    <label for="cvv">CVV <span class="text-danger mt-1">*</span></label>
-                                    <input type="password" class="form-control" id="CVV" name="CVV" required data-bv-field="CVV"
-                                       [(ngModel)]="form_data.CVV" #CVV_o="ngModel"
-                                       [ngClass]="{'validation-error':!CVV_o.valid && (CVV_o.touched || paymentportalsettings.submitted)}"
-                                       required placeholder="***">
-                                    <div class="invalid-error" *ngIf="CVV_o.touched && !CVV_o.valid && CVV_o.value!=''"> CVV is
-                                       required
-                                    </div>
+                                    <label for="cvv">CVV </label>
+                                    <input type="password" class="form-control" id="CVV" name="CVV" 
+                                       data-bv-field="CVV" [(ngModel)]="form_data.pay_profile.CVV" 
+                                        placeholder="***">
+                                    
                                  </div>
                               </div>
                            </div>
                            <!-- Bank details  -->
-                           <div class="row mt-2" *ngIf="form_data.PayType == 'BA'">
+                           <div class="row mt-2" *ngIf="form_data.pay_profile.PayType == 'BA'">
                               <div class="col-12 col-sm-6">
                                  <div class="form-group">
-                                    <label for="accountName">Name on Account <span class="text-danger mt-1">*</span></label>
-                                    <input type="text" class="form-control" id="ACName" name="ACName" required data-bv-field="ACName"
-                                       [(ngModel)]="form_data.ACName" #ACName_o="ngModel"
+                                    <label for="accountName">Name on Account <span
+                                          class="text-danger mt-1">*</span></label>
+                                    <input type="text" class="form-control" id="ACName" name="ACName" required
+                                       data-bv-field="ACName" [(ngModel)]="form_data.pay_profile.ACName" #ACName_o="ngModel"
                                        [ngClass]="{'validation-error':!ACName_o.valid && (ACName_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="Name on Account">
-                                    <div class="invalid-error" *ngIf="ACName_o.touched && !ACName_o.valid && ACName_o.value!=''"> Name
+                                    <div class="invalid-error"
+                                       *ngIf="ACName_o.touched && !ACName_o.valid && ACName_o.value!=''"> Name
                                        on Account is
                                        required
                                     </div>
@@ -396,23 +446,25 @@
                                  <div class="form-group">
                                     <label for="input-zone">Account Type <span class="text-danger mt-1">*</span></label>
                                     <select class="custom-select" id="accont_type" name="accont_type"
-                                       [(ngModel)]="form_data.ACTypeName" #ACTypeName_o="ngModel"
+                                       [(ngModel)]="form_data.pay_profile.ACTypeName" #ACTypeName_o="ngModel" (change)="account_type_change(form_data.pay_profile.ACTypeName)"
                                        [ngClass]="{'validation-error':!ACTypeName_o.valid && (ACTypeName_o.touched || paymentportalsettings.submitted)}"
                                        required>
                                        <option value=""> --- Please Select --- </option>
                                        <option value="saving">Savings </option>
-                                       <option value="current">Current</option>
+                                       <option value="checking">Checking</option>
+                                       <option value="business_checking"> Business Checking</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="col-12">
                                  <div class="form-group">
                                     <label for="bankname">Bank Name <span class="text-danger mt-1">*</span></label>
-                                    <input type="text" class="form-control" id="ACBank" name="ACBank" required data-bv-field="ACBank"
-                                       [(ngModel)]="form_data.ACBank" #ACBank_o="ngModel"
+                                    <input type="text" class="form-control" id="ACBank" name="ACBank" required
+                                       data-bv-field="ACBank" [(ngModel)]="form_data.pay_profile.ACBank" #ACBank_o="ngModel"
                                        [ngClass]="{'validation-error':!ACBank_o.valid && (ACBank_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="Bank Name">
-                                    <div class="invalid-error" *ngIf="ACBank_o.touched && !ACBank_o.valid && ACBank_o.value!=''"> Bank
+                                    <div class="invalid-error"
+                                       *ngIf="ACBank_o.touched && !ACBank_o.valid && ACBank_o.value!=''"> Bank
                                        Name is
                                        required
                                     </div>
@@ -420,12 +472,14 @@
                               </div>
                               <div class="col-12 col-sm-6">
                                  <div class="form-group">
-                                    <label for="account_no">Account Number <span class="text-danger mt-1">*</span></label>
+                                    <label for="account_no">Account Number <span
+                                          class="text-danger mt-1">*</span></label>
                                     <input type="text" class="form-control" id="ACNumber" name="ACNumber" required
-                                       data-bv-field="ACNumber" [(ngModel)]="form_data.ACNumber" #ACNumber_o="ngModel"
+                                       data-bv-field="ACNumber" [(ngModel)]="form_data.pay_profile.ACNumber" #ACNumber_o="ngModel"
                                        [ngClass]="{'validation-error':!ACNumber_o.valid && (ACNumber_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="Account Number">
-                                    <div class="invalid-error" *ngIf="ACNumber_o.touched && !ACNumber_o.valid && ACNumber_o.value!=''">
+                                    <div class="invalid-error"
+                                       *ngIf="ACNumber_o.touched && !ACNumber_o.valid && ACNumber_o.value!=''">
                                        Account Number is
                                        required
                                     </div>
@@ -433,21 +487,24 @@
                               </div>
                               <div class="col-12 col-sm-6">
                                  <div class="form-group">
-                                    <label for="aba_routing_no">ABA Routing Number <span class="text-danger mt-1">*</span></label>
+                                    <label for="aba_routing_no">ABA Routing Number <span
+                                          class="text-danger mt-1">*</span></label>
                                     <input type="text" class="form-control" id="ACABRouteNo" name="ACABRouteNo" required
-                                       data-bv-field="ACABRouteNo" [(ngModel)]="form_data.ACABRouteNo" #ACABRouteNo_o="ngModel"
+                                       data-bv-field="ACABRouteNo" [(ngModel)]="form_data.pay_profile.ACABRouteNo"
+                                       #ACABRouteNo_o="ngModel"
                                        [ngClass]="{'validation-error':!ACABRouteNo_o.valid && (ACABRouteNo_o.touched || paymentportalsettings.submitted)}"
                                        required placeholder="ABA Routing Number">
                                     <div class="invalid-error"
-                                       *ngIf="ACABRouteNo_o.touched && !ACABRouteNo_o.valid && ACABRouteNo_o.value!=''"> ABA Routing
+                                       *ngIf="ACABRouteNo_o.touched && !ACABRouteNo_o.valid && ACABRouteNo_o.value!=''">
+                                       ABA Routing
                                        Number is
                                        required
                                     </div>
                                  </div>
                               </div>
                            </div>
-               
-                           <hr class="mt-1 mb-1">
+
+                        <!--    <hr class="mt-1 mb-1">
                            <h6> <b>Validate Profile</b> </h6>
                            <div class="row">
                               <div class="col-12">
@@ -458,23 +515,24 @@
                                        authorization before saving data</label>
                                  </div>
                               </div>
-                           </div>
+                           </div> -->
                         </div>
                      </div>
-               
-                     <button class="btn btn-primary text-center m-auto mt-5" type="submit">Save Changes</button>
+
+                     <button class="btn btn-primary text-center m-auto mt-5"  *ngIf="this.form_data.PayProfiles.length == 0" type="submit">Submit</button>
                   </form>
                </div>
 
             </ng-template>
-          <!--   <div id="edit-pay-profile-settings" class="modal fade " role="dialog" aria-hidden="true">
+            <!--   <div id="edit-pay-profile-settings" class="modal fade " role="dialog" aria-hidden="true">
             </div> -->
             <!-- Payment Profile  Settings End -->
 
             <!-- Security
           ============================================= -->
             <div class="bg-light shadow-sm rounded p-4">
-               <h3 class="text-5 font-weight-400 mb-3">Security <a href="javascript:;" (click)="this.common_service.openModal(changepasswordpopup, 'modal-md')" 
+               <h3 class="text-5 font-weight-400 mb-3">Security <a href="javascript:;"
+                     (click)="this.common_service.openModal(changepasswordpopup, 'modal-md')"
                      class="float-right text-1 text-uppercase text-muted btn-link"><i
                         class="fas fa-edit mr-1"></i>Edit</a></h3>
                <div class="row">
@@ -489,34 +547,54 @@
             </div>
             <!-- Edit Details Modal
           ================================== -->
-         <ng-template #changepasswordpopup>
-            <div class="modal-header">
-               <h5 class="modal-title font-weight-400">Change Password</h5>
-               <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal(changepasswordpopup)">
-                  <span aria-hidden="true">&times;</span> </button>
-            </div>
-            <div class="modal-body p-4">
-               <form id="changePassword" method="post">
-                  <div class="form-group">
-                     <label for="existingPassword">Confirm Current Password</label>
-                     <input type="text" class="form-control" data-bv-field="existingpassword" id="existingPassword" required
-                        placeholder="Enter Current Password">
-                  </div>
-                  <div class="form-group">
-                     <label for="newPassword">New Password</label>
-                     <input type="text" class="form-control" data-bv-field="newpassword" id="newPassword" required
-                        placeholder="Enter New Password">
-                  </div>
-                  <div class="form-group">
-                     <label for="confirmPassword">Confirm New Password</label>
-                     <input type="text" class="form-control" data-bv-field="confirmgpassword" id="confirmPassword" required
-                        placeholder="Enter Confirm New Password">
-                  </div>
-                  <button class="btn btn-primary btn-block mt-4" type="submit">Update Password</button>
-               </form>
-            </div>
-         </ng-template>
-            
+            <ng-template #changepasswordpopup>
+               <div class="modal-header">
+                  <h5 class="modal-title font-weight-400">Change Password</h5>
+                  <button type="button" class="close font-weight-400"
+                     (click)="this.common_service.closeModal(changepasswordpopup)">
+                     <span aria-hidden="true">&times;</span> </button>
+               </div>
+               <div class="modal-body p-4">
+                  <form id="passwordform" method="post" #passwordform="ngForm"
+                     (ngSubmit)="onChangePassSubmit(passwordform.valid)">
+                     <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <div class="input-group">
+                           <div class="input-group-append bg-white w-100 cursor-pointer">
+                              <input type="{{this.password_field_type1}}" class="form-control" id="newPassword"
+                                 name="newPassword" required [(ngModel)]="pass_form_data.new_password"
+                                 #newPassword_o="ngModel" placeholder="Enter New Password">
+                              <span class="input-group-text bg-white border-left-0" id="eye_icon"
+                                 (click)="change_field_visibility(1)"><i class="{{this.pass_icon1}}"></i></span>
+                           </div>
+                        </div>
+
+                        <div class="invalid-error"
+                           *ngIf="newPassword_o.touched && !newPassword_o.valid && newPassword_o.value!=''"> Company
+                           Name is required </div>
+
+                     </div>
+                     <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <div class="input-group">
+                           <div class="input-group-append bg-white w-100 cursor-pointer">
+                              <input type="{{this.password_field_type2}}" class="form-control" id="confirmPassword"
+                                 name="confirmPassword" required [(ngModel)]="pass_form_data.confirm_new_password"
+                                 #confirm_password_o="ngModel" placeholder="Enter Confirm New Password">
+                              <span class="input-group-text bg-white border-left-0" id="eye_icon"
+                                 (click)="change_field_visibility(2)"><i class="{{this.pass_icon2}}"></i></span>
+                           </div>
+                        </div>
+
+                        <div class="invalid-error"
+                           *ngIf="confirm_password_o.touched && !confirm_password_o.valid && confirm_password_o.value!=''">
+                           Company Name is required </div>
+                     </div>
+                     <button class="btn btn-primary btn-block mt-4" type="submit">Update Password</button>
+                  </form>
+               </div>
+            </ng-template>
+
             <!-- Security End -->
 
          </div>

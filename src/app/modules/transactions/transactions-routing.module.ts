@@ -11,7 +11,7 @@ const routes: Routes = [
     component: TransactionsComponent,
     pathMatch: 'full'
   },
-  { path: 'pay-now/:one', component: PayNowComponent },
+  { path: 'pay-now', component: PayNowComponent },
   { path: 'pay-confirm/:one', component: PayConfirmComponent },
 ];
 

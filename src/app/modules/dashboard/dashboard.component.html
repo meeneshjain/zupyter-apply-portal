@@ -28,148 +28,136 @@
             =============================== -->
                <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
                   <div class="row">
-                     <div class="col-2 col-sm-1 text-center"><span class="">Date</span></div>
-                     <div class="col col-sm-7">Description</div>
-                     <div class="col-auto col-sm-2 d-none d-sm-block text-center">Status</div>
-                     <div class="col-3 col-sm-2 text-right">Amount</div>
+                     <div class="col col-sm-3 text-left"><span class="">Date</span></div>
+                     <div class="col col-sm-2 text-left"><span class="">Payment Method</span></div>
+                     <div class="col col-sm-3">Description</div>
+                     <div class=" col-sm-2 d-none d-sm-block text-center">Status</div>
+                     <div class="col col-sm-2 text-right">Amount</div>
                   </div>
                </div>
                <!-- Title End -->
 
                <!-- Transaction List
             =============================== -->
-               <div class="transaction-list">
-                  <div class="transaction-item px-4 py-3"  (click)="this.common_service.openModal(activitydetailpopup, 'modal-md')">
-                     <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">16</span>
-                           <span class="d-block text-1 font-weight-300 text-uppercase">APR</span>
+               <ng-container *ngIf="transaction_details.length > 0">
+                  <div class="transaction-list" *ngFor="let row_data of this.transaction_details; let i = index;">
+                     <div class="transaction-item px-4 py-3"
+                        (click)="show_transaction_details(activitydetailpopup , row_data)">
+                        <div class="row align-items-center flex-row">
+                           <div class="col col-sm-3 text-left">
+                              {{row_data.CreateDate}}
+                           </div>
+                           <div class="col col-sm-2 text-left">
+                              <span *ngIf="row_data.PayType =='BA'">
+                                 Bank Account
+                              </span>
+                              <span *ngIf="row_data.PayType =='CC'">
+                                 Credit Card
+                              </span>
+                           </div>
+                           <div class="col col-sm-3"> <span class="d-block text-4">HDFC Bank</span> <span
+                                 class="text-muted">Withdraw to Bank account</span> </div>
+                           <div class=" col-sm-2 d-none d-sm-block text-center text-3">
+                              <span *ngIf="this.form_data.pp_TransID != ''"
+                                 class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
+                                    class="fas fa-check-circle"></i> Active</span>
+
+                              <span *ngIf="this.form_data.pp_TransID == ''"
+                                 class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
+                                    class="fas fa-times"></i>
+                                 Inactive</span>
+                           </div>
+                           <div class="col col-sm-2 text-right text-4"> <span
+                                 class="text-nowrap">${{row_data.PaidAmt}}</span> </div>
                         </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span
-                              class="text-muted">Withdraw to Bank account</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-warning"
-                              data-toggle="tooltip" data-original-title="In Progress"><i
-                                 class="fas fa-ellipsis-h"></i></span> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $562</span> <span
-                              class="text-2 text-uppercase">(USD)</span> </div>
                      </div>
                   </div>
-                  <div class="transaction-item px-4 py-3"  (click)="this.common_service.openModal(activitydetailpopup, 'modal-md')">
-                     <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">15</span>
-                           <span class="d-block text-1 font-weight-300 text-uppercase">APR</span>
+               </ng-container>
+               <ng-container *ngIf="transaction_details.length == 0">
+                  <div class="transaction-list">
+                     <div class="transaction-item px-2 py-2">
+                        <div class="row align-items-center flex-row">
+                           <div class="col text-center text-secondary">
+                              No Rows Found
+                           </div>
                         </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">Envato Pty Ltd</span> <span
-                              class="text-muted">Payment Received</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success"
-                              data-toggle="tooltip" data-original-title="Completed"><i
-                                 class="fas fa-check-circle"></i></span> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">+ $562</span> <span
-                              class="text-2 text-uppercase">(USD)</span> </div>
                      </div>
                   </div>
-                  <div class="transaction-item px-4 py-3"  (click)="this.common_service.openModal(activitydetailpopup, 'modal-md')">
-                     <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">04</span>
-                           <span class="d-block text-1 font-weight-300 text-uppercase">APR</span>
-                        </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span
-                              class="text-muted">Withdraw to Bank account</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success"
-                              data-toggle="tooltip" data-original-title="Completed"><i
-                                 class="fas fa-check-circle"></i></span> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $106</span> <span
-                              class="text-2 text-uppercase">(USD)</span> </div>
-                     </div>
-                  </div>
-                  
-                  
-                  <div class="transaction-item px-4 py-3"  (click)="this.common_service.openModal(activitydetailpopup, 'modal-md')">
-                     <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">16</span>
-                           <span class="d-block text-1 font-weight-300 text-uppercase">FEB</span>
-                        </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">HDFC Bank</span> <span
-                              class="text-muted">Withdraw to Bank account</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success"
-                              data-toggle="tooltip" data-original-title="Completed"><i
-                                 class="fas fa-check-circle"></i></span> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">- $1498</span> <span
-                              class="text-2 text-uppercase">(USD)</span> </div>
-                     </div>
-                  </div>
-                  <div class="transaction-item px-4 py-3"  (click)="this.common_service.openModal(activitydetailpopup, 'modal-md')">
-                     <div class="row align-items-center flex-row">
-                        <div class="col-2 col-sm-1 text-center"> <span class="d-block text-4 font-weight-300">15</span>
-                           <span class="d-block text-1 font-weight-300 text-uppercase">FEB</span>
-                        </div>
-                        <div class="col col-sm-7"> <span class="d-block text-4">Envato Pty Ltd</span> <span
-                              class="text-muted">Payment Received</span> </div>
-                        <div class="col-auto col-sm-2 d-none d-sm-block text-center text-3"> <span class="text-success"
-                              data-toggle="tooltip" data-original-title="Completed"><i
-                                 class="fas fa-check-circle"></i></span> </div>
-                        <div class="col-3 col-sm-2 text-right text-4"> <span class="text-nowrap">+ $1498</span> <span
-                              class="text-2 text-uppercase">(USD)</span> </div>
-                     </div>
-                  </div>
-               </div>
+               </ng-container>
                <!-- Transaction List End -->
 
                <!-- Transaction Item Details Modal
             =========================================== -->
-            <ng-template #activitydetailpopup>
-               <div class="modal-body">
-                  <div class="row no-gutters">
-                     <div class="col-sm-5 d-flex justify-content-center zupyter-bg-primary rounded-left py-4">
-                        <div class="my-auto text-center">
-                           <div class="text-17 text-white my-3"><i class="fas fa-building"></i></div>
-                           <h3 class="text-4 text-white font-weight-400 my-3">Envato Pty Ltd</h3>
-                           <div class="text-8 font-weight-500 text-white my-4">$557.20</div>
-                           <p class="text-white">15 March 2019</p>
+               <ng-template #activitydetailpopup>
+                  <div class="modal-body">
+                     <div class="row no-gutters">
+                        <div class="col-sm-3 d-flex justify-content-center zupyter-bg-primary rounded-left py-4">
+                           <div class="my-auto text-center">
+                              <div class="text-17 text-white my-3"><i class="fas fa-building"></i></div>
+                              <h3 class="text-4 text-white font-weight-400 my-3">
+                                 {{this.selected_transaction['transid']}}</h3>
+                              <div class="text-8 font-weight-500 text-white my-4">
+                                 ${{this.selected_transaction['PaidAmt']}}</div>
+                              <p class="text-white">{{this.selected_transaction['CreateDate']}}</p>
+                           </div>
+                        </div>
+                        <div class="col-sm-9">
+                           <h5 class="text-5 font-weight-400 ml-3 mr-3 ml-2 mb-2">Transaction Details
+                              <button type="button" class="close font-weight-400" (click)="close_transaction()"> <span
+                                    aria-hidden="true">&times;</span>
+                              </button>
+                           </h5>
+                           <hr class="mt-1 mb-2">
+                           <div class="ml-3 mr-1">
+                                 <!-- <h5 class="text-5 font-weight-400">Items Details </h5> -->
+                                 <!-- <hr class="mt-1 mb-2"> -->
+                                 <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
+                                    <div class="row">
+                                       <!-- <div class="col col-sm-3 text-left">Trans Num.</div> -->
+                                       <!-- <div class="col col-sm-3 text-left">Doc. Entry</div> -->
+                                       <div class="col col-sm-6 text-left">Transaction Number</div>
+                                       <div class="col col-sm-6 text-right">Amount</div>
+                                    </div>
+                                 </div>
+                                 <div class="transaction-list" *ngFor="let items of this.selected_transaction['Lines']; let i = index;">
+                                    <div class="transaction-item px-4 py-3">
+                                       <div class="row align-items-center flex-row">
+                                          <!-- <div class="col col-sm-3 text-left"> {{items.pp_TransNum}} </div> -->
+                                          <!-- <div class="col col-sm-3 text-left"> {{items.DocEntry}} </div> -->
+                                          <div class="col col-sm-6 text-left"> {{items.DocNum}} </div>
+                                          <div class="col col-sm-6 text-right"> ${{items.SumApplied}} </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              <ul class="list-unstyled py-2 px-4">
+                                 <li class="mb-2">Payment Amount <span
+                                       class="float-right text-3">${{this.selected_transaction['PaidAmt']}}</span>
+                                 </li>
+                                 <li class="mb-2">Fee <span class="float-right text-3">-$0</span></li>
+                              </ul>
+                              <hr class="mb-2">
+                              <p class="d-flex align-items-center font-weight-500 mb-4 py-2 px-4">Total Amount <span
+                                    class="text-3 ml-auto">${{this.selected_transaction['PaidAmt']}}</span></p>
+                              <!-- <ul class="list-unstyled">
+                                 <li class="font-weight-500">Paid By:</li>
+                                 <li class="text-muted">{{this.selected_transaction['CardName']}}</li>
+                              </ul> -->
+                           
+                           
+
+                           </div>
                         </div>
                      </div>
-                     <div class="col-sm-7">
-                        <h5 class="text-5 font-weight-400 m-3">Transaction Details
-                           <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('')"> <span
-                                 aria-hidden="true">&times;</span> </button>
-                        </h5>
-                        <hr>
-                        <div class="px-3">
-                           <ul class="list-unstyled">
-                              <li class="mb-2">Payment Amount <span class="float-right text-3">$562.00</span>
-                              </li>
-                              <li class="mb-2">Fee <span class="float-right text-3">-$4.80</span></li>
-                           </ul>
-                           <hr class="mb-2">
-                           <p class="d-flex align-items-center font-weight-500 mb-4">Total Amount <span
-                                 class="text-3 ml-auto">$557.20</span></p>
-                           <ul class="list-unstyled">
-                              <li class="font-weight-500">Paid By:</li>
-                              <li class="text-muted">Envato Pty Ltd</li>
-                           </ul>
-                           <ul class="list-unstyled">
-                              <li class="font-weight-500">Transaction ID:</li>
-                              <li class="text-muted">26566689645685976589</li>
-                           </ul>
-                           <ul class="list-unstyled">
-                              <li class="font-weight-500">Description:</li>
-                              <li class="text-muted">Envato March 2019 Member Payment</li>
-                           </ul>
-                           <ul class="list-unstyled">
-                              <li class="font-weight-500">Status:</li>
-                              <li class="text-muted">Completed</li>
-                           </ul>
-                        </div>
-                     </div>
+
                   </div>
-               </div>
-            </ng-template>
+               </ng-template>
 
                <!-- Transaction Item Details Modal End -->
 
                <!-- View all Link
             =============================== -->
-               <div class="text-center mt-4 pb-3"><a href="javascript:;" [routerLink]="['/transaction']" class="btn-link text-3">View all<i
-                        class="fas fa-chevron-right text-2 ml-2"></i></a></div>
+               <div class="text-center mt-4 pb-3"><a href="javascript:;" [routerLink]="['/transaction']"
+                     class="btn-link text-3">View all<i class="fas fa-chevron-right text-2 ml-2"></i></a></div>
                <!-- View all Link End -->
 
             </div>

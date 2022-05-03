@@ -8,6 +8,7 @@ import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
 import { PayNowComponent } from './pay-now/pay-now.component';
 import { PayConfirmComponent } from './pay-confirm/pay-confirm.component';
 import { SharedModules } from 'src/app/core/shared.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SharedModules } from 'src/app/core/shared.module';
     NgxSkeletonLoaderModule.forRoot(),
     TransactionsRoutingModule,
     SharedSidebarModule,
-    SharedModules
+    SharedModules,
+    BsDatepickerModule.forRoot(),
   ]
 })
 export class TransactionsModule { }

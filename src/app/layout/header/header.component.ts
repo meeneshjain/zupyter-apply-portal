@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
 import { SharedService } from "src/app/core/services/shared.service";
 import { MainService } from "src/app/core/services/main.service";
 import { CommonService } from "src/app/core/services/common.service";
@@ -14,7 +16,10 @@ export class HeaderComponent implements OnInit {
   public load_menu = false;
   public is_logged_in = false;
   public login_logo = '';
+  public current_path = '';
   constructor(
+    public location: Location,
+    public router: Router,
     public shared_service: SharedService,
     public common_service: CommonService,
     public service: MainService
@@ -22,6 +27,15 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.load_menu = true;
     }, 200);
+    
+    router.events.subscribe((val) => {
+      if (location.path() != '') {
+        if (val instanceof NavigationEnd) {
+          this.current_path = location.path().replace("/","");
+          console.log('location.path() ', this.current_path)  
+        }
+      }
+    });
     
     this.shared_service.loginValueData.subscribe((obj) => {
         this.is_logged_in = obj;

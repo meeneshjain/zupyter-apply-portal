@@ -1,0 +1,202 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+
+<div id="content" class="py-4">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-12  col-md-12 ">
+            <div class="row">
+               <div class="col-md-6 col-lg-6">
+                  <h4 class="font-weight-400 mb-3">User List</h4>
+
+               </div>
+               <div class="col-md-6 col-lg-6">
+                  <div class="pull-right text-right ">
+                     <button class="btn btn-primary btn-sm" type="button" (click)="add_user(userFormPopup)"> <i
+                           class="fas fa-plus mr-1"></i> Add New User</button>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Recent Activity  =============================== -->
+            <div class="bg-light shadow-sm rounded mb-4 mt-2">
+               <!-- <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">Account Activity</h3> -->
+
+               <!-- Title   =============================== -->
+               <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
+                  <div class="row">
+                     <div class="col col-md-1 col-sm-1 col-lg-1 text-left"><span class="">#</span></div>
+                     <div class="col text-left"><span class="">First Name</span></div>
+                     <div class="col text-left"><span class="">Last Name</span></div>
+                     <div class="col text-left"><span class="">Email</span></div>
+                     <div class="col text-left"><span class="">Mobile</span></div>
+                     <div class="col text-left"><span class="">Status</span></div>
+                     <div class="col  col-md-1 col-sm-1 col-lg-1 text-left"><span class="">Action</span></div>
+
+                  </div>
+               </div>
+               <!-- Title End -->
+               <!-- Transaction List  =============================== -->
+               <ng-container *ngIf="user_list.length > 0">
+                  <div class="transaction-list" *ngFor="let row_data of this.user_list; let i = index;">
+                     <div class="transaction-item px-4 py-3">
+                        <!-- (click)="show_user_list(userFormPopup , row_data)" -->
+                        <div class="row align-items-center flex-row">
+                           <div class="col col-sm-3 text-left">
+                              {{row_data.CreateDate}}
+                           </div>
+                           <div class="col col-sm-2 text-left">
+                              <span *ngIf="row_data.PayType =='BA'">
+                                 Bank Account
+                              </span>
+                              <span *ngIf="row_data.PayType =='CC'">
+                                 Credit Card
+                              </span>
+                           </div>
+                           <div class="col col-sm-3"> <span class="d-block text-4">HDFC Bank</span> <span
+                                 class="text-muted">Withdraw to Bank account</span> </div>
+                           <div class=" col-sm-2 d-none d-sm-block text-center text-3">
+                              <span *ngIf="this.form_data.pp_TransID != ''"
+                                 class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
+                                    class="fas fa-check-circle"></i> Active</span>
+
+                              <span *ngIf="this.form_data.pp_TransID == ''"
+                                 class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
+                                    class="fas fa-times"></i>
+                                 Inactive</span>
+                           </div>
+                           <div class="col col-sm-2 text-right text-4"> <span
+                                 class="text-nowrap">${{row_data.PaidAmt}}</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </ng-container>
+               <ng-container *ngIf="user_list.length == 0">
+                  <div class="transaction-list">
+                     <div class="transaction-item px-2 py-2">
+                        <div class="row align-items-center flex-row">
+                           <div class="col text-center text-secondary">
+                              No Rows Found
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </ng-container>
+               <!-- Transaction List End -->
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <ng-template #userFormPopup>
+      <div class="modal-header">
+         <h5 class="modal-title font-weight-400">{{this.card_form_title}}</h5>
+         <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('')">
+            <span aria-hidden="true">&times;</span> </button>
+      </div>
+      <div class="modal-body p-4">
+         <form id="userForm" method="post" #userForm="ngForm" (ngSubmit)="onUserAddUpdate(userForm.valid)">
+            <div class="row">
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="FirstName">First Name</label>
+                     <input type="text" class="form-control" id="FirstName" name="FirstName" required
+                        [(ngModel)]="form_data.FirstName" #firstName_o="ngModel"
+                        [ngClass]="{'validation-error':!firstName_o.valid && (firstName_o.touched || userForm.submitted)}"
+                        required placeholder="First Name">
+                     <div class="invalid-error"
+                        *ngIf="firstName_o.touched && !firstName_o.valid && firstName_o.value!=''">
+                        First Name is required
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="LastName">Last Name</label>
+                     <input type="text" class="form-control" id="LastName" name="LastName" required
+                        [(ngModel)]="form_data.LastName" #LastName_o="ngModel"
+                        [ngClass]="{'validation-error':!LastName_o.valid && (LastName_o.touched || userForm.submitted)}"
+                        required placeholder="Last Name">
+                     <div class="invalid-error" *ngIf="LastName_o.touched && !LastName_o.valid && LastName_o.value!=''">
+                        Last Name is required
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="EmailAddress">Email</label>
+                     <input type="email" class="form-control" id="EmailAddress" name="EmailAddress" required
+                        [(ngModel)]="form_data.EmailAddress" #EmailAddress_o="ngModel"
+                        [ngClass]="{'validation-error':!EmailAddress_o.valid && (EmailAddress_o.touched || userForm.submitted)}"
+                        required placeholder="Email">
+                     <div class="invalid-error"
+                        *ngIf="EmailAddress_o.touched && !EmailAddress_o.valid && EmailAddress_o.value!=''">
+                        Email is required
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="Password">Password</label>
+                     <input type="password" class="form-control" id="Password" name="Password" required
+                        [(ngModel)]="form_data.Password" #Password_o="ngModel"
+                        [ngClass]="{'validation-error':!Password_o.valid && (Password_o.touched || userForm.submitted)}"
+                        required placeholder="Password">
+                     <div class="invalid-error" *ngIf="Password_o.touched && !Password_o.valid && Password_o.value!=''">
+                        Password is required
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="EmailAddress">Email</label>
+                     <input type="email" class="form-control" id="EmailAddress" name="EmailAddress" required
+                        [(ngModel)]="form_data.EmailAddress" #EmailAddress_o="ngModel"
+                        [ngClass]="{'validation-error':!EmailAddress_o.valid && (EmailAddress_o.touched || userForm.submitted)}"
+                        required placeholder="Email">
+                     <div class="invalid-error"  *ngIf="EmailAddress_o.touched && !EmailAddress_o.valid && EmailAddress_o.value!=''">
+                        Email is required
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="Password">Password</label>
+                     <input type="password" class="form-control" id="Password" name="Password" required
+                        [(ngModel)]="form_data.Password" #Password_o="ngModel"
+                        [ngClass]="{'validation-error':!Password_o.valid && (Password_o.touched || userForm.submitted)}"
+                        required placeholder="Password">
+                     <div class="invalid-error" *ngIf="Password_o.touched && !Password_o.valid && Password_o.value!=''">
+                        Password is required
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="AlterNateMeil">Alternate Email</label>
+                     <input type="text" class="form-control" id="AlterNateMeil" name="AlterNateMeil" [(ngModel)]="form_data.AlterNateMeil" placeholder="Alternate Email">
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-6">
+                  <div class="form-group">
+                     <label for="MobileNumber"> Mobile Number</label>
+                     <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" [(ngModel)]="form_data.MobileNumber" placeholder="Mobile Number">
+                     
+                  </div>
+               </div>
+            </div>
+            <button class="btn btn-primary" type="submit">{{this.card_button_title}}</button>
+         </form>
+      </div>
+   </ng-template>

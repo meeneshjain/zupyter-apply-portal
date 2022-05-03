@@ -187,7 +187,7 @@ export class MainService {
 	}	
 	
 	
-	create_payment_profile(mode, dataset): Observable<any> {
+	create_payment_profile(mode, dataset, card_bank_data): Observable<any> {
 		let user_details = JSON.parse(sessionStorage.user_details);
 		let data_object = {
 			"SysID": this.sys_id,
@@ -202,39 +202,40 @@ export class MainService {
 			"PaymentProfiles": [
 				{
 					"Mode": mode,
+					"CardCode": user_details.CardCode,
 					"UserID": parseInt(sessionStorage.user_id),
-					"PayProfileID": dataset.PayProfileID,
+					"PayProfileID": card_bank_data.PayProfileID,
 					"Custid": dataset.Custid,
-					"CustomerType": dataset.CustomerType,
-					"FirstName": dataset.FirstName,
-					"LastName": dataset.LastName,
-					"Company": dataset.Company,
-					"Address": dataset.Address,
-					"City": dataset.City,
-					"State": dataset.State,
-					"Zip": dataset.Zip,
-					"Country": dataset.Country,
-					"Phone": dataset.Phone,
-					"Fax": dataset.Fax,
-					"PayType": dataset.PayType,
-					"CardType": dataset.CardType,
-					"CardNumber": dataset.CardNumber,
-					"CardExpiry": dataset.CardExpiry,
-					"CVV": dataset.CVV,
-					"ACName": dataset.ACName,
-					"ACTypeID": dataset.ACTypeID,
-					"ACTypeName": dataset.ACTypeName,
-					"ACABRouteNo": dataset.ACABRouteNo,
-					"ACNumber": dataset.ACNumber,
-					"ACBank": dataset.ACBank,
-					"Active": dataset.Active,
-					"DefltPayProfile": true,
-					"customerPaymentProfileId": dataset.customerPaymentProfileId
+					"CustomerType": card_bank_data.CustomerType,
+					"FirstName": card_bank_data.FirstName,
+					"LastName": card_bank_data.LastName,
+					"Company": card_bank_data.Company,
+					"Address": card_bank_data.Address,
+					"City": card_bank_data.City,
+					"State": card_bank_data.State,
+					"Zip": card_bank_data.Zip,
+					"Country": card_bank_data.Country,
+					"Phone": card_bank_data.Phone,
+					"Fax": card_bank_data.Fax,
+					"PayType": card_bank_data.PayType,
+					"CardType": card_bank_data.CardType,
+					"CardNumber": card_bank_data.CardNumber,
+					"CardExpiry": card_bank_data.CardExpiry,
+					"CVV": card_bank_data.CVV,
+					"ACName": card_bank_data.ACName,
+					"ACTypeID": card_bank_data.ACTypeID,
+					"ACTypeName": card_bank_data.ACTypeName,
+					"ACABRouteNo": card_bank_data.ACABRouteNo,
+					"ACNumber": card_bank_data.ACNumber,
+					"ACBank": card_bank_data.ACBank,
+					"Active": card_bank_data.Active,
+					"DefltPayProfile": card_bank_data.DefltPayProfile,
+					"customerPaymentProfileId": card_bank_data.customerPaymentProfileId
 				}
 			]
 		};
 		
-		
+		console.log('object ', data_object )
 		if (mode == "A") {
 			return this.httpclient.post(this.config_file_data.service_url + "/pp/payprofile/add", data_object); // this.common_params.httpOptions
 		} else if (mode == "M") {
@@ -243,11 +244,114 @@ export class MainService {
 	}
 	
 	
+	get_invoices_transactions(ReportType, Detailed,search_string, page_no, record_in_page, from_date, to_date): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+		let user_details = JSON.parse(sessionStorage.user_details);
+		this.mod_id = this.common_params.get_module_id(this.module_name);
+		let data_object = {
+			"Mode": "F",
+			"Detailed": Detailed,
+			"ModID": this.mod_id,
+			"SysID": this.sys_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"SearchString": search_string,
+			"PageNumber": page_no,
+			"RecordInPage": record_in_page,
+			"CardCode": user_details.CardCode,
+			"CardName": user_details.CardName,
+			"From_RefDat": from_date,
+			"To_RefDat": to_date,
+			"ReportType": ReportType
+		};
+		return this.httpclient.post(this.config_file_data.service_url + "/crm/rpts/acdetails", data_object); // this.common_params.httpOptions
+	}
 	
+	change_password(password): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+		this.mod_id = this.common_params.get_module_id(this.module_name);
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": this.mod_id,
+			"NewPassword": password,
+			"UserId": parseInt(sessionStorage.user_id)
+		}
+		return this.httpclient.post(this.config_file_data.service_url + "/mod/user/change_password/", data_object); // this.common_params.httpOptions
+	}	
 	
-	
-	
-	
-	
+	delete_payment_profile(customerProfileId, PayProfileID, customerPaymentProfileId): Observable<any> {
+		let user_details = JSON.parse(sessionStorage.user_details);
+		this.mod_id = this.common_params.get_module_id(this.module_name);
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": this.mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"Mode": "R",
+			"customerProfileId": customerProfileId,
+			"PaymentProfiles": [{
+					"Mode": "R",
+					"PayProfileID": PayProfileID,
+					"customerPaymentProfileId": customerPaymentProfileId
+				}
+			]
+		};
 
+		return this.httpclient.post(this.config_file_data.service_url + "/pp/payprofile/del", data_object); // this.common_params.httpOptions
+	}
+	
+	add_transaction(customerProfileId, customerPaymentProfileId, PayProfileID, PaidAmt, line_data): Observable<any> {
+		let user_details = JSON.parse(sessionStorage.user_details);
+		this.mod_id = this.common_params.get_module_id(this.module_name);
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": this.mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"Mode": "A",
+			"DataType": "", //"H" if need header information "D" if details needed
+			"pp_TransID": -1,
+			"pp_TransNum": -1,
+			"CardCode": user_details.CardCode,
+			"CardName": user_details.CardName,
+			"SearchString": "",
+			"PageNumber": 1,
+			"RecordInPage": 1,
+			"PaidAmt": PaidAmt,
+			"DiscAmt": 0,
+			"PayProfileID": PayProfileID,
+			"customerProfileId": customerProfileId,
+			"customerPaymentProfileId": customerPaymentProfileId,
+			"MarkupType": "A",
+			"MarkupValue": 20,
+			"PayOnAcct": "N",
+			"Comments": "",
+			"transid": "",
+			"authCode": "",
+			"networkTransId": "",
+			"Lines": line_data  
+		};
+
+		return this.httpclient.post(this.config_file_data.service_url + "/pp/trans/add", data_object); // this.common_params.httpOptions
+	}
+	
+	
+	get_completed_transaction(pp_TransID, pp_TransNum, DataType, RecordInPage): Observable<any> {
+		this.mod_id = this.common_params.get_module_id(this.module_name);
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": this.mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"PageNumber": 1,
+			"RecordInPage": RecordInPage,
+			"pp_TransID": pp_TransID,
+			"pp_TransNum": pp_TransNum,
+			"erp_sync": false,
+			"DataType": DataType,
+			"CardCode": "",
+			"SearchString": ""
+		};
+
+		return this.httpclient.post(this.config_file_data.service_url + "/pp/trans/", data_object); // this.common_params.httpOptions
+	}
+	
+	
+	
 }

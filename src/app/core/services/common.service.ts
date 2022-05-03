@@ -46,7 +46,6 @@ export class CommonService {
 			text: sub_msg,
 			icon: 'warning',
 			showCancelButton: true,
-			maxOpened : 1,
 			confirmButtonText: '<i class="fa fa-trash"></i> Yes',
 			cancelButtonText: '<i class="fa fa-times"></i> No'
 		}).then((result) => {

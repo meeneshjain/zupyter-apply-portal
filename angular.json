@@ -60,7 +60,8 @@
               "src/assets/vendor/currency-flags/css/currency-flags.min.css",
               "src/assets/vendor/daterangepicker/daterangepicker.css",
               "src/assets/css/stylesheet.css",
-              "node_modules/sweetalert2/src/sweetalert2.scss"
+              "./node_modules/sweetalert2/src/sweetalert2.scss",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
             ],
             "scripts": []
           },

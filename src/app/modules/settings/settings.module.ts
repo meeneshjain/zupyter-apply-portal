@@ -7,9 +7,13 @@ import { SharedModules } from 'src/app/core/shared.module';
 import { ModalModule } from "ngx-bootstrap/modal";
 /// import { SiderbarComponent } from 'src/app/layout/siderbar/siderbar.component';
 import { SharedSidebarModule } from 'src/app/core/shared.sidebar.module';
+import { SetupConfigComponent } from './setup-config/setup-config.component';
+import { SystemUsersComponent } from './system-users/system-users.component';
 @NgModule({
   declarations: [
     ProfileSettingComponent,
+    SetupConfigComponent,
+    SystemUsersComponent,
  //  SiderbarComponent
 
 ],

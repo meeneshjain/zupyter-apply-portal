@@ -43,3 +43,25 @@
 .btn-sm {
     padding: 0.3rem 0.6rem !important;
 }
+
+.form-control:disabled, .form-control[readonly]{
+        background-color: #f9f9f9 !important;
+}
+
+.spinner-border-sm{
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.font-size-1-2rem{
+    font-size: 1.2rem;
+    
+}
+
+.account-card.account-card-primary {
+    background: linear-gradient(-45deg, #6c6b6b, #0a0a0a) !important;
+}
+ 
+.validation-error:after{
+    border: 1px solid red !important;
+}
