@@ -29,10 +29,10 @@
                <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
                   <div class="row">
                      <div class="col col-sm-3 text-left"><span class="">Date</span></div>
-                     <div class="col col-sm-2 text-left"><span class="">Payment Method</span></div>
-                     <div class="col col-sm-3">Description</div>
-                     <div class=" col-sm-2 d-none d-sm-block text-center">Status</div>
+                     <!-- <div class="col col-sm-2 text-left"><span class="">Payment Method</span></div> -->
+                     <div class="col col-sm-5">Payment Method</div>
                      <div class="col col-sm-2 text-right">Amount</div>
+                     <div class=" col-sm-2 d-none d-sm-block text-center">Status</div>
                   </div>
                </div>
                <!-- Title End -->
@@ -47,28 +47,39 @@
                            <div class="col col-sm-3 text-left">
                               {{row_data.CreateDate}}
                            </div>
-                           <div class="col col-sm-2 text-left">
+                           <!-- <div class="col col-sm-2 text-left">
                               <span *ngIf="row_data.PayType =='BA'">
                                  Bank Account
                               </span>
                               <span *ngIf="row_data.PayType =='CC'">
                                  Credit Card
                               </span>
+                           </div> -->
+                           <div class="col col-sm-5">
+                              <span *ngIf="row_data.PayType =='BA'">
+                                 <span class="d-block text-4">{{row_data.ACBank}}</span>
+                                 <span class="text-muted">{{row_data.ACNumber}}</span> |
+                                 <span class="text-muted text-capitalize">{{row_data.ACTypeName}}</span>
+                              </span>
+                              <span *ngIf="row_data.PayType =='CC'">
+                                 <span class="d-block text-4">{{row_data.CardType}}</span>
+                                 <span class="text-muted">{{row_data.CardNumber}}</span> |
+                                 <span class="text-muted">{{row_data.CardExpiry}}</span>
+                              </span>
+
                            </div>
-                           <div class="col col-sm-3"> <span class="d-block text-4">HDFC Bank</span> <span
-                                 class="text-muted">Withdraw to Bank account</span> </div>
+
+                           <div class="col col-sm-2 text-right text-4"> <span
+                                 class="text-nowrap">${{row_data.PaidAmt}}</span>
+                           </div>
                            <div class=" col-sm-2 d-none d-sm-block text-center text-3">
                               <span *ngIf="this.form_data.pp_TransID != ''"
                                  class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
-                                    class="fas fa-check-circle"></i> Active</span>
+                                    class="fas fa-check-circle"></i> Complete</span>
 
-                              <span *ngIf="this.form_data.pp_TransID == ''"
-                                 class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
-                                    class="fas fa-times"></i>
-                                 Inactive</span>
+                              <span *ngIf="this.form_data.pp_TransID == ''" class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
+                                    class="fas fa-times"></i> Pending</span>
                            </div>
-                           <div class="col col-sm-2 text-right text-4"> <span
-                                 class="text-nowrap">${{row_data.PaidAmt}}</span> </div>
                         </div>
                      </div>
                   </div>
@@ -109,26 +120,27 @@
                            </h5>
                            <hr class="mt-1 mb-2">
                            <div class="ml-3 mr-1">
-                                 <!-- <h5 class="text-5 font-weight-400">Items Details </h5> -->
-                                 <!-- <hr class="mt-1 mb-2"> -->
-                                 <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
-                                    <div class="row">
-                                       <!-- <div class="col col-sm-3 text-left">Trans Num.</div> -->
-                                       <!-- <div class="col col-sm-3 text-left">Doc. Entry</div> -->
-                                       <div class="col col-sm-6 text-left">Transaction Number</div>
-                                       <div class="col col-sm-6 text-right">Amount</div>
+                              <!-- <h5 class="text-5 font-weight-400">Items Details </h5> -->
+                              <!-- <hr class="mt-1 mb-2"> -->
+                              <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
+                                 <div class="row">
+                                    <!-- <div class="col col-sm-3 text-left">Trans Num.</div> -->
+                                    <!-- <div class="col col-sm-3 text-left">Doc. Entry</div> -->
+                                    <div class="col col-sm-6 text-left">Transaction Number</div>
+                                    <div class="col col-sm-6 text-right">Amount</div>
+                                 </div>
+                              </div>
+                              <div class="transaction-list"
+                                 *ngFor="let items of this.selected_transaction['Lines']; let i = index;">
+                                 <div class="transaction-item px-4 py-3">
+                                    <div class="row align-items-center flex-row">
+                                       <!-- <div class="col col-sm-3 text-left"> {{items.pp_TransNum}} </div> -->
+                                       <!-- <div class="col col-sm-3 text-left"> {{items.DocEntry}} </div> -->
+                                       <div class="col col-sm-6 text-left"> {{items.DocNum}} </div>
+                                       <div class="col col-sm-6 text-right"> ${{items.SumApplied}} </div>
                                     </div>
                                  </div>
-                                 <div class="transaction-list" *ngFor="let items of this.selected_transaction['Lines']; let i = index;">
-                                    <div class="transaction-item px-4 py-3">
-                                       <div class="row align-items-center flex-row">
-                                          <!-- <div class="col col-sm-3 text-left"> {{items.pp_TransNum}} </div> -->
-                                          <!-- <div class="col col-sm-3 text-left"> {{items.DocEntry}} </div> -->
-                                          <div class="col col-sm-6 text-left"> {{items.DocNum}} </div>
-                                          <div class="col col-sm-6 text-right"> ${{items.SumApplied}} </div>
-                                       </div>
-                                    </div>
-                                 </div>
+                              </div>
                               <ul class="list-unstyled py-2 px-4">
                                  <li class="mb-2">Payment Amount <span
                                        class="float-right text-3">${{this.selected_transaction['PaidAmt']}}</span>
@@ -142,8 +154,8 @@
                                  <li class="font-weight-500">Paid By:</li>
                                  <li class="text-muted">{{this.selected_transaction['CardName']}}</li>
                               </ul> -->
-                           
-                           
+
+
 
                            </div>
                         </div>
