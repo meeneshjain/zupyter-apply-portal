@@ -164,6 +164,10 @@ export class TransactionsComponent implements OnInit {
           }
         }
         
+        if (response.Table.length == 0) {
+          this.show_loader = false;
+       //   this.common_service.show_sweet_alert('i', "Info!", 'No Transaction Found.');
+        }
 
         this.submit_show_loader = false;
         this.loadmore_show_loader = false;
