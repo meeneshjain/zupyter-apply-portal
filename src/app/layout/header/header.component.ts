@@ -5,6 +5,7 @@ import { SharedService } from "src/app/core/services/shared.service";
 import { MainService } from "src/app/core/services/main.service";
 import { CommonService } from "src/app/core/services/common.service";
 import { CommonFunctions } from "src/app/core/helpers/common.functions";
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-header',
@@ -17,12 +18,18 @@ export class HeaderComponent implements OnInit {
   public is_logged_in = false;
   public login_logo = '';
   public current_path = '';
+  
+  public isMobile = this.deviceService.isMobile();
+  public isTablet = this.deviceService.isTablet();
+  public isDesktopDevice = this.deviceService.isDesktop();
+  
   constructor(
     public location: Location,
     public router: Router,
     public shared_service: SharedService,
     public common_service: CommonService,
-    public service: MainService
+    public service: MainService,
+    private deviceService: DeviceDetectorService
   ) { 
     setTimeout(() => {
       this.load_menu = true;
@@ -58,6 +65,10 @@ export class HeaderComponent implements OnInit {
     
 
   ngOnInit(): void {
+    
+    console.log('isTablet ', this.isTablet);
+    console.log('isMobile ', this.isMobile);
+    
     this.login_logo = this.common_params.default_login_image
     if (sessionStorage.general_setting!= undefined){
       let general = JSON.parse(sessionStorage.general_setting);

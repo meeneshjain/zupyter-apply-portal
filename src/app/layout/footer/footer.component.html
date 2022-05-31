@@ -1,4 +1,4 @@
-<footer id="footer" class="mt-2 pt-2 pb-2 mb-2" [ngClass]="{'fixed_footer': this.is_logged_in == false}">
+<footer id="footer" class="mt-2 pt-2 pb-2 mb-4" [ngClass]="{'fixed_footer': this.is_logged_in == false}">
    <div class="container">
       <!-- <div class="row">
          <div class="col-lg d-lg-flex align-items-center">
@@ -24,7 +24,7 @@
             </ul>
          </div>
       </div> -->
-      <div class=" pt-3 pt-lg-2 mt-2"> <!-- footer-copyright -->
+      <div class=" pt-3 pt-lg-2 mt-2 mb-5"> <!-- footer-copyright -->
          <div class="row">
             <div class="col-lg">
                <p class="text-center text-lg-center mb-3 pb-3 mb-lg-0">Copyright &copy; {{year}} <b><a href="{{this.url}}" class="text-zupyter" target="_blank">{{this.owner}}</a> </b>. All Rights

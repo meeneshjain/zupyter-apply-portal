@@ -1,9 +1,11 @@
- <div id="preloader" *ngIf="show_loader">
+<div id="preloader" *ngIf="show_loader">
    <div data-loader="dual-ring"></div>
-</div> 
+</div>
+
 <!-- Transaction screen - start -->
 <div id="content" class="py-4">
    <div class="container">
+
       <div class="row">
          <!--  <app-siderbar fxLayout="column" class="col-lg-3"></app-siderbar>
          <div class="col-lg-9"> -->
@@ -20,24 +22,23 @@
                      <form id="transaction" method="post" #transaction="ngForm"
                         (ngSubmit)="ontransactionSearch(transaction.valid)">
                         <div class="form-row">
-                           <div class="col-sm-3 col-md-3 form-group">
+                           <div class="col-sm-3 col-md-6 col-lg-3 form-group">
                               <span class="icon-inside"><i class="fas fa-search"></i></span>
                               <input type="text" name="search" id="search" class="form-control"
                                  [(ngModel)]="form_data.search_string" placeholder="Search Transaction">
                            </div>
 
-                           <div class="col-sm-3 col-md-3 form-group">
-                              <input type="text" placeholder="Reference from date - to date" class="form-control" name="date_range"
-                                 id="date_range" readonly bsDaterangepicker [bsConfig]="{ isAnimated: true }"
-                                 [(ngModel)]="form_data.date_picker">
+                           <div class="col-sm-3 col-md-6 col-lg-3 form-group">
+                              <input type="text" placeholder="Reference from - to date" class="form-control"
+                                 name="date_range" id="date_range" readonly bsDaterangepicker
+                                 [bsConfig]="{ isAnimated: true }" [(ngModel)]="form_data.date_picker">
                               <span class="icon-inside"><i class="fas fa-calendar-alt"></i></span>
                            </div>
-                           <div class="col-sm-2 col-md-2 mt-3 form-group" data-toggle="collapse">
+                           <div class=" col-3 col-sm-2 col-md-3 mt-3 col-lg-2 form-group" data-toggle="collapse">
                               <a class="btn-link" data-toggle="collapse" href="#allFilters" aria-expanded="false"
-                                 aria-controls="allFilters">All
-                                 Filters<i class="fas fa-sliders-h text-3 ml-1"></i></a>
+                                 aria-controls="allFilters"> Filters<i class="fas fa-sliders-h text-3 ml-1"></i></a>
                            </div>
-                           <div class="col-sm-4 col-md-4 form-group">
+                           <div class="col-9 col-sm-4 col-md-9 col-lg-4 form-group">
                               <div class="float-right">
                                  <button type="submit" class="btn btn-primary   mr-2"> <i class="fas fa-filter"></i>
                                     Search <div *ngIf="submit_show_loader"
@@ -45,7 +46,8 @@
                                        <span class="sr-only">Loading...</span>
                                     </div>
                                  </button>
-                                 <button type="button" class="btn btn-primary  ml-2  " *ngIf="multiple_selected" (click)="pay_selected()">
+                                 <button type="button" class="btn btn-primary  ml-2  " *ngIf="multiple_selected"
+                                    (click)="pay_selected()">
                                     Pay <div *ngIf="pay_selected_show_loader"
                                        class="spinner-border text-dark spinner-border-sm" role="status">
                                        <span class="sr-only">Loading...</span>
@@ -54,7 +56,7 @@
                               </div>
                            </div>
 
-                           <div class="col-12 collapse mb-3" id="allFilters">
+                           <div class="col-12 collapse mb-3 text-sm-center" id="allFilters">
                               <div class="custom-control custom-radio custom-control-inline">
                                  <input type="radio" id="unpaid_transaction" name="transaction" value="U"
                                     [(ngModel)]="form_data.transaction_type" class="custom-control-input">
@@ -79,7 +81,63 @@
                   </div>
                </div>
 
-               <div class="bg-light shadow-sm rounded mb-4">
+               <ng-container *ngIf="this.dataSource.length > 0">
+                  <div class=" overflow-y-scroll max-height-500">
+                     <ng-container *ngFor="let row_data of this.dataSource; let i = index;">
+                        <div class="card bg-light shadow-sm rounded mb-4 d-block d-sm-block d-md-block d-lg-none">
+                           <div class="card-header bg-light">
+                              <div class="row">
+                                 <div class="col-6">
+                                    <div class="form-check custom-control custom-checkbox">
+                                       <input type="checkbox" id="select_invoices_{{i}}" name="select_invoices_{{i}}"
+                                          (change)="check_row_item(row_data.DocEntry)" [(ngModel)]="row_data.checked"
+                                          class="custom-control-input">
+                                       <label class="custom-control-label" for="select_invoices_{{i}}">
+                                          {{row_data.Document}}</label>
+                                    </div>
+                                 </div>
+                                 <div class="col-6">
+                                    <div class="pull-right float-right m-auto">
+                                       <a href="javascript:;" class="btn btn-primary btn-sm mr-auto mr-2"
+                                          (click)="show_transaction_detail(activitydetailpopup, row_data)"> <i
+                                             class="fas fa-eye mr-2"></i> View </a>
+                                       &nbsp; <a href="javascript:;" class="btn btn-primary btn-sm mr-auto"
+                                          (click)="pay_now(row_data)"> Pay </a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="card-body">
+                              <div class="row">
+                                 <div class="text-left col-6">
+                                    <span class="text-left "> <b> Posting Date </b> : <br class="d-md-none"> {{row_data.PostingDate}}</span> <br class="">
+
+                                    <span class="text-left "> <b> Due Date </b> :  <br class="d-md-none"> {{row_data.DueDate}}</span> <br>
+                                 </div>
+                                 <div class="text-left col-6">
+                                    <span class="text-left "> <b> Original Amount </b> : <br class="d-md-none"> <span *ngIf="row_data.OriginalAmt!='' && row_data.OriginalAmt!= null "> ${{row_data.OriginalAmt}} </span> </span> <br >
+                                    <span class="text-left "> <b>   Applied Amount </b> :  <br class="d-md-none"> <span *ngIf="row_data.AppliedAmt!='' && row_data.AppliedAmt!= null "> ${{row_data.AppliedAmt}} </span> </span>
+                                 </div>
+                              </div>
+                              
+                              <div class="text-left row">
+                                 <div class="text-left col-6">
+
+                                    <span class="text-left "> <b> Days Past Due </b> : <br class="d-md-none"> {{row_data.DaysPastDue}}</span> <br class="d-md-none">
+                                 </div>
+                                 <div class="text-left col-6">
+                                    <span class="text-left "> <b> Balance Due </b> : <br class="d-md-none"> <span *ngIf="row_data.BalanceDue!='' && row_data.BalanceDue!= null "> ${{row_data.BalanceDue}} </span> </span> <br class="d-md-none">
+                                 </div>
+                              </div>
+                           </div>
+
+                        </div>
+                     </ng-container>
+                  </div>
+               </ng-container>
+
+
+               <div class="bg-light shadow-sm rounded mb-4 d-none d-sm-none d-md-none d-lg-block">
                   <!-- <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">All Account Activity</h3> -->
 
                   <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
@@ -101,39 +159,41 @@
                         <div class="col text-nowrap col-md-2 col-sm-2 text-right">Action</div>
                      </div>
                   </div>
-                  <ng-container *ngIf="this.dataSource.length > 0">
-                     <div class="transaction-list" *ngFor="let row_data of this.dataSource; let i = index;">
-                        <div class="transaction-item px-2 py-2">
-                           <div class="row align-items-center flex-row">
-                              <div class="ml-3">
-                                 <div class="form-check custom-control custom-checkbox">
-                                    <input type="checkbox" id="select_invoices_{{i}}" name="select_invoices_{{i}}"
-                                       (change)="check_row_item(row_data.DocEntry)" [(ngModel)]="row_data.checked"
-                                       class="custom-control-input">
-                                    <label class="custom-control-label" for="select_invoices_{{i}}"></label>
-                                 </div>
+                  <div class="overflow-y-scroll height-500">
+                     <ng-container *ngIf="this.dataSource.length > 0">
+                        <div class="transaction-list" *ngFor="let row_data of this.dataSource; let i = index;">
+                           <div class="transaction-item px-2 py-2">
+                              <div class="row align-items-center flex-row">
+                                 <div class="ml-3">
+                                    <div class="form-check custom-control custom-checkbox">
+                                       <input type="checkbox" id="select_invoices_{{i}}" name="select_invoices_{{i}}"
+                                          (change)="check_row_item(row_data.DocEntry)" [(ngModel)]="row_data.checked"
+                                          class="custom-control-input">
+                                       <label class="custom-control-label" for="select_invoices_{{i}}"></label>
+                                    </div>
 
-                              </div>
-                              <div class="col text-left">{{row_data.PostingDate}}</div>
-                              <div class="col-md-2 col-sm-2">{{row_data.Document}}</div>
-                              <div class="col">{{row_data.DueDate}}</div>
-                              <div class="col">{{row_data.DaysPastDue}}</div>
-                              <div class="col text-right">${{row_data.OriginalAmt}}</div>
-                              <div class="col text-right">${{row_data.AppliedAmt}}</div>
-                              <div class="col text-right">${{row_data.BalanceDue}}</div>
-                              <div class="col text-right col-md-2 col-sm-2"> <a href="javascript:;"
-                                    class="btn btn-primary btn-sm mr-auto mr-2"
-                                    (click)="show_transaction_detail(activitydetailpopup, row_data)"> <i
-                                       class="fas fa-eye"></i> </a>
-                                 &nbsp; <a href="javascript:;" class="btn btn-primary btn-sm mr-auto"
-                                    (click)="pay_now(row_data)"> Pay </a>
+                                 </div>
+                                 <div class="col text-left">{{row_data.PostingDate}}</div>
+                                 <div class="col-md-2 col-sm-2">{{row_data.Document}}</div>
+                                 <div class="col">{{row_data.DueDate}}</div>
+                                 <div class="col">{{row_data.DaysPastDue}}</div>
+                                 <div class="col text-right">${{row_data.OriginalAmt}}</div>
+                                 <div class="col text-right">${{row_data.AppliedAmt}}</div>
+                                 <div class="col text-right">${{row_data.BalanceDue}}</div>
+                                 <div class="col text-right col-md-2 col-sm-2"> <a href="javascript:;"
+                                       class="btn btn-primary btn-sm mr-auto mr-2"
+                                       (click)="show_transaction_detail(activitydetailpopup, row_data)"> <i
+                                          class="fas fa-eye"></i> </a>
+                                    &nbsp; <a href="javascript:;" class="btn btn-primary btn-sm mr-auto"
+                                       (click)="pay_now(row_data)"> Pay </a>
+                                 </div>
                               </div>
                            </div>
+
+
                         </div>
-
-
-                     </div>
-                  </ng-container>
+                     </ng-container>
+                  </div>
                   <ng-container *ngIf="this.dataSource.length == 0">
                      <div class="transaction-list">
                         <div class="transaction-item px-2 py-2">
@@ -144,12 +204,11 @@
                            </div>
                         </div>
                      </div>
-
                   </ng-container>
 
-                  <ul class="pagination justify-content-center mt-4 mb-0 pb-4">
+                  <ul class="pagination justify-content-center mt-2 mb-0 pb-2">
                      <a class="page-link" href="javascript:;" (click)="load_more_transactions()"
-                        *ngIf="!this.loadmore_show_loader">Load More </a>
+                        *ngIf="!this.loadmore_show_loader"> <b> Load More </b> </a>
                      <div class="spinner-border text-dark" role="status" *ngIf="this.loadmore_show_loader">
                         <span class="sr-only">Loading...</span>
                      </div>
@@ -167,6 +226,17 @@
 
 <ng-template #activitydetailpopup>
    <div class="modal-body">
+      <div class="row ">
+         <div class="col-md-12 col-sm-12 col-12">
+            <div class="">
+               <h5 class="text-5 font-weight-400 ml-3 mr-3 ml-2 mb-2">Transaction Details
+                  <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('')">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </h5>
+            </div>
+         </div>
+      </div>
       <div class="row no-gutters">
          <div class="col-sm-5 d-flex justify-content-center zupyter-bg-primary rounded-left py-4">
             <div class="my-auto text-center">
@@ -177,10 +247,10 @@
             </div>
          </div>
          <div class="col-sm-7">
-            <h5 class="text-5 font-weight-400 m-3">Transaction Details
+            <!-- <h5 class="text-5 font-weight-400 m-3">Transaction Details
                <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('')"> <span
                      aria-hidden="true">&times;</span> </button>
-            </h5>
+            </h5> -->
             <hr>
             <div class="px-3">
                <ul class="list-unstyled">

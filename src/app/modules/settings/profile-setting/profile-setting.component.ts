@@ -124,7 +124,7 @@ export class ProfileSettingComponent implements OnInit {
       });
     } else {
       this.common_service.show_sweet_alert('e', "", "Card Code not found, please try again ");
-
+      this.show_loader = false;
     }
   }
 

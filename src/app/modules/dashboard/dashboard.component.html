@@ -4,47 +4,71 @@
 
 <div id="content" class="py-4">
    <div class="container">
-      <div class="row">
-         <app-siderbar fxLayout="column" class="col-lg-3"></app-siderbar>
+      <div class="row tablet-reserve">
+         <app-siderbar fxLayout="column" class="col-lg-3 "></app-siderbar>
 
          <!-- Middle Panel
         ============================================= -->
          <div class="col-lg-9">
             <h4 class="font-weight-400 mb-3">Recent Activity</h4>
-            <!-- <div class="item" *ngIf="show_loader">
-   <div class="bg-light shadow-sm rounded py-4 mb-4">
-
-      <ngx-skeleton-loader count="10"></ngx-skeleton-loader>
-   </div>
-</div> -->
-
 
             <!-- Recent Activity
           =============================== -->
-            <div class="bg-light shadow-sm rounded mb-4">
+               <ng-container *ngIf="transaction_details.length > 0" >
+                  <div class="overflow-y-scroll max-height-500">
+                     <ng-container *ngFor="let row_data of this.transaction_details; let i = index;">
+                        <div class="card bg-light shadow-sm rounded mb-4 d-block d-sm-block d-md-none d-lg-none">
+                           <div class="card-body" [ngClass]="{'c-border-left-danger': row_data.pp_TransID == '' , 'c-border-left-success': row_data.pp_TransID != ''}">
+                              <div class="row">
+                              <div class="col">
+                                 <span *ngIf="row_data.PayType =='BA'">
+                                    <span class="d-block text-4">{{row_data.ACBank}}</span>
+                                    <span class="text-muted">{{row_data.ACNumber}}</span> |
+                                    <span class="text-muted text-capitalize">{{row_data.ACTypeName}}</span>
+                                 </span>
+                                 <span *ngIf="row_data.PayType =='CC'">
+                                    <span class="d-block text-4">{{row_data.CardType}}</span>
+                                    <span class="text-muted">{{row_data.CardNumber}}</span> |
+                                    <span class="text-muted">{{row_data.CardExpiry}}</span>
+                                 </span>
+                              
+                              </div>
+                              <div class="col-4 text-right "> 
+                                 <span class="text-nowrap"> {{row_data.CreateDate}} </span> <br>
+                                 <span class="text-nowrap">${{row_data.PaidAmt}}</span>
+                              </div>
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </ng-container>
+                  </div>
+               </ng-container>
+          
+            <div class="bg-light shadow-sm rounded mb-4 d-none d-md-block d-lg-block">
                <!-- <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">Account Activity</h3> -->
 
                <!-- Title
             =============================== -->
                <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
                   <div class="row">
-                     <div class="col col-sm-3 text-left"><span class="">Date</span></div>
+                     <div class="col col-sm-3 col-md-2 text-left"><span class="">Date</span></div>
                      <!-- <div class="col col-sm-2 text-left"><span class="">Payment Method</span></div> -->
-                     <div class="col col-sm-5">Payment Method</div>
-                     <div class="col col-sm-2 text-right">Amount</div>
-                     <div class=" col-sm-2 d-none d-sm-block text-center">Status</div>
+                     <div class="col col-sm-5 col-md-4">Payment Method</div>
+                     <div class="col col-sm-2 col-md-2 text-right">Amount</div>
+                     <div class=" col-sm-2 col-md-3 d-none d-sm-block text-center">Status</div>
                   </div>
                </div>
                <!-- Title End -->
 
                <!-- Transaction List
             =============================== -->
-               <ng-container *ngIf="transaction_details.length > 0">
+               <ng-container *ngIf="transaction_details.length > 0" class="d-none d-">
                   <div class="transaction-list" *ngFor="let row_data of this.transaction_details; let i = index;">
                      <div class="transaction-item px-4 py-3"
                         (click)="show_transaction_details(activitydetailpopup , row_data)">
                         <div class="row align-items-center flex-row">
-                           <div class="col col-sm-3 text-left">
+                           <div class="col col-sm-3  col-md-2 text-left">
                               {{row_data.CreateDate}}
                            </div>
                            <!-- <div class="col col-sm-2 text-left">
@@ -55,7 +79,7 @@
                                  Credit Card
                               </span>
                            </div> -->
-                           <div class="col col-sm-5">
+                           <div class="col col-sm-5  col-md-4">
                               <span *ngIf="row_data.PayType =='BA'">
                                  <span class="d-block text-4">{{row_data.ACBank}}</span>
                                  <span class="text-muted">{{row_data.ACNumber}}</span> |
@@ -69,15 +93,15 @@
 
                            </div>
 
-                           <div class="col col-sm-2 text-right text-4"> <span
+                           <div class="col col-sm-2 col-md-2 text-right text-4"> <span
                                  class="text-nowrap">${{row_data.PaidAmt}}</span>
                            </div>
-                           <div class=" col-sm-2 d-none d-sm-block text-center text-3">
-                              <span *ngIf="this.form_data.pp_TransID != ''"
+                           <div class=" col-sm-2 col-md-3 d-none d-sm-block text-center text-3">
+                              <span *ngIf="row_data.pp_TransID != ''"
                                  class="bg-success text-white rounded-pill d-inline-block px-2 mb-0"><i
                                     class="fas fa-check-circle"></i> Complete</span>
 
-                              <span *ngIf="this.form_data.pp_TransID == ''" class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
+                              <span *ngIf="row_data.pp_TransID == ''" class="bg-danger text-white rounded-pill d-inline-block px-2 mb-0"><i
                                     class="fas fa-times"></i> Pending</span>
                            </div>
                         </div>
@@ -100,9 +124,20 @@
                <!-- Transaction Item Details Modal
             =========================================== -->
                <ng-template #activitydetailpopup>
+                  
                   <div class="modal-body">
+                     <div class="row ">
+                        <div class="col-md-12 col-sm-12 col-12">
+                           <div class="">
+                              <h5 class="text-5 font-weight-400 ml-3 mr-3 ml-2 mb-2">Transaction Details
+                              <button type="button" class="close font-weight-400" (click)="close_transaction()"> <span aria-hidden="true">&times;</span>
+                           </button>
+                           </h5>
+                           </div>
+                        </div>
+                     </div>
                      <div class="row no-gutters">
-                        <div class="col-sm-3 d-flex justify-content-center zupyter-bg-primary rounded-left py-4">
+                        <div class="col-sm-3 col-12 col-md-4 d-flex justify-content-center zupyter-bg-primary rounded-left py-4">
                            <div class="my-auto text-center">
                               <div class="text-17 text-white my-3"><i class="fas fa-building"></i></div>
                               <h3 class="text-4 text-white font-weight-400 my-3">
@@ -112,12 +147,10 @@
                               <p class="text-white">{{this.selected_transaction['CreateDate']}}</p>
                            </div>
                         </div>
-                        <div class="col-sm-9">
-                           <h5 class="text-5 font-weight-400 ml-3 mr-3 ml-2 mb-2">Transaction Details
-                              <button type="button" class="close font-weight-400" (click)="close_transaction()"> <span
-                                    aria-hidden="true">&times;</span>
-                              </button>
-                           </h5>
+                        <div class="col-sm-9 col-md-8">
+                           
+                              
+                           
                            <hr class="mt-1 mb-2">
                            <div class="ml-3 mr-1">
                               <!-- <h5 class="text-5 font-weight-400">Items Details </h5> -->
@@ -126,8 +159,8 @@
                                  <div class="row">
                                     <!-- <div class="col col-sm-3 text-left">Trans Num.</div> -->
                                     <!-- <div class="col col-sm-3 text-left">Doc. Entry</div> -->
-                                    <div class="col col-sm-6 text-left">Transaction Number</div>
-                                    <div class="col col-sm-6 text-right">Amount</div>
+                                    <div class="col col-sm-6 col-md-9 text-left">Transaction Number</div>
+                                    <div class="col col-sm-6 col-md-3 text-right">Amount</div>
                                  </div>
                               </div>
                               <div class="transaction-list"
@@ -175,6 +208,7 @@
             </div>
             <!-- Recent Activity End -->
          </div>
+         
          <!-- Middle Panel End -->
       </div>
    </div>

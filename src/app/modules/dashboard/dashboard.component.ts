@@ -5,6 +5,7 @@ import { CommonFunctions } from "src/app/core/helpers/common.functions";
 import { CommonService } from "src/app/core/services/common.service";
 import { MainService } from "src/app/core/services/main.service";
 import { SharedService } from "src/app/core/services/shared.service";
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,12 +19,19 @@ export class DashboardComponent implements OnInit {
   public form_data: any = {};
   public transaction_details = [];
   public selected_transaction = {};
+  
+  public isMobile = this.deviceService.isMobile();
+  public isTablet = this.deviceService.isTablet();
+  public isDesktopDevice = this.deviceService.isDesktop();
+  
+  
   constructor(
     private router: Router,
     private ActivatedRoute: ActivatedRoute,
     public common_service: CommonService,
     public service: MainService,
-    public shared_service: SharedService
+    public shared_service: SharedService,
+    private deviceService: DeviceDetectorService
   ) { }
 
   ngOnInit() {

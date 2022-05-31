@@ -2,6 +2,11 @@
    <div class="container">
       <div class="header-row" *ngIf="this.is_logged_in == true">
          <div class="header-column justify-content-start">
+            <!-- Collapse Button
+          ============================== -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav"> <span></span>
+               <span></span> <span></span> </button>
+            <!-- Collapse Button end -->
             <!-- Logo
           ============================= -->
             <div class="logo">
@@ -9,11 +14,7 @@
                   <img [src]="this.login_logo" alt="Zupyter Payment Portal" class="logo_width" /></a>
             </div>
             <!-- Logo end -->
-            <!-- Collapse Button
-          ============================== -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-nav"> <span></span>
-               <span></span> <span></span> </button>
-            <!-- Collapse Button end -->
+
 
             <!-- Primary Navigation
           ============================== -->
@@ -27,175 +28,7 @@
                      <!-- <li><a href="javascript:;" [routerLink]="['/send-request-money']">Send/Request</a></li> -->
                      <li [ngClass]="{'active': this.current_path =='cards-banking'}"><a href="javascript:;"
                            [routerLink]="['/cards-banking']" class="w-160px">Payment Methods</a></li>
-                     <!-- <li class="dropdown"> <a class="dropdown-toggle" href="#">Features</a>
-                        <ul class="dropdown-menu">
-                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Headers <i
-                                    class="arrow"></i></a>
-                              <ul class="dropdown-menu" data-bs-toggle="dropdown">
-                                 <li><a class="dropdown-item" href="index.html">Light Version (Default)</a></li>
-                                 <li><a class="dropdown-item" href="feature-header-dark.html">Dark Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-header-primary.html">Primary Version</a>
-                                 </li>
-                                 <li><a class="dropdown-item" href="index-2.html">Transparent Version</a></li>
-                              </ul>
-                           </li>
-                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Navigation
-                                 DropDown <i class="arrow"></i> </a>
-                              <ul class="dropdown-menu">
-                                 <li><a class="dropdown-item" href="index.html">Light Version (Default)</a></li>
-                                 <li><a class="dropdown-item" href="feature-navigation-dropdown-dark.html">Dark
-                                       Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-navigation-dropdown-primary.html">Primary
-                                       Version</a></li>
-                              </ul>
-                           </li>
-                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Second Navigation <i
-                                    class="arrow"></i></a>
-                              <ul class="dropdown-menu">
-                                 <li><a class="dropdown-item" href="send-money.html">Default Version</a></li>
-                                 <li><a class="dropdown-item" href="deposit-money.html">Alternate Version</a></li>
-                              </ul>
-                           </li>
-                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Page Headers <i
-                                    class="arrow"></i></a>
-                              <ul class="dropdown-menu">
-                                 <li><a class="dropdown-item" href="feature-page-header-left-alignment.html">Left
-                                       Alignment</a></li>
-                                 <li><a class="dropdown-item" href="feature-page-header-center-alignment.html">Center
-                                       Alignment</a></li>
-                                 <li><a class="dropdown-item" href="feature-page-header-light.html">Light Version</a>
-                                 </li>
-                                 <li><a class="dropdown-item" href="feature-page-header-dark.html">Dark Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-page-header-primary.html">Primary
-                                       Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-page-header-custom-background.html">Custom
-                                       Background</a></li>
-                                 <li><a class="dropdown-item"
-                                       href="feature-page-header-custom-background-with-transparent-header.html">Custom
-                                       Background 2</a></li>
-                              </ul>
-                           </li>
-                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Footer <i
-                                    class="arrow"></i></a>
-                              <ul class="dropdown-menu">
-                                 <li><a class="dropdown-item" href="index.html">Light Version Default</a></li>
-                                 <li><a class="dropdown-item" href="index-2.html">Alternate Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-footer-dark.html">Dark Version</a></li>
-                                 <li><a class="dropdown-item" href="feature-footer-primary.html">Primary Version</a>
-                                 </li>
-                              </ul>
-                           </li>
-                           <li><a class="dropdown-item" href="feature-layout-boxed.html">Layout Boxed</a></li>
-                        </ul>
-                     </li> -->
-                     <!-- <li class="dropdown dropdown-mega"> <a class="dropdown-toggle" href="#">Pages</a>
-                        <ul class="dropdown-menu">
-                           <li>
-                              <div class="dropdown-mega-content">
-                                 <div class="row">
-                                    <div class="col-lg-3"> <span class="sub-title">Homepage</span>
-                                       <ul class="dropdown-mega-submenu">
-                                          <li><a class="dropdown-item" href="index.html">Home Version 1</a></li>
-                                          <li><a class="dropdown-item" href="index-2.html">Home Version 2</a></li>
-                                          <li><a class="dropdown-item" href="landing-page-send.html">Landing Page -
-                                                Send</a></li>
-                                          <li><a class="dropdown-item" href="landing-page-receive.html">Landing Page -
-                                                Receive</a></li>
-                                       </ul>
-                                    </div>
-                                    <div class="col-lg-3"> <span class="sub-title">Account</span>
-                                       <ul class="dropdown-mega-submenu">
-                                          <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-                                          <li><a class="dropdown-item" href="profile-cards-and-bank-accounts.html">Cards
-                                                & Bank Accounts</a></li>
-                                          <li><a class="dropdown-item"
-                                                href="profile-notifications.html">Notifications</a></li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle"
-                                                href="#">Login</a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="login.html">Login Page 1</a></li>
-                                                <li><a class="dropdown-item" href="login-2.html">Login Page 2</a></li>
-                                                <li><a class="dropdown-item" href="login-3.html">Login Page 3</a></li>
-                                             </ul>
-                                          </li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle"
-                                                href="#">Signup</a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="signup.html">Signup Page 1</a></li>
-                                                <li><a class="dropdown-item" href="signup-2.html">Signup Page 2 </a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="signup-3.html">Signup Page 3 </a>
-                                                </li>
-                                             </ul>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                    <div class="col-lg-3"> <span class="sub-title">Dashboard</span>
-                                       <ul class="dropdown-mega-submenu">
-                                          <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                                          <li><a class="dropdown-item" href="/transaction">Transactions</a></li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Send
-                                                Money <i class="arrow"></i></a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="send-money.html">Send Money <i
-                                                         class="arrow"></i></a></li>
-                                                <li><a class="dropdown-item" href="send-money-confirm.html">Send Money
-                                                      Confirm</a></li>
-                                                <li><a class="dropdown-item" href="send-money-success.html">Send Money
-                                                      Success </a></li>
-                                             </ul>
-                                          </li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Request
-                                                Money <i class="arrow"></i></a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="request-money.html">Request Money <i
-                                                         class="arrow"></i></a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="request-money-confirm.html">Request
-                                                      Money Confirm</a></li>
-                                                <li><a class="dropdown-item" href="request-money-success.html">Request
-                                                      Money Success </a></li>
-                                             </ul>
-                                          </li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="#">Deposit
-                                                Money <i class="arrow"></i></a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="deposit-money.html">Deposit Money</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="deposit-money-confirm.html">Deposit
-                                                      Money Confirm</a></li>
-                                                <li><a class="dropdown-item" href="deposit-money-success.html">Deposit
-                                                      Money Success </a></li>
-                                             </ul>
-                                          </li>
-                                          <li class="dropdown"><a class="dropdown-item dropdown-toggle"
-                                                href="#">Withdraw Money <i class="arrow"></i></a>
-                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="withdraw-money.html">Withdraw
-                                                      Money</a></li>
-                                                <li><a class="dropdown-item" href="withdraw-money-confirm.html">Withdraw
-                                                      Money Confirm</a></li>
-                                                <li><a class="dropdown-item" href="withdraw-money-success.html">Withdraw
-                                                      Money Success </a></li>
-                                             </ul>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                    <div class="col-lg-3"> <span class="sub-title">Others</span>
-                                       <ul class="dropdown-mega-submenu">
-                                          <li><a class="dropdown-item" href="about-us.html">About Us</a></li>
-                                          <li><a class="dropdown-item" href="fees.html">Fees</a></li>
-                                          <li><a class="dropdown-item" href="help.html">cards</a></li>
-                                          <li><a class="dropdown-item" href="contact-us.html">Contact Us</a></li>
-                                          <li><a class="dropdown-item" href="elements.html">Elements</a></li>
-                                          <li><a class="dropdown-item" href="elements-2.html">Elements 2</a></li>
-                                       </ul>
-                                    </div>
-                                 </div>
-                              </div>
-                           </li>
-                        </ul>
-                     </li> -->
+
                   </ul>
                </div>
             </nav>
@@ -204,29 +37,51 @@
          <div class="header-column justify-content-end">
             <!-- Login & Signup Link
           ============================== -->
-            <nav class="login-signup navbar navbar-expand">
-               <ul class="navbar-nav" *ngIf="this.is_logged_in == true">
-                  <!-- <li><a href="profile.html">Settings</a> </li> -->
-                  <li class="dropdown w-50 pl-sm-5 float-right">
-                     <a class="dropdown-toggle" href="javascript:;"> <img class="rounded-circle profile-pic-width-space"
-                           src="assets/images/user.png" alt=""></a>
-                     <ul class="dropdown-menu">
-                        <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
-                              [routerLink]="['/settings/profile']"> <i class="fas fa-user mr-2"></i> Profile </a> </li>
-                        <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
-                              [routerLink]="['/settings/setup']"> <i class="fas fa-cogs mr-2 "></i> Settings </a>
-                        </li>
-                        <!-- <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;" [routerLink]="['/settings/notifications']"><i class="fas fa-bell mr-2"></i> Notifications </a></li> -->
-                        <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
-                              (click)="this.common_service.signout()"> <i class="fas fa-power-off mr-2"></i> Sign Out
-                           </a></li>
+            <button class="d-flex d-sm-flex d-md-flex d-lg-none" type="button" data-toggle="collapse"
+               data-target="#side-header-nav">
+               <img class="rounded-circle profile-pic-width-space" src="assets/images/user.png" alt="">
+            </button>
+            <span class="d-flex d-sm-flex d-md-flex d-lg-none">
+
+               <nav class="primary-menu navbar navbar-expand-lg">
+                  <div id="side-header-nav" class="collapse navbar-collapse" *ngIf="this.is_logged_in == true">
+                     <ul class="navbar-nav mr-auto">
+                        <li><a href="javascript:;" [routerLink]="['/settings/profile']"> <i
+                                 class="fas fa-user mr-2"></i> Profile </a> </li>
+                        <li><a href="javascript:;" [routerLink]="['/settings/setup']"> <i class="fas fa-cogs mr-2 "></i>
+                              Settings </a> </li>
+                        <li><a href="javascript:;" (click)="this.common_service.signout()"> <i class="fas fa-power-off mr-2"></i> Sign Out </a></li>
+
                      </ul>
-                  </li>
-                  <li class="align-items-center h-auto ml-sm-3"><a
-                        class="btn btn-outline-primary shadow-none d-none d-sm-block ml-2 pl-2 pr-2" href="javascript:;"
-                        (click)="this.common_service.signout()">Sign Out</a></li>
-               </ul>
-            </nav>
+                  </div>
+               </nav>
+            </span>
+            <span class="d-none d-lg-flex">
+               
+               <nav class="login-signup navbar navbar-expand ">
+                  <ul class="navbar-nav" *ngIf="this.is_logged_in == true">
+                     <!-- <li><a href="profile.html">Settings</a> </li> -->
+                     <li class="dropdown w-50 pl-sm-5 float-right">
+                        <a class="dropdown-toggle d-none d-lg-flex" href="javascript:;"> <img
+                              class="rounded-circle profile-pic-width-space" src="assets/images/user.png" alt=""></a>
+                        <ul class="dropdown-menu">
+                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
+                                 [routerLink]="['/settings/profile']"> <i class="fas fa-user mr-2"></i> Profile </a> </li>
+                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
+                                 [routerLink]="['/settings/setup']"> <i class="fas fa-cogs mr-2 "></i> Settings </a>
+                           </li>
+                           <!-- <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;" [routerLink]="['/settings/notifications']"><i class="fas fa-bell mr-2"></i> Notifications </a></li> -->
+                           <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
+                                 (click)="this.common_service.signout()"> <i class="fas fa-power-off mr-2"></i> Sign Out
+                              </a></li>
+                        </ul>
+                     </li>
+                     <li class="align-items-center h-auto ml-sm-3 d-none d-lg-flex"><a
+                           class="btn btn-outline-primary shadow-none d-none d-sm-block ml-2 pl-2 pr-2" href="javascript:;"
+                           (click)="this.common_service.signout()">Sign Out</a></li>
+                  </ul>
+               </nav>
+            </span>
             <!-- Login & Signup Link end -->
          </div>
       </div>

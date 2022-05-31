@@ -33,40 +33,73 @@
     width: 160px;
 }
 
-.fixed_footer{
-    position:fixed;
-    bottom:0;
-    left:0;
+.fixed_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
 }
- 
+
 .btn-sm {
     padding: 0.3rem 0.6rem !important;
 }
 
-.form-control:disabled, .form-control[readonly]{
-        background-color: #f9f9f9 !important;
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #f9f9f9 !important;
 }
 
-.spinner-border-sm{
+.spinner-border-sm {
     width: 1.4rem;
     height: 1.4rem;
 }
 
-.font-size-1-2rem{
+.font-size-1-2rem {
     font-size: 1.2rem;
-    
+
 }
 
 .account-card.account-card-primary {
     background: linear-gradient(-45deg, #6c6b6b, #0a0a0a) !important;
 }
- 
-.validation-error:after{
+
+.validation-error:after {
     border: 1px solid red !important;
 }
 
-.text-capitalize{
+.text-capitalize {
     text-transform: capitalize
-    
+}
+
+@media (max-width : 820px) {
+    .tablet-reserve {
+        flex-flow: column-reverse;
+    }
+}
+
+.cross_button_pos {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+}
+
+.c-border-left-danger{
+        border-left: 10px solid red;
+}
+
+.c-border-left-success {
+    border-left: 10px solid green;
+}
+
+.c-border-left-black{
+    border-left: 10px solid rgb(0, 0, 0);
+}
+
+.overflow-y-scroll{
+    overflow-y: scroll;
+    overflow-x: hidden;
+} 
+
+.max-height-500{
+    max-height: 500px;
 }
