@@ -103,3 +103,7 @@
 .max-height-500{
     max-height: 500px;
 }
+
+.right_navigation .dropdown-menu.show {
+    left: -80px !important;
+}

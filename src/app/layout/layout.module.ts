@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 // import { SiderbarComponent } from './siderbar/siderbar.component';
-
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent/* , SiderbarComponent */ ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    BsDropdownModule.forRoot(),
   ],
   exports: [
     HeaderComponent,

@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   public isMobile = this.deviceService.isMobile();
   public isTablet = this.deviceService.isTablet();
   public isDesktopDevice = this.deviceService.isDesktop();
-  
+  public text?: string;
   constructor(
     public location: Location,
     public router: Router,
@@ -88,6 +88,13 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.load_menu = true;
     }, 200);
+  }
+  
+  onHidden(): void {
+    console.log('Dropdown is hidden');
+  }
+  onShown(): void {
+    console.log('Dropdown is shown');
   }
 
 }
