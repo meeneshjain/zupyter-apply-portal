@@ -37,7 +37,18 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./modules/authentication/authentication.module').then(m => m.AuthenticationModule),
     data: { showHeader: true, showFooter: true }
-  }
+  },
+  
+  {
+    path: 'account-verification',
+    loadChildren: () => import('./modules/bank-account/bank-account.module').then(m => m.BankAccountModule),
+    data: { showHeader: true, showFooter: true }
+  },
+  {
+    path: 'advanced',
+    loadChildren: () => import('./modules/auto-pay/auto-pay.module').then(m => m.AutoPayModule),
+    data: { showHeader: true, showFooter: true }
+  },
 ]
 
 

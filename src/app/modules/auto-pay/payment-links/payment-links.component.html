@@ -1,0 +1,82 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+
+<!-- Transaction screen - start -->
+<div id="content" class="py-4">
+   <div class="container">
+
+      <div class="row">
+         <div class="col-lg-12 text-center m-auto">
+            <h3 class="font-weight-600 mb-3">Pay by Text</h3>
+         </div>
+      </div>
+
+      <section class="section pt-3 pb-3 ">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-6">
+                  <div class="text-center m-auto"> <img class="card-img opacity-8"
+                        src="images/how-work.jpg" alt="banner">
+                     <div class="card-img-overlay p-0"> 
+                           <img
+                              src="https://why.pay.link/templates/rt_fluent/custom/images/Lifestyle/Payment%20Links%20Text%20Message.png"
+                              alt="" class="img-thumbnail w-50">
+                             </div>
+                  </div>
+               </div>
+               <div class="col-lg-6 mt-5 mt-lg-0">
+                  <div class="ml-4">
+                     <h2 class="text-9">How does it work?</h2>
+                     <p class="text-4">Simply send a text message to get invoices paid immediately.</p>
+                     <!-- <ul class="list-unstyled text-3 line-height-5">
+                        <li><i class="fas fa-check mr-2"></i>Sign Up Account</li>
+                        <li><i class="fas fa-check mr-2"></i>Receive & Send Payments from worldwide</li>
+                        <li><i class="fas fa-check mr-2"></i>Your funds will be transferred to your local bank account
+                        </li>
+                     </ul> -->
+                     <div class="featured-box style-1 mb-5">
+                        <div class="featured-box-icon mr-3 mt-2"><span class="w-100 text-20 text-black font-weight-500">1</span></div>
+                        <h3 class="ml-3">Enroll Your Mobile Number</h3>
+                        <p class="ml-3">Enter your mobile number to recieve a verification code.</p>
+                     </div>
+                     <div class="featured-box style-1 mb-5">
+                        <div class="featured-box-icon mr-3 mt-2"><span class="w-100 text-20 text-black font-weight-500">2</span></div>
+                        <h3 class="ml-3">We will send a text message with Payment Link</h3>
+                        <p class="ml-3">A Payment Link is sent directly to your mobile number.</p>
+                     </div>
+                     <div class="featured-box style-1 mb-5">
+                        <div class="featured-box-icon mr-3 mt-4"><span class="w-100 text-20 text-black font-weight-500">3</span></div>
+                        <h3 class="ml-3">Accept payments anywhere</h3>
+                        <p class="ml-3">Clicks on the link in the text message and seamlessly makes the payment online.</p>
+                     </div>
+                     <button type="button" class="btn btn-primary   mr-2" (click)="on_instant_click(add_instant_popup)">                        
+                       Create Payment Link
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+
+
+   </div>
+</div>
+
+
+<ng-template #add_instant_popup>
+   <div class="modal-header">
+      <h5 class="modal-title font-weight-400">Add Payment Link</h5>
+      <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('');">
+         <span aria-hidden="true">&times;</span> </button>
+   </div>
+   <div class="modal-body p-4">
+      <form id="instantForm" method="post" #instantForm="ngForm" (ngSubmit)="onAutoPaySubmit(instantForm.valid)">
+         <p class="text-dark">Generated Payment link will expire on the above mentioned time, You again have to generate
+            new link old link cannot be
+            used once expired</p>
+         <button class="btn btn-primary" type="submit">Save Payment</button>
+      </form>
+   </div>
+</ng-template>

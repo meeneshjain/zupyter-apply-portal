@@ -138,6 +138,10 @@ export class FooterComponent implements OnInit {
         .btn-link:hover, .page-link, .text-zupyter{
             color: `+ theme_data['ovrall_Systemlink_Color'] +` !important;
         }
+        
+        .text-zupyter-secondary{
+            color: `+ theme_data['scnd_NavigateHoverlink_Color'] +` !important;
+        }
 
         .primary-menu ul.navbar-nav>li.dropdown .dropdown-menu li>a:not(.btn),
         .login-signup ul.navbar-nav>li.dropdown .dropdown-menu li>a:not(.btn){
@@ -173,6 +177,10 @@ export class FooterComponent implements OnInit {
         
         .theme-green .bs-datepicker-head {
             background-color: `+ theme_data['input_Buttonback_Color'] +` !important;
+        }
+        
+        .nav-tabs .nav-item .nav-link.active:after{
+          background-color: `+ theme_data['btn_Back_Color'] +` !important;
         }
     
     `);

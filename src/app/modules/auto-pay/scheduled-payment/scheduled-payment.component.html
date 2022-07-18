@@ -1,0 +1,130 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+<div id="content" class="py-4">
+   <section class="section bg-white pt-5 pb-5">
+      <div class="container">
+         <h2 class="text-7 text-center">Scheduled Payment</h2>
+         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item"> <a class="nav-link active" id="mobile-recharge-tab" data-toggle="tab" href="#mobile-recharge"
+                  role="tab" aria-controls="mobile-recharge" aria-selected="true">Scheduled</a> </li>
+            <li class="nav-item"> <a class="nav-link" id="billpayment-tab" data-toggle="tab" href="#billpayment" role="tab"
+                  aria-controls="billpayment" aria-selected="false">Posted
+               </a> </li>
+         
+         </ul>
+         
+         <div class="tab-content my-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="mobile-recharge" role="tabpanel" aria-labelledby="mobile-recharge-tab">
+               <div class="row">
+                  <div class="col-lg-12 col-md-12">
+                     <div class="float-right">
+                        <div class="float-right mt-4"><a href="javascript:;" (click)="on_instant_click(add_instant_popup)"
+                              class="btn btn-primary bbtn-sm text-uppercase pull-right">Schedule A Payment</a></div>
+                     </div>
+                  </div>
+               </div>
+               <div>
+                  <p>You have no scheduled payments</p>
+                  
+               </div>
+            </div>
+            <div class="tab-pane fade" id="billpayment" role="tabpanel" aria-labelledby="billpayment-tab">
+               <p>You have no posted payments</p>
+            </div>
+         
+         </div>
+
+      </div>
+   </section>
+</div>
+
+<ng-template #add_instant_popup>
+      <form id="instantForm" method="post" #instantForm="ngForm" (ngSubmit)="onAutoPaySubmit(instantForm.valid)">
+   <div class="modal-header">
+      <h5 class="modal-title font-weight-400">Schedule A Payment</h5>
+      <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('');">
+         <span aria-hidden="true">&times;</span> </button>
+   </div>
+   <div class="modal-body p-4">
+      <div class="form-group">
+         <label for="input-zone">Payment Method </label>
+         <select class="custom-select" id="bank_account" name="bank_account" required [(ngModel)]="form_data.payment_source"
+            #bank_account_obj="ngModel"
+            [ngClass]="{'validation-error':!bank_account_obj.valid && (bank_account_obj.touched || instantForm.submitted)}">
+            <option value=""> --- Please Select --- </option>
+            <!--   <option > *ngFor="let item of this.bank_account_list" value="{{item.PayProfileID}}"
+                           {{item.ACBank}}</option> -->
+            <option value="add_bank"> Payment Method is required </option>
+         </select>
+         <span class="text-muted">(Routing Number : 111100088884)</span>
+      </div>
+      <div class="form-group">
+         <label for="pay_with_date">Payment Date <span class="text-danger mt-1">*</span></label>
+         <div class="input-group">
+            <input type="text" class="form-control" id="card_name" name="card_name" data-bv-field="card_name" required
+               [(ngModel)]="form_data['pay_with_date']" #pay_with_date_o="ngModel"
+               [ngClass]="{'validation-error':!pay_with_date_o.valid && (pay_with_date_o.touched || instantForm.submitted)}"
+               required placeholder="MM/DD/YYYY">
+         </div>
+         <div class="invalid-error" *ngIf="pay_with_date_o.touched && !pay_with_date_o.valid && pay_with_date_o.value!=''">
+            Payment Date is required
+         </div>
+      </div>
+      <div class="form-group">
+         <label for="pay_with_date">Choose Payment Option <span class="text-danger mt-1">*</span></label>
+      
+         <div class="row">
+            <div class="col-12">
+               <div class="btn-group d-flex btn-group-toggle mb-3 spacing-large-button-option">
+                  <label class="mr-2 btn btn-outline-secondary btn-sm shadow-none w-100 padding-top-14-per"
+                     [ngClass]="{'active': form_data.pay_profile.PayType == 'BA'}">
+                     <input type="radio" name="PayType" value="CC" id="BA" (change)="change_pay_typ('BA')"
+                        [checked]="form_data.pay_profile.PayType == 'BA'"> Current Balance <br> as of 12/08/2022 </label>
+                 <!--  <label class="ml-2 btn btn-outline-secondary btn-sm shadow-none w-100 padding-top-14-per "
+                     [ngClass]="{'active': form_data.pay_profile.PayType == 'CC'}">
+                     <input type="radio" name="PayType" value="CC" id="CC" (change)="change_pay_typ('CC')"
+                        [checked]="form_data.pay_profile.PayType == 'CC'"> Statement Balance <br> as of 12/08/2022 </label> -->
+                     <label class="ml-2 btn btn-outline-secondary btn-sm shadow-none w-100 padding-top-14-per "
+                        [ngClass]="{'active': form_data.pay_profile.PayType == 'OA'}">
+                        <span class="text-success">$0.00 </span> <br>
+                        <input type="radio" name="PayType" value="OA" id="OA" (change)="change_pay_typ('OA')"
+                           [checked]="form_data.pay_profile.PayType == 'OA'"> Other Amount </label>
+               </div>
+            </div>
+         </div>
+      
+         <!-- 
+         <div class="row">
+            <div class="col-12">
+               <div class="btn-group d-flex btn-group-toggle mb-3 spacing-large-button-option">
+                     <label class="mr-2 btn btn-outline-secondary btn-sm shadow-none w-100 padding-top-14-per"
+                     [ngClass]="{'active': form_data.pay_profile.PayType == 'MPFA'}">
+                     <span class="text-success">$0.00 </span> <br>
+                     <input type="radio" name="PayType" value="MPFA" id="MPFA" (change)="change_pay_typ('MPFA')"
+                        [checked]="form_data.pay_profile.PayType == 'BA'"> Minium Payment </label> 
+                        
+                        
+                     </div>
+                  </div>
+               </div>
+            --> 
+               <div class="form-group">
+                  <label for="balance_amount">Payment Amount <span class="text-danger mt-1">*</span></label>
+                  <div class="input-group">
+                     <input type="text" class="form-control" id="balance_amount" name="balance_amount" data-bv-field="balance_amount" required
+                        [(ngModel)]="form_data['balance_amount']" #balance_amount_o="ngModel"
+                        [ngClass]="{'validation-error':!balance_amount_o.valid && (balance_amount_o.touched || instantForm.submitted)}"
+                        required placeholder="$10000">
+                  </div>
+                  <div class="invalid-error" *ngIf="balance_amount_o.touched && !balance_amount_o.valid && balance_amount_o.value!=''">
+                     >Balance / Amount is required
+                  </div>
+               </div>
+      </div>
+      
+      <p class="text-dark">Scheduled payments made by 12:00 midnight will be credited to your account on the next day</p>
+      <button class="btn btn-primary" type="submit">Schedule</button>
+   </div>
+</form>
+</ng-template>
