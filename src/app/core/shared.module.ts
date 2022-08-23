@@ -6,6 +6,7 @@ import { LayoutModule } from '../layout/layout.module';
 // pipes
 import { ToFixedPipe } from 'src/app/core/pipe/to-fixed.pipe';
 import { FilterPipe } from 'src/app/core/pipe/filter.pipe';
+import { FilterItemPipe } from 'src/app/core/pipe/filterItem.pipe';
 import { BlankhandlerPipe } from 'src/app/core/pipe/blankhandler.pipe';
 // import { SafeURLPipe } from 'src/app/core/pipe/safe-url.pipe';
 import { NoSanitizePipe } from 'src/app/core/pipe/no-sanatize-html';
@@ -13,6 +14,7 @@ import { NoSanitizePipe } from 'src/app/core/pipe/no-sanatize-html';
 	declarations: [
 	ToFixedPipe,
 	FilterPipe,
+	FilterItemPipe,
 	BlankhandlerPipe,
 	// SafeURLPipe,
 	NoSanitizePipe,
@@ -22,7 +24,7 @@ import { NoSanitizePipe } from 'src/app/core/pipe/no-sanatize-html';
 	CommonModule,
 	LayoutModule,
 	],
-	exports: [ FormsModule, LayoutModule,  ToFixedPipe, FilterPipe, BlankhandlerPipe, /* SafeURLPipe, */ NoSanitizePipe],
+	exports: [FormsModule, LayoutModule, ToFixedPipe, FilterPipe, FilterItemPipe, BlankhandlerPipe, /* SafeURLPipe, */ NoSanitizePipe],
 	providers: [],
 	bootstrap: []
 })

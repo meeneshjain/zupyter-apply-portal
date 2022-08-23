@@ -133,7 +133,9 @@
 }
 
 body {
-    font-family: Inter var, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !important;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji " !important;
+    color: #000000 !important; 
 }
 
 .right_side_menu {
@@ -156,4 +158,39 @@ body {
 .left_side_menu {
     min-width: 20rem !important;
     width: 20rem !important;
+}
+
+.rounded-1{
+    border-radius: 1rem !important;
+}
+
+#header {
+    background: #f1f5f6 !important;
+    border-bottom: 1px solid #efefef;
+}
+
+#footer {
+    background: #f1f5f6 !important;
+}
+
+.clear_custom_button{
+    margin-top: 2rem !important;
+}
+
+.scrollable-section{
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.text-black{
+ color: black !important;   
+}
+
+.btn-outline-dark:not(:disabled):not(.disabled).active,
+.btn-outline-dark:not(:disabled):not(.disabled):active,
+.show>.btn-outline-dark.dropdown-toggle {
+    color: #fff !important;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
 }

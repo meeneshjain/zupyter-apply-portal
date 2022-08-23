@@ -1,0 +1,265 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+<form id="delivery_form" method="post" #delivery_form="ngForm" (ngSubmit)="onSubmit(delivery_form.valid)">
+   <div id="content" class="py-4">
+      <div class="ml-5 mr-5">
+         <div class="row tablet-reserve">
+            <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+               <div class="bg-light shadow-sm rounded-1 p-3 mb-3">
+                  <h3 class="text-5 font-weight-600 mb-4 transaction-item "> <i class="fa fa-file-alt"></i> Delivery No.
+                     - {{delivery_data.DocNum}} </h3>
+                  <div class="row">
+                     <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="pull-left">
+                           <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-building mr-2"></i>
+                              <b>
+                                 {{delivery_data.CardName}} </b></div>
+                           <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-user mr-2"></i> <b>
+                                 {{delivery_data.DefaultContactPerson}}
+                              </b></div>
+                           <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-phone mr-2"></i> <b>
+                                 {{delivery_data.DefaultPhone}}
+                              </b></div>
+                           <div class="d-block transaction-item px-2 py-2"> <i class="fa fa-map-marker-alt mr-2"></i>
+                              <b> {{delivery_data.ShipToAddress}} </b>
+                           </div>
+                           <div class="transaction-list">
+                              <div class="transaction-item px-2 py-2">
+                                 <div class="row align-items-center flex-row">
+                                    <div class="col col-sm-8  col-md-8 text-left">
+                                       <b> <i class="fa fa-calendar-alt mr-2"></i> Delivery Date </b>
+                                    </div>
+                                    <div class="col col-sm-4 col-md-4"> <span
+                                          class="text-nowrap">{{delivery_data.DocDueDate}}</span>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="transaction-list">
+                              <div class="transaction-item px-2 py-2">
+                                 <div class="row align-items-center flex-row">
+                                    <div class="col col-sm-8  col-md-8 text-left">
+                                       <b> <i class="fa fa-clock mr-2"></i> Arrival Time </b>
+                                    </div>
+                                    <div class="col col-sm-4 col-md-4"> <span
+                                          class="text-nowrap">{{delivery_data.ArrivalTime}}</span>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="transaction-list">
+                              <div class="transaction-item px-2 py-2">
+                                 <div class="row align-items-center flex-row">
+                                    <div class="col col-sm-8  col-md-8 text-left">
+                                       <b> <i class="fa fa-clock mr-2"></i> Delivery Start Time </b>
+                                    </div>
+                                    <div class="col col-sm-4 col-md-4"> <span
+                                          class="text-nowrap">{{delivery_data.DeliveryStartTime}}</span>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="transaction-list">
+                              <div class="transaction-item px-2 py-2">
+                                 <div class="row align-items-center flex-row">
+                                    <div class="col col-sm-8  col-md-8 text-left">
+                                       <b> <i class="fa fa-clock mr-2"></i> Delivery End Time </b>
+                                    </div>
+                                    <div class="col col-sm-4 col-md-4"> <span
+                                          class="text-nowrap">{{delivery_data.DeliveryEndTime}}</span>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="d-block transaction-item px-2 py-2"> <span
+                                 class=" p-2 text-2 {{delivery_data.delivery_badge_color}}">{{delivery_data.delivery_status}}</span>
+                           </div>
+
+                        </div>
+                     </div>
+
+                  </div>
+               </div>
+
+
+            </div>
+            <div class="col-lg-8 col-md-8 col-lg-8 col-8 mb-5">
+               <div class="bg-light shadow-sm rounded-1 p-3 mb-3">
+                  <div class="row flex-row">
+                     <div class="col col-sm-3  col-md-3 text-left">
+                        <h3 class="text-5 font-weight-600 mb-4  mt-1">Item Details </h3>
+                     </div>
+                     <div class="col col-sm-9  col-md-9 text-left">
+                        <div class=" ">
+                           <input type="text" class="form-control-sm w-100" id="search_string" name="search_string" [(ngModel)]="search_string"
+                              #search_string_o="ngModel" placeholder="Search Items">
+                        </div>
+                     </div>
+                  </div>
+                  <hr class="mt-1 mb-1">
+                  
+                  <div class="row">
+                     <div
+                        class="bg-light shadow-sm rounded mb-4 d-none d-md-block d-lg-block col-md-12 col-sm-12 col-lg-12">
+                        <!-- <h3 class="text-5 font-weight-400 d-flex align-items-center px-4 mb-3">Account Activity</h3> -->
+
+                        <!-- Title =============================== -->
+                        <div class="transaction-title py-2 px-4 zupyter-bg-primary text-white">
+                           <div class="row">
+                              <div class="col col-sm-4 col-md-4 text-left"><span class="">Item Code </span></div>
+                              <div class="col col-sm-6 col-md-6">Item Name</div>
+                              <div class="col col-sm-2 col-md-2 text-center">Quantity</div>
+                           </div>
+                        </div>
+                        <!-- Title End -->
+                        <div class="scrollable-section mb-2">
+                           <ng-container *ngIf="delivery_data.Items.length > 0" class="d-none d-">
+                              <div class="transaction-list"
+                                 *ngFor="let row_data of this.delivery_data.Items | filterItem : search_string; let i = index;">
+                                 <div class="transaction-item px-2 py-2">
+                                    <div class="row align-items-center flex-row">
+                                       <div class="col col-sm-4  col-md-4 text-left">
+                                          {{row_data.ItemCode}}
+                                       </div>
+                                       <div class="col col-sm-6 col-md-6 "> <span
+                                             class="text-nowrap">{{row_data.ItemName}}</span>
+                                       </div>
+                                       <div class="col col-sm-2 col-md-2  text-center"> <span
+                                             class="text-nowrap text-center">{{row_data.Quantity}}</span>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </ng-container>
+                        </div>
+
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12 col-sm-12 col-lg-12 col-12">
+                        <div class="transaction-list">
+                           <div class=" px-2 py-2">
+                              <div class="row flex-row">
+                                 <div class="col col-sm-4  col-md-4 text-left">
+                                    <b> Item Count : </b> {{delivery_data.Items.length}}
+                                 </div>
+                                 <div class="col col-sm-4 col-md-4 text-left">
+                                    <b> Total Packages : </b> {{delivery_data.total_packages}}
+                                 </div>
+                                 <div class="col col-sm-4 col-md-4 text-left">
+                                    <b> Gross Weight : </b> {{this.delivery_data.GrossWeight}}
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12 col-sm-12 col-lg-12 col-12">
+                        <div class="">
+                           <div class=" px-2 py-2">
+                              <div class="row flex-row">
+                                 <div class="col col-sm-4  col-md-4 text-left">
+                                    <label for="accountName"><b> Payment Method </b> </label>
+                                    <div class="btn-group d-flex">
+                                       <label class="btn btn-outline-dark btn-sm shadow-none w-100"
+                                          [ngClass]="{'active': delivery_data.PaymentMethod == 'Check'}">
+                                          <input type="radio" name="PaymentMethod" value="Check" id="Check"
+                                             (change)="change_pay_typ('Check')"
+                                             [checked]="delivery_data.PaymentMethod == 'Check'">
+                                          Check </label>
+                                       <label class="btn btn-outline-dark btn-sm shadow-none w-100 "
+                                          [ngClass]="{'active': delivery_data.PaymentMethod == 'Cash'}">
+                                          <input type="radio" name="PaymentMethod" value="Cash" id="Cash"
+                                             (change)="change_pay_typ('Cash')"
+                                             [checked]="delivery_data.PaymentMethod == 'Cash'">
+                                          Cash </label>
+
+                                    </div>
+                                 </div>
+                                 <div class="col col-sm-4 col-md-4 text-left">
+
+                                    <div class="form-group">
+                                       <label for="accountName"><b> Check No. </b> </label>
+                                       <input type="text" class="form-control-sm" id="checkNo" name="checkNo"
+                                          [(ngModel)]="delivery_data.CheckNo" #checkNo_o="ngModel"
+                                          placeholder="Check No." [readonly]="delivery_data.PaymentMethod == 'Cash'">
+                                       <div class="invalid-error"
+                                          *ngIf="checkNo_o.touched && !checkNo_o.valid && checkNo_o.value!=''"> Name
+                                          on Account is required
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col col-sm-4 col-md-4 text-left">
+                                    <div class="form-group">
+                                       <label for="accountName"><b> Payment Amount </b> </label>
+                                       <input type="text" class="form-control-sm" id="paymentAmount"
+                                          name="paymentAmount" [(ngModel)]="delivery_data.PaymentAmount"
+                                          #paymentAmount_o="ngModel" placeholder="Payment Amount">
+                                       <div class="invalid-error"
+                                          *ngIf="paymentAmount_o.touched && !paymentAmount_o.valid && paymentAmount_o.value!=''">
+                                          Name
+                                          on Account is required
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row mt-3">
+                     <div class="col-md-8 col-lg-8 col-sm-8 col-8 ">
+                        <label for=""><b> Customer Signature</b> <span class="text-danger">*</span></label>
+                        <div style="border:1px solid #ccc" class="rounded-1">
+                           <ngx-signaturepad #signaturePad [options]="options" [width]="width" [height]="height">
+                           </ngx-signaturepad>
+                        </div>
+                        <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                           Signature</button>
+
+                        <a class="cursor-pointer ml-2 text-black mt-2 pt-2" (click)="term_condition()"> Terms &
+                           Conditions</a>
+                     </div>
+                     <div class="col-md-4 col-lg-4 col-sm-4 col-4">
+                        <div class="form-group">
+                           <label for=""><b> Date </b></label>
+                           <input type="text" class="form-control-sm" id="SignatureDate" readonly name="SignatureDate"
+                              [(ngModel)]="delivery_data.SignatureDate" #SignatureDate_o="ngModel" placeholder="MM/YY">
+
+                        </div>
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row  mt-3">
+                     <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                        <div class="pb-2 mb-2">
+                           <div class="row">
+                              <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                 <div class="text-left pull-left float-left">
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                 <div class="text-right pull-right float-right">
+                                    <button class="btn btn-secondary" (click)="go_to_dashboard()"
+                                       type="button">Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+
+         </div>
+      </div>
+   </div>
+</form>

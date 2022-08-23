@@ -19,6 +19,14 @@ export class CommonService {
 	public long_snack_time      = 6000;
 	public default_loading_time = 2000;
 	public modalRef: BsModalRef;
+	
+	public delivery_status = [
+		{ "key": "L", "value": "Loaded on Truck", "class": "badge badge-warning" },
+		{ "key": "I", "value": "In Transit", "class": "badge badge-primary" },
+		{ "key": "D", "value": "Delivered", "class": "badge badge-danger" },
+		{ "key": "N", "value": "Not Delivered", "class": "badge badge-success" },
+	];
+	
 	constructor(
 		private ActivatedRouter: ActivatedRoute,
 		private route: Router,
@@ -27,6 +35,15 @@ export class CommonService {
     private modalService: BsModalService
 
 		) { }
+		
+	get_delivery_status(status, field){
+		let index = this.delivery_status.findIndex((obj)=>{
+			return obj['key'] == status
+		});
+		
+		return (this.delivery_status[index] != undefined && this.delivery_status[index][field] != undefined) ? this.delivery_status[index][field] : '';
+		return (this.delivery_status[index] != undefined && this.delivery_status[index][field] != undefined) ? this.delivery_status[index][field] : '';
+	}	
 	
 	change_route(router_link){
 		this.route.navigate([router_link])

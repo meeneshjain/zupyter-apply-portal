@@ -1,6 +1,6 @@
 <header id="header" *ngIf="load_menu">
-   <div class="container">
-      <div class="header-row" *ngIf="this.is_logged_in == true">
+   <div class="mt-2 ml-5 mr-5 bg-white rounded-1">
+      <div class="header-row pl-3 pr-3" *ngIf="this.is_logged_in == true">
          <div class="header-column justify-content-start">
             <!-- Collapse Button
           ============================== -->
@@ -13,16 +13,14 @@
                </a>
                <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu left_side_menu" role="menu"
                   aria-labelledby="button-basic">
-                  <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
+              <!--     <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         [routerLink]="['/dashboard']">
-                        <i class="fas fa-home mr-2"></i> Dashboard </a></li>
-                  <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
-                        [routerLink]="['/transaction']">
-                        <i class="fas fa-file-invoice mr-2 "></i> Pay Bills </a></li>
-                  <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
+                        <i class="fas fa-home mr-2"></i> Dashboard </a></li> -->
+                  
+                  <!-- <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         [routerLink]="['/cards-banking']"> <i class="fas fa-credit-card mr-2"></i> Payment Methods </a>
-                  </li>
-                  <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
+                  </li> -->
+               <!--    <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         [routerLink]="['/advanced/payment-zelle']"> <i class="fas fa-credit-card mr-2"></i> Pay with Zelle </a>
                   </li>
                   <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
@@ -33,7 +31,7 @@
                   </li>
                   <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         [routerLink]="['/advanced/scheduled-payment']"> <i class="fas fa-credit-card mr-2"></i> Schedule a Payment </a>
-                  </li>
+                  </li> -->
 
 
                </ul>
@@ -51,13 +49,13 @@
             <nav class="primary-menu navbar navbar-expand-lg">
                <div id="header-nav" class="collapse navbar-collapse">
                   <ul class="navbar-nav mr-auto">
-                     <li [ngClass]="{'active': this.current_path =='dashboard'}"><a href="javascript:;"
-                           [routerLink]="['/dashboard']">Dashboard</a></li>
+                     <!-- <li [ngClass]="{'active': this.current_path =='dashboard'}"><a href="javascript:;"
+                           [routerLink]="['/dashboard']">Dashboard</a></li> -->
                      <!-- <li [ngClass]="{'active': this.current_path =='transaction'}"><a href="javascript:;"
                            [routerLink]="['/transaction']">Pay Bills</a></li> -->
-                     <li [ngClass]="{'active': this.current_path =='cards-banking'}"><a href="javascript:;"
-                           [routerLink]="['/cards-banking']" class="w-160px">Payment Methods</a></li>
-                     <li class="dropdown"> <a class="dropdown-toggle" href="#">Make a Payment</a>
+                    <!--  <li [ngClass]="{'active': this.current_path =='cards-banking'}"><a href="javascript:;"
+                           [routerLink]="['/cards-banking']" class="w-160px">Payment Methods</a></li> -->
+                     <!-- <li class="dropdown"> <a class="dropdown-toggle" href="#">Make a Payment</a>
                         <ul class="dropdown-menu">
                            <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
                                  [routerLink]="['/transaction']">Pay Bills</a> </li>
@@ -70,7 +68,7 @@
                            <li class="dropdown"><a class="dropdown-item dropdown-toggle" href="javascript:;"
                                  [routerLink]="['/advanced/scheduled-payment']">Schedule a Payment</a> </li>
                         </ul>
-                     </li>
+                     </li> -->
 
                   </ul>
                </div>
@@ -88,12 +86,12 @@
                </a>
                <ul id="dropdown-basic " *dropdownMenu class="right_side_menu dropdown-menu " role="menu"
                   aria-labelledby="button-basic">
-                  <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
+               <!--    <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         [routerLink]="['/settings/profile']">
                         <i class="fas fa-user mr-2"></i> Profile </a></li>
                   <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
-                        [routerLink]="['/settings/setup']">
-                        <i class="fas fa-cogs mr-2 "></i> Settings </a></li>
+                        [routerLink]="['/settings/setup']"> 
+                        <i class="fas fa-cogs mr-2 "></i> Settings </a></li>-->
                   <li role="menuitem" class="right_side_menu_li"><a class="dropdown-item" href="javascript:;"
                         (click)="this.common_service.signout()"> <i class="fas fa-power-off mr-2"></i> Sign Out </a>
                   </li>
@@ -107,7 +105,7 @@
                      <li class="dropdown w-50 pl-sm-5 float-right">
                         <a class="dropdown-toggle d-none d-lg-flex" href="javascript:;"> <img
                               class="rounded-circle profile-pic-width-space" src="assets/images/user.png" alt=""></a>
-                        <ul class="dropdown-menu">
+                        <!-- <ul class="dropdown-menu">
                            <li class="dropdown"><a class="dropdown-item dropdown-toggle font-size-1-2rem"
                                  href="javascript:;" [routerLink]="['/settings/profile']"> <i
                                     class="fas fa-user fa-1-5x mr-4"></i> Profile </a>
@@ -120,7 +118,7 @@
                                  href="javascript:;" (click)="this.common_service.signout()"> <i
                                     class="fas fa-power-off fa-1-5x mr-4"></i> Sign Out
                               </a></li>
-                        </ul>
+                        </ul> -->
                      </li>
                      <li class="align-items-center h-auto ml-sm-3 d-none d-lg-flex"><a
                            class="btn btn-outline-primary shadow-none d-none d-sm-block ml-2 pl-2 pr-2"

@@ -352,6 +352,67 @@ export class MainService {
 		return this.httpclient.post(this.config_file_data.service_url + "/pp/trans/", data_object); // this.common_params.httpOptions
 	}
 	
+	get_fleet_settings(): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+		let mod_id = this.common_params.get_module_id("Fleeet Management");
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"Mode": "F",
+		};
+		return this.httpclient.post(this.config_file_data.service_url + "/fleet", data_object); // this.common_params.httpOptions
+	}	
+	
+	get_delivery_app_data(DocEntry): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+		let mod_id = this.common_params.get_module_id("Fleeet Management");
+		let data_object = {
+			"SysID": this.sys_id,
+			"ModID": mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"Mode": "F",
+			"DocEntry": DocEntry
+		};
+		return this.httpclient.post(this.config_file_data.service_url + "/fleet/delv", data_object); // this.common_params.httpOptions
+	}	
+	
+	update_delivery(fleet_settings, dataset, signature): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+		let mod_id = this.common_params.get_module_id('Fleeet Management');
+		dataset.ArrivalTime = dataset.ArrivalTime.split(":").join("");
+		dataset.DeliveryStartTime = dataset.DeliveryStartTime.split(":").join("");
+		dataset.DeliveryEndTime = dataset.DeliveryEndTime.split(":").join("");
+		let data_object = {
+			"SysID": 1,
+			"ModID": mod_id,
+			"UserID": parseInt(sessionStorage.user_id),
+			"ConfigcrmID": parseFloat(fleet_settings.ConfigcrmID).toString(),
+			"DocEntry": dataset.DocEntry,
+			"DocNum": dataset.DocNum,
+			"DocDate": dataset.DocDate,
+			"DocDueDate": dataset.DocDueDate,
+			"CardCode": dataset.CardCode,
+			"CardName": dataset.CardName,
+			"RouteName": dataset.RouteName,
+			"StopNo": dataset.StopNo,
+			"DeliveryStatus": dataset.DeliveryStatus,
+			"ArrivalTime": dataset.ArrivalTime,
+			"DeliveryStartTime": dataset.DeliveryStartTime,
+			"DeliveryEndTime": dataset.DeliveryEndTime,
+			"ItemsReturned": dataset.ItemsReturned,
+			"CheckNo": dataset.CheckNo,
+			"ReturnItems": dataset.ReturnItems,
+			"PaymentReceived": dataset.PaymentReceived,
+			"PaymentMethod": dataset.PaymentMethod,
+			"PaymentAmount": parseInt(dataset.PaymentAmount),
+			"Signature": signature,
+			"SignatureDate": dataset.SignatureDate
+		};
+		return this.httpclient.post(this.config_file_data.service_url + "/fleet/delv/upd", data_object); // this.common_params.httpOptions
+	}
+	
+	
 	
 	
 }

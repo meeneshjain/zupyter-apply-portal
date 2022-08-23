@@ -14,20 +14,17 @@ const routes: Routes = [
     data: { showHeader: true, showFooter: true }
   },
   {
-    path: 'transaction',
-    loadChildren: () => import('./modules/transactions/transactions.module').then(m => m.TransactionsModule),
+    path: 'delivery',
+    loadChildren: () => import('./modules/delivery-details/delivery-details.module').then(m => m.DeliveryDetailsModule),
     data: { showHeader: true, showFooter: true }
   },
+  
   {
     path: 'cards-banking',
     loadChildren: () => import('./modules/cards-banking/cards-banking.module').then(m => m.CardsBankingModule),
     data: { showHeader: true, showFooter: true }
   },
-  {
-    path: 'send-request-money',
-    loadChildren: () => import('./modules/send-request-money/send-request-money.module').then(m => m.SendRequestMoneyModule),
-    data: { showHeader: true, showFooter: true }
-  },
+ 
   {
     path: 'settings',
     loadChildren: () => import('./modules/settings/settings.module').then(m => m.SettingsModule),
@@ -44,11 +41,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/bank-account/bank-account.module').then(m => m.BankAccountModule),
     data: { showHeader: true, showFooter: true }
   },
-  {
-    path: 'advanced',
-    loadChildren: () => import('./modules/auto-pay/auto-pay.module').then(m => m.AutoPayModule),
-    data: { showHeader: true, showFooter: true }
-  },
+ 
 ]
 
 
