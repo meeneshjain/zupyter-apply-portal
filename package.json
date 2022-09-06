@@ -7,7 +7,7 @@
     "build": "ng build --aot --base-href=./ --output-hashing=all",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve": "ng serve --port 8945 --live-reload false"
+    "serve": "ng serve --port 4521 --live-reload false"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +22,7 @@
     "@ng-bootstrap/ng-bootstrap": "^11.0.0",
     "@types/jquery": "^3.5.14",
     "bootstrap": "^4.3.1",
+    "html-to-image": "^1.10.8",
     "jquery": "^3.6.0",
     "ngx-bootstrap": "^6.2.0",
     "ngx-device-detector": "^2.1.0",

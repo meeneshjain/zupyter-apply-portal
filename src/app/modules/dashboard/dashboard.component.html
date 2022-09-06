@@ -24,11 +24,18 @@
                </div>
             </div> -->
             <div class="row mb-2">
-               <div class="col-sm-12 col-md-12 col-lg-12">
-                  <div class="pull-left">
-                     <input type="text" class="form-control " id="search_string" name="search_string"
-                        [(ngModel)]="form_data.search_string" #search_string_o="ngModel" placeholder="Search Document">
-                  </div>
+               <div class="col-sm-8 col-md-8 col-lg-8 col-8">
+
+                  <input type="text" class="form-control  rounded-1" id="search_string" name="search_string"
+                     [(ngModel)]="form_data.search_string" #search_string_o="ngModel" placeholder="Search Delivery Number">
+
+               </div>
+               <div class="col-sm-4 col-md-4 col-lg-4 col-4">
+                  <button class="btn btn-primary " (click)="search_document(form_data.search_string)"> <b> <i
+                           class="fa fa-search mr-1"></i> Search </b></button>
+                  <button class="btn btn-primary float-right  ml-2" 
+                     (click)="this.transaction_details = []; form_data.search_string= '';"> <b> <i
+                           class="fa fa-trash  mr-1"></i> Clear </b></button>
                </div>
 
             </div>
@@ -38,7 +45,7 @@
                <div class="overflow-y-scroll ">
                   <ng-container
                      *ngFor="let row_data of this.transaction_details | filter : this.form_data.search_string; let i = index;">
-                     <div class="card border-black mb-3">
+                     <div class="card border-black mb-3 rounded-1">
                         <!-- <div class="card-header bg-transparent border-0 ">
                            <div class="row">
                               <div class="col-sm-6 col-md-6 col-lg-6">
@@ -71,33 +78,36 @@
                               <div class="col-md-6 col-sm-6 col-lg-6 col-6 ">
                                  <div class="row">
                                     <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="d-block float-left pull-left text-3 px-0 py-2"> <h3 class="text-5 font-weight-600 mb-1  "> <i class="fa fa-map"></i>
-                                          {{row_data.RouteName}} </h3></div>
-                                 
+                                       <div class="d-block float-left pull-left text-3 px-0 py-2">
+                                          <h3 class="text-5 font-weight-600 mb-1  "> <i class="fa fa-map"></i>
+                                             {{row_data.RouteName}} </h3>
+                                       </div>
+
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="float-right pull-right px-2 py-2 text-5"> 
-                                        <b>  <i class="fa fa-file-alt"></i>
-                                          {{row_data.DocNum}}</b>
+                                       <div class="float-right pull-right px-2 py-2 text-5">
+                                          <b> <i class="fa fa-file-alt"></i>
+                                             {{row_data.DocNum}}</b>
                                        </div>
                                     </div>
                                  </div>
-                              <hr class="mt-1 mb-1">
-                                    
-                               <div class="row">
-                               <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                 <div class="d-block float-left pull-left text-3 px-0 py-2"> <i class="fa fa-stop-circle text-5 mr-3"></i> <span
-                                       class="badge badge-black bg-black p-2 text-4 text-white">Stop
-                                       #{{row_data.StopNo}}</span> </div>
-                                
-                               </div>
-                               <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                 <div class="float-right pull-right px-2 py-2"> <span
-                                       class=" p-2 text-2 {{row_data.delivery_badge_color}}">{{row_data.delivery_status}}</span>
+                                 <hr class="mt-1 mb-1">
+
+                                 <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
+                                       <div class="d-block float-left pull-left text-3 px-0 py-2"> <i
+                                             class="fa fa-stop-circle text-5 mr-3"></i> <span
+                                             class="badge badge-black bg-black p-2 text-4 text-white">Stop
+                                             #{{row_data.StopNo}}</span> </div>
+
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
+                                       <div class="float-right pull-right px-2 py-2"> <span
+                                             class=" p-2 text-2 {{row_data.delivery_badge_color}}">{{row_data.delivery_status}}</span>
+                                       </div>
+                                    </div>
                                  </div>
-                               </div>
-                               </div>
-                               <hr class="mt-1 mb-1">
+                                 <hr class="mt-1 mb-1">
                                  <div class="d-block text-3 transaction-item px-2 py-2"> <i
                                        class="fa fa-building mr-2"></i> <b>
                                        {{row_data.CardName}} </b></div>
@@ -108,7 +118,8 @@
                                  <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-user mr-2"></i>
                                     <b>
                                        {{row_data.DefaultContactPerson}}
-                                    </b></div>
+                                    </b>
+                                 </div>
                                  <div class="d-block text-3 transaction-item px-2 py-2"> <i
                                        class="fa fa-phone mr-2"></i> <b>
                                        {{row_data.DefaultPhone}}
@@ -116,9 +127,6 @@
 
                               </div>
                               <div class="col-md-6 col-sm-6 col-lg-6 col-6 border-left">
-
-
-
                                  <div class="transaction-list">
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
@@ -132,7 +140,7 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <div class="transaction-list">
+                              <!--   <div class="transaction-list">
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
                                           <div class="col col-sm-8  col-md-8 text-left">
@@ -157,7 +165,7 @@
 
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> 
                                  <div class="transaction-list">
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
@@ -170,16 +178,17 @@
 
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> -->
                                  <div class="transaction-list">
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
                                           <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Item Count </b>
+                                             <b> <i class="fa fa-list-alt mr-2"></i> Item Count </b>
                                           </div>
-                                          <div class="col col-sm-4 col-md-4"> <span class="text-nowrap">{{row_data.Items.length}}</span>
+                                          <div class="col col-sm-4 col-md-4"> <span
+                                                class="text-nowrap">{{row_data.Items.length}}</span>
                                           </div>
-                                 
+
                                        </div>
                                     </div>
                                  </div>
@@ -187,11 +196,12 @@
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
                                           <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Total Packages </b>
+                                             <b> <i class="fa fa-boxes mr-2"></i> Total Packages </b>
                                           </div>
-                                          <div class="col col-sm-4 col-md-4"> <span class="text-nowrap">{{row_data.total_packages}}</span>
+                                          <div class="col col-sm-4 col-md-4"> <span
+                                                class="text-nowrap">{{row_data.total_packages}}</span>
                                           </div>
-                                 
+
                                        </div>
                                     </div>
                                  </div>
@@ -199,17 +209,19 @@
                                     <div class="transaction-item px-2 py-2">
                                        <div class="row align-items-center flex-row">
                                           <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Gross Weight </b>
+                                             <b> <i class="fa fa-balance-scale mr-2"></i> Gross Weight </b>
                                           </div>
-                                          <div class="col col-sm-4 col-md-4"> <span class="text-nowrap">{{row_data.GrossWeight}}</span>
+                                          <div class="col col-sm-4 col-md-4"> <span
+                                                class="text-nowrap">{{row_data.GrossWeight}}</span>
                                           </div>
-                                 
+
                                        </div>
                                     </div>
                                  </div>
-                               
+
                                  <br>
-                                 <a class="btn btn-primary float-right pull-right" (click)="view_details(row_data)"> <b>  Start Delivery <i class="fa fa-truck  ml-2"></i></b></a>
+                                 <button class="btn btn-primary float-right pull-right" [disabled]="row_data.DeliveryStatus == 'D'" (click)="view_details(row_data)"> <b>
+                                       Start Delivery <i class="fa fa-truck  ml-2"></i></b></button>
                               </div>
 
                            </div>

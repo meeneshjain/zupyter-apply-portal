@@ -13,7 +13,7 @@ export class MainService {
 	public sys_id = 1;
 	public mod_id = 2;
 	public module_list  = [];
-	public module_name = "Customer Portal";
+	public module_name = "Fleet Management";
 	
 	constructor(private httpclient: HttpClient) {}
 	
@@ -354,7 +354,7 @@ export class MainService {
 	
 	get_fleet_settings(): Observable<any> {
 		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
-		let mod_id = this.common_params.get_module_id("Fleeet Management");
+		let mod_id = this.common_params.get_module_id("Fleet Management");
 		let data_object = {
 			"SysID": this.sys_id,
 			"ModID": mod_id,
@@ -364,22 +364,24 @@ export class MainService {
 		return this.httpclient.post(this.config_file_data.service_url + "/fleet", data_object); // this.common_params.httpOptions
 	}	
 	
-	get_delivery_app_data(DocEntry): Observable<any> {
+	get_delivery_app_data(DocNum): Observable<any> {
 		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
-		let mod_id = this.common_params.get_module_id("Fleeet Management");
+		let mod_id = this.common_params.get_module_id("Fleet Management");
 		let data_object = {
 			"SysID": this.sys_id,
 			"ModID": mod_id,
 			"UserID": parseInt(sessionStorage.user_id),
 			"Mode": "F",
-			"DocEntry": DocEntry
+			"DocNum": DocNum,
+			 "DocEntry": -1
+			// "DocEntry": DocEntry
 		};
 		return this.httpclient.post(this.config_file_data.service_url + "/fleet/delv", data_object); // this.common_params.httpOptions
 	}	
 	
 	update_delivery(fleet_settings, dataset, signature): Observable<any> {
 		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
-		let mod_id = this.common_params.get_module_id('Fleeet Management');
+		let mod_id = this.common_params.get_module_id('Fleet Management');
 		dataset.ArrivalTime = dataset.ArrivalTime.split(":").join("");
 		dataset.DeliveryStartTime = dataset.DeliveryStartTime.split(":").join("");
 		dataset.DeliveryEndTime = dataset.DeliveryEndTime.split(":").join("");
@@ -396,7 +398,7 @@ export class MainService {
 			"CardName": dataset.CardName,
 			"RouteName": dataset.RouteName,
 			"StopNo": dataset.StopNo,
-			"DeliveryStatus": dataset.DeliveryStatus,
+			"DeliveryStatus": 'D',
 			"ArrivalTime": dataset.ArrivalTime,
 			"DeliveryStartTime": dataset.DeliveryStartTime,
 			"DeliveryEndTime": dataset.DeliveryEndTime,
@@ -404,10 +406,12 @@ export class MainService {
 			"CheckNo": dataset.CheckNo,
 			"ReturnItems": dataset.ReturnItems,
 			"PaymentReceived": dataset.PaymentReceived,
+			"Comments": dataset.Comments,
 			"PaymentMethod": dataset.PaymentMethod,
 			"PaymentAmount": parseInt(dataset.PaymentAmount),
 			"Signature": signature,
-			"SignatureDate": dataset.SignatureDate
+			"SignatureDate": dataset.SignatureDate,
+			"PalletReturn": dataset.PalletReturn
 		};
 		return this.httpclient.post(this.config_file_data.service_url + "/fleet/delv/upd", data_object); // this.common_params.httpOptions
 	}

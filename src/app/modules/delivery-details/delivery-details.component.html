@@ -9,12 +9,13 @@
                <div class="bg-light shadow-sm rounded-1 p-3 mb-3">
                   <h3 class="text-5 font-weight-600 mb-4 transaction-item "> <i class="fa fa-file-alt"></i> Delivery No.
                      - {{delivery_data.DocNum}} </h3>
-                  <div class="row">
+                  <div class="row mb-3">
                      <div class="col-sm-12 col-md-12 col-lg-12">
                         <div class="pull-left">
                            <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-building mr-2"></i>
                               <b>
-                                 {{delivery_data.CardName}} </b></div>
+                                 {{delivery_data.CardName}} </b>
+                           </div>
                            <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-user mr-2"></i> <b>
                                  {{delivery_data.DefaultContactPerson}}
                               </b></div>
@@ -37,7 +38,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="transaction-list">
+                           <!-- <div class="transaction-list">
                               <div class="transaction-item px-2 py-2">
                                  <div class="row align-items-center flex-row">
                                     <div class="col col-sm-8  col-md-8 text-left">
@@ -75,11 +76,50 @@
 
                                  </div>
                               </div>
-                           </div>
+                           </div> -->
                            <div class="d-block transaction-item px-2 py-2"> <span
                                  class=" p-2 text-2 {{delivery_data.delivery_badge_color}}">{{delivery_data.delivery_status}}</span>
                            </div>
 
+                           <div class="transaction-list">
+                              <label for=""><b> Customer Signature</b> <span class="text-danger">*</span></label>
+                              <br>
+                              <input type="text" class="form-control-sm col-12 col-sm-12 col-md-12 col-lg-12" id="signName" name="signName" [(ngModel)]="signature_name" #signName_o="ngModel" placeholder="Enter your Name" (input)="generate_customer_sign()" >
+                              <!-- <button class="btn btn-primary btn-sm ml-2 float-right" type="button" (click)="generate_customer_sign()"> Sign </button> -->
+                              
+                              <div style="border:1px solid #ccc;" class="rounded-1 mt-2" *ngIf="generated_signature_name== ''">
+                                 <ngx-signaturepad #signaturePad [options]="options" [width]="width" [height]="height">
+                                 </ngx-signaturepad>
+                              </div>
+                              <div  class="transaction-list mt-2" [hidden]="generated_signature_name== ''">
+                                 <div class="southam_signature rounded-1" id="generated_signature_id" style=" font-family: 'Southam'; font-size: 55px; width: 100%; height: 130px; line-height: 100px; padding-left: 40px; background-color: white; color: black;">
+                                    {{generated_signature_name}}
+                                 </div>
+                              </div>
+                              <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                                 Signature</button>
+
+                              <a class="cursor-pointer ml-2 text-black mt-2 pt-2" (click)="term_condition()"> Terms &
+                                 Conditions</a>
+                           </div>
+                           <div class="transaction-list">
+                              <div class="transaction-item px-2 py-2">
+                                 <div class="row align-items-center flex-row">
+                                    <div class="col text-left">
+                                       <b> <i class="fa fa-calendar-alt mr-2"></i> Signature Date </b>
+                                    </div>
+                                    <div class="col">
+                                       <input type="text" class="form-control-sm col-md-8 float-right pull-right"
+                                          id="SignatureDate" readonly name="SignatureDate"
+                                          [(ngModel)]="delivery_data.SignatureDate" #SignatureDate_o="ngModel"
+                                          placeholder="MM/YY">
+                                    </div>
+
+                                 </div>
+                              </div>
+
+                           </div>
+                            
                         </div>
                      </div>
 
@@ -96,13 +136,13 @@
                      </div>
                      <div class="col col-sm-9  col-md-9 text-left">
                         <div class=" ">
-                           <input type="text" class="form-control-sm w-100" id="search_string" name="search_string" [(ngModel)]="search_string"
-                              #search_string_o="ngModel" placeholder="Search Items">
+                           <input type="text" class="form-control-sm w-100" id="search_string" name="search_string"
+                              [(ngModel)]="search_string" #search_string_o="ngModel" placeholder="Search Items">
                         </div>
                      </div>
                   </div>
                   <hr class="mt-1 mb-1">
-                  
+
                   <div class="row">
                      <div
                         class="bg-light shadow-sm rounded mb-4 d-none d-md-block d-lg-block col-md-12 col-sm-12 col-lg-12">
@@ -190,8 +230,8 @@
                                           [(ngModel)]="delivery_data.CheckNo" #checkNo_o="ngModel"
                                           placeholder="Check No." [readonly]="delivery_data.PaymentMethod == 'Cash'">
                                        <div class="invalid-error"
-                                          *ngIf="checkNo_o.touched && !checkNo_o.valid && checkNo_o.value!=''"> Name
-                                          on Account is required
+                                          *ngIf="checkNo_o.touched && !checkNo_o.valid && checkNo_o.value!=''"> Check NO
+                                          is required
                                        </div>
                                     </div>
                                  </div>
@@ -203,8 +243,7 @@
                                           #paymentAmount_o="ngModel" placeholder="Payment Amount">
                                        <div class="invalid-error"
                                           *ngIf="paymentAmount_o.touched && !paymentAmount_o.valid && paymentAmount_o.value!=''">
-                                          Name
-                                          on Account is required
+                                          Payment Amount is required
                                        </div>
                                     </div>
                                  </div>
@@ -215,6 +254,14 @@
                   </div>
                   <div class="row mt-3">
                      <div class="col-md-8 col-lg-8 col-sm-8 col-8 ">
+                        <div class="form-group">
+                           <label for="accountName"><b> Comments </b> </label>
+                           <textarea class="form-control" id="Comments" name="Comments"
+                              [(ngModel)]="delivery_data.Comments" #Comments_o="ngModel"
+                              placeholder="Comments...!">{{delivery_data.Comments}}</textarea>
+
+                        </div>
+                        <!-- 
                         <label for=""><b> Customer Signature</b> <span class="text-danger">*</span></label>
                         <div style="border:1px solid #ccc" class="rounded-1">
                            <ngx-signaturepad #signaturePad [options]="options" [width]="width" [height]="height">
@@ -225,14 +272,25 @@
 
                         <a class="cursor-pointer ml-2 text-black mt-2 pt-2" (click)="term_condition()"> Terms &
                            Conditions</a>
+                      -->
                      </div>
                      <div class="col-md-4 col-lg-4 col-sm-4 col-4">
                         <div class="form-group">
+                           <label for="input-zone"><b> Pallets Returned </b> </label>
+                           <select class="custom-select" id="PalletReturn" name="PalletReturn" required
+                              [(ngModel)]="delivery_data.PalletReturn" #PalletReturn_obj="ngModel"
+                              [ngClass]="{'validation-error':!PalletReturn_obj.valid && (PalletReturn_obj.touched || delivery_form.submitted)}">
+                              <option value=""> --- Please Select --- </option>
+                              <option *ngFor="let number of this.number_list" [value]="number" > {{number}} </option>
+                           </select>
+                        </div>
+                        
+                        <!--  <div class="form-group">
                            <label for=""><b> Date </b></label>
                            <input type="text" class="form-control-sm" id="SignatureDate" readonly name="SignatureDate"
                               [(ngModel)]="delivery_data.SignatureDate" #SignatureDate_o="ngModel" placeholder="MM/YY">
 
-                        </div>
+                        </div> -->
                      </div>
                   </div>
                   <hr>

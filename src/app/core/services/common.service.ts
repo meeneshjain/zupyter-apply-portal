@@ -22,9 +22,9 @@ export class CommonService {
 	
 	public delivery_status = [
 		{ "key": "L", "value": "Loaded on Truck", "class": "badge badge-warning" },
-		{ "key": "I", "value": "In Transit", "class": "badge badge-primary" },
-		{ "key": "D", "value": "Delivered", "class": "badge badge-danger" },
-		{ "key": "N", "value": "Not Delivered", "class": "badge badge-success" },
+		{ "key": "I", "value": "In Transit", "class": "badge badge-primary-2" },
+		{ "key": "D", "value": "Delivered", "class": "badge badge-success" },
+		{ "key": "N", "value": "Not Delivered", "class": "badge badge-danger" },
 	];
 	
 	constructor(

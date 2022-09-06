@@ -125,8 +125,8 @@ export class SigninComponent implements OnInit {
       sessionStorage.setItem("is_logged_in", '1');
       sessionStorage.setItem("user_id", user_id);
       sessionStorage.setItem("AccessType", response[0]['AccessType']);
-      response[0]['CardCode'] = (response[0]['crm_CardCode']!= null && response[0]['crm_CardCode']!= undefined ) ? response[0]['crm_CardCode'] : '';
-      response[0]['CardName'] = (response[0]['crm_CardName']!= null && response[0]['crm_CardName']!= undefined ) ? response[0]['crm_CardName'] : '';
+      //response[0]['CardCode'] = (response[0]['crm_CardCode']!= null && response[0]['crm_CardCode']!= undefined ) ? response[0]['crm_CardCode'] : '';
+     // response[0]['CardName'] = (response[0]['crm_CardName']!= null && response[0]['crm_CardName']!= undefined ) ? response[0]['crm_CardName'] : '';
       sessionStorage.setItem("user_details", JSON.stringify(response[0]));
       /* this.common_service.show_sweet_alert('s', '', `Welcome ${response[0]['FirstName']}`); */
       this.shared_service.loginValue(true);

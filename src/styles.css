@@ -194,3 +194,26 @@ body {
     background-color: #000000 !important;
     border-color: #000000 !important;
 }
+
+
+.badge-primary-2{
+    color: #fff !important;
+    background-color: #007bff  !important;
+}
+
+
+@font-face {
+    font-family: Southam;
+    src: url('./assets/fonts/Southam-Demo.otf');
+}
+
+.southam_signature {
+    font-family: 'Southam';
+    font-size: 55px;
+    width: 100%;
+        height: 130px;
+    border: 1px solid #ccc;
+        line-height: 100px;
+            padding-left: 40px;
+    
+}

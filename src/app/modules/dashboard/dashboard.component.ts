@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
   public isMobile = this.deviceService.isMobile();
   public isTablet = this.deviceService.isTablet();
   public isDesktopDevice = this.deviceService.isDesktop();
-  
+  public date = new Date();
   
   constructor(
     private router: Router,
@@ -37,12 +37,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.common_service.check_session_on();
     this.show_loader = true;
-    this.get_delivery_app_data()
+    setTimeout(() => {
+      this.show_loader = false;
+    }, 200);
+
   }
   
-  get_delivery_app_data() {
-    this.service.get_delivery_app_data(-1).subscribe((res) => {
+  get_delivery_app_data(search_string) {
+    this.service.get_delivery_app_data(search_string).subscribe((res) => {
       console.log('res ', res)
+      this.transaction_details = [];
       if (res != null) {
         if (res.data != undefined && res.data.length > 0) {
           this.transaction_details = res.data;
@@ -66,7 +70,7 @@ export class DashboardComponent implements OnInit {
               }
             }
           }
-        }
+        } 
       }
       this.show_loader = false;
     }, error => {
@@ -89,7 +93,20 @@ export class DashboardComponent implements OnInit {
   }
   
   view_details(row_data){
-    this.common_service.change_route('delivery/delivery-detail/' + row_data.DocEntry)
+    this.common_service.change_route('delivery/delivery-detail/' + row_data.DocNum)
+  }
+  
+  search_document(search_string){
+    if (search_string!= ''){
+     this.show_loader = true;
+      this.get_delivery_app_data(search_string);
+      setTimeout(() => {
+        this.form_data.search_string = '';
+      }, 500);
+    } else {
+      this.common_service.show_sweet_alert('e', "Info", 'Please enter Delivery Number ');
+
+    }
   }
 
 }

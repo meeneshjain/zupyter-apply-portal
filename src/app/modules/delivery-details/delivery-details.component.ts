@@ -6,6 +6,8 @@ import { CommonService } from "src/app/core/services/common.service";
 import { MainService } from "src/app/core/services/main.service";
 import { SharedService } from "src/app/core/services/shared.service";
 import { DeviceDetectorService } from 'ngx-device-detector';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 @Component({
   selector: 'app-delivery-details',
@@ -25,11 +27,19 @@ export class DeliveryDetailsComponent implements OnInit {
   public isTablet = this.deviceService.isTablet();
   public isDesktopDevice = this.deviceService.isDesktop();
   public fleet_settings:any = {};
+  public number_list = [];
+  public signature_name: any = '';
+  public generated_signature_name: any = '';
+  public generated_sign_base64:any = '';
   @ViewChild('signaturePad', { static: false }) signaturePad;
-  
-  width: number = 410;
-  height: number = 70;
-  options: any = null;
+
+  width: number = 285;
+  height: number = 130;
+  public options: any = {
+    backgroundColor: "rgb(255, 255, 255)",
+    fillColor: "rgb(255, 255, 255)",
+    penColor: "rgb(0, 0, 0)"
+  }
   
   constructor(
     private router: Router,
@@ -50,6 +60,10 @@ export class DeliveryDetailsComponent implements OnInit {
     this.DocEntry = this.ActivatedRoute.snapshot.paramMap.get('one');
     this.delivery_data.Items = [];
     this.fleet_settings = {};
+    for (let index = 0; index < 25; index++) {
+      this.number_list.push(index);
+      
+    }
     this.get_fleet_settings();
     if (this.DocEntry != null) {
       this.show_loader = true;
@@ -79,14 +93,18 @@ export class DeliveryDetailsComponent implements OnInit {
         if (res.data != undefined && res.data.length > 0) {
           this.delivery_data = res.data[0];
           this.delivery_data.ArrivalTime = this.delivery_data.ArrivalTime.replace(/(..)/g, '$1:').slice(0, -1)
-          this.delivery_data.DeliveryStartTime = this.delivery_data.DeliveryStartTime.replace(/(..)/g, '$1:').slice(0, -1)
-          this.delivery_data.DeliveryEndTime = this.delivery_data.DeliveryEndTime.replace(/(..)/g, '$1:').slice(0, -1)
+        //  this.delivery_data.DeliveryStartTime = this.delivery_data.DeliveryStartTime.replace(/(..)/g, '$1:').slice(0, -1)
+        var date = new Date();
+          this.delivery_data.DeliveryStartTime = date.getHours() + ':' + date.getMinutes()
+         // this.delivery_data.DeliveryEndTime = this.delivery_data.DeliveryEndTime.replace(/(..)/g, '$1:').slice(0, -1)
           this.delivery_data.delivery_status = this.common_service.get_delivery_status(this.delivery_data['DeliveryStatus'], 'value');
           this.delivery_data.delivery_badge_color = this.common_service.get_delivery_status(this.delivery_data['DeliveryStatus'], 'class');
+         //  this.delivery_data.PalletReturn = (this.delivery_data.PalletReturn == '') ? 1 : this.delivery_data.PalletReturn ; 
           this.delivery_data.total_packages = 0;
+          this.delivery_data.PaymentAmount = (this.delivery_data.PaymentAmount != 0) ? this.delivery_data.PaymentAmount : '';
           this.delivery_data.GrossWeight = 0;
           this.delivery_data.CheckNo ='';
-          this.delivery_data.PaymentMethod = (this.delivery_data.PaymentMethod == 'CH') ? this.delivery_data.PaymentMethod : 'CA';
+          this.delivery_data.PaymentMethod = (this.delivery_data.PaymentMethod == 'Check') ? this.delivery_data.PaymentMethod : 'Cash';
           var d = new Date();
           this.delivery_data.SignatureDate = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear()
           if (this.delivery_data.Items.length > 0){
@@ -131,7 +149,10 @@ export class DeliveryDetailsComponent implements OnInit {
 
   clear() {
     console.log('clear');
-    this.signaturePad.clear();
+    if(this.signaturePad != undefined) this.signaturePad.clear();
+    
+    this.generated_signature_name = '';
+    this.signature_name = '';
   }
 
   changeOptions() {
@@ -139,7 +160,8 @@ export class DeliveryDetailsComponent implements OnInit {
     this.options = {
       minWidth: 5,
       maxWidth: 10,
-      penColor: "rgb(66, 133, 244)"
+      penColor: "rgb(66, 133, 244)",
+      
     };
   }
 
@@ -156,17 +178,34 @@ export class DeliveryDetailsComponent implements OnInit {
   onSubmit(isValid: Boolean) {
     var signature = '';
     if (!this.signaturePad.isEmpty()){
-      signature = this.signaturePad.toDataURL(); 
-      signature = signature.replace("data:image/png;base64,", '')
-      console.log("signature - ", signature);
+      signature = this.signaturePad.toDataURL("image/jpeg"); 
+      console.log("signature 1 - ", signature);
+    } else {
+      if(this.generated_signature_name != ''){
+        signature = this.generated_sign_base64;
+        console.log("signature 2 - ", signature);
+      } else {
+        this.common_service.show_sweet_alert('e', "Errors!", `Please sign the form before you submit`);
+        return; 
+      }
+    }
+    this.show_loader = true;
+    
+    signature = signature.replace("data:image/jpeg;base64,", '')
+      var date2 = new Date();
+      this.delivery_data.DeliveryEndTime = date2.getHours() + ':' + date2.getMinutes()
+       
       let dataset = JSON.parse(JSON.stringify(this.delivery_data));
-      console.log('this.fleet_settings ', this.fleet_settings )
+   
       this.service.update_delivery(this.fleet_settings, dataset, signature).subscribe(response => {
         console.log('response ', response);
         if (response.Message != ''){
           if (response.Message == 'true' || response.Message == 'True'){
             this.show_loader = false;
-            this.common_service.show_sweet_alert('s', "Success!", 'Updated Succesfully');  
+            this.common_service.show_sweet_alert('s', "Success!", 'Your Delivery has been processed Successfully.');  
+            setTimeout(() => {
+              this.common_service.change_route('/dashboard')
+            }, 200);
           } else {
             
             this.show_loader = false;
@@ -177,10 +216,6 @@ export class DeliveryDetailsComponent implements OnInit {
         this.show_loader = false;
         this.common_service.show_sweet_alert('e', "Error!", "There was some error, Please try again.");
       });
-      
-    } else {
-      this.common_service.show_sweet_alert('e', "Errors!", `Please sign the form before you submit`);
-    }
   }
   
   go_to_dashboard() {
@@ -198,6 +233,24 @@ export class DeliveryDetailsComponent implements OnInit {
   
   term_condition(){
     this.common_service.show_sweet_alert('', "", `The perishable agricultural commodities listed on this invoice are sold subject to the statutory trust authorized by section 5(c) of the Perishable Agricultural Commodities Act, 1930(7 U.S.C. 499e(c)).The seller of these commodities retains a trust claim over these commodities, all inventories of food or other products derived from these commodities, and any receivables or proceeds from the sale of these commodities until full payment is received.`);  
+  }
+  
+  generate_customer_sign(){
+    this.generated_signature_name = this.signature_name ;
+    if (this.generated_signature_name!= ''){
+      var node = document.getElementById('generated_signature_id');
+      console.log('node ', node )
+      setTimeout(() => {
+        htmlToImage.toJpeg(node, { quality: 0.80 }).then(function (dataUrl) {
+          console.log('dataUrl - ', dataUrl)
+          this.generated_sign_base64 = dataUrl;
+        })
+          .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+          });
+      }, 250);
+      
+    }
   }
 
 }
