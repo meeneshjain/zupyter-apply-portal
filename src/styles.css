@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import '~bootstrap/dist/css/bootstrap.min.css'; */
 
+@import '~ng-wizard/themes/ng_wizard.min.css';
+
+/* 
+@import '~ng-wizard/themes/ng_wizard_theme_circles.min.css';
+@import '~ng-wizard/themes/ng_wizard_theme_dots.min.css';
+@import '~ng-wizard/themes/ng_wizard_theme_arrows.min.css';
+ */
 .validation-error {
     border-color: #dc3545 !important;
     padding-right: calc(1.5em + 0.75rem) !important;
@@ -134,8 +142,8 @@
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji " !important;
-    color: #000000 !important; 
+    font-family: sans-serif !important;
+    color: #000000 !important;
 }
 
 .right_side_menu {
@@ -160,7 +168,7 @@ body {
     width: 20rem !important;
 }
 
-.rounded-1{
+.rounded-1 {
     border-radius: 1rem !important;
 }
 
@@ -173,18 +181,18 @@ body {
     background: #f1f5f6 !important;
 }
 
-.clear_custom_button{
+.clear_custom_button {
     margin-top: 2rem !important;
 }
 
-.scrollable-section{
+.scrollable-section {
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
-.text-black{
- color: black !important;   
+.text-black {
+    color: black !important;
 }
 
 .btn-outline-dark:not(:disabled):not(.disabled).active,
@@ -196,9 +204,9 @@ body {
 }
 
 
-.badge-primary-2{
+.badge-primary-2 {
     color: #fff !important;
-    background-color: #007bff  !important;
+    background-color: #007bff !important;
 }
 
 
@@ -211,9 +219,69 @@ body {
     font-family: 'Southam';
     font-size: 55px;
     width: 100%;
-        height: 130px;
+    height: 130px;
     border: 1px solid #ccc;
-        line-height: 100px;
-            padding-left: 40px;
-    
+    line-height: 100px;
+    padding-left: 40px;
+
+}
+
+
+.font-size-70 {
+    font-size: 70px !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #1e1d1c;
+    font-family: sans-serif !important;
+}
+
+.om-color {
+    color: #F6693F !important;
+    border-color: #F6693F !important;
+}
+
+li.nav-item {
+    border-bottom: 2px solid black;
+}
+
+a.nav-link-new {
+    color: black !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 1rem !important;
+    position: relative !important;
+    border-radius: 0 !important;
+    padding: 1rem 20px !important;
+    /* color: #7b8084; */
+    display: block;
+    white-space: nowrap !important;
+}
+
+li.nav-item.active {
+    border-bottom: 2px solid #F6693F;
+}
+
+a.nav-link-active {
+    color: #F6693F !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 1rem !important;
+    position: relative !important;
+    border-radius: 0 !important;
+    padding: 1rem 20px !important;
+    /* color: #7b8084; */
+    display: block;
+    white-space: nowrap !important;
+}
+
+.btn-primary {
+    background-color: black !important;
+    border-color: black !important;
+    color: white !important;
 }

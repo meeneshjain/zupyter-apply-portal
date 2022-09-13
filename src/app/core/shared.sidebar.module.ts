@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SiderbarComponent  } from 'src/app/layout/siderbar/siderbar.component';
+//import { SiderbarComponent  } from 'src/app/layout/siderbar/siderbar.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
    declarations: [
-      SiderbarComponent,
+  //     SiderbarComponent,
    ],
    imports: [
       CommonModule,
       RouterModule
    ],
    exports: [
-      SiderbarComponent,
+  //     SiderbarComponent,
    ]
 })
 export class SharedSidebarModule { }

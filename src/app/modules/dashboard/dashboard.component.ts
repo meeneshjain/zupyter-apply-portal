@@ -24,7 +24,12 @@ export class DashboardComponent implements OnInit {
   public isTablet = this.deviceService.isTablet();
   public isDesktopDevice = this.deviceService.isDesktop();
   public date = new Date();
-  
+  public login_logo = '';
+  public config_data;
+  public module_id = 0;
+
+  public resume_form: any = {};
+
   constructor(
     private router: Router,
     private ActivatedRoute: ActivatedRoute,
@@ -34,79 +39,69 @@ export class DashboardComponent implements OnInit {
     private deviceService: DeviceDetectorService
   ) { }
 
-  ngOnInit() {
-    this.common_service.check_session_on();
-    this.show_loader = true;
-    setTimeout(() => {
-      this.show_loader = false;
-    }, 200);
 
-  }
-  
-  get_delivery_app_data(search_string) {
-    this.service.get_delivery_app_data(search_string).subscribe((res) => {
-      console.log('res ', res)
-      this.transaction_details = [];
-      if (res != null) {
-        if (res.data != undefined && res.data.length > 0) {
-          this.transaction_details = res.data;
-          for(let index in this.transaction_details){
-            this.transaction_details[index]['ArrivalTime'] = this.transaction_details[index]['ArrivalTime'].replace(/(..)/g, '$1:').slice(0, -1)
-            this.transaction_details[index]['DeliveryStartTime'] = this.transaction_details[index]['DeliveryStartTime'].replace(/(..)/g, '$1:').slice(0, -1)
-            this.transaction_details[index]['DeliveryEndTime'] = this.transaction_details[index]['DeliveryEndTime'].replace(/(..)/g, '$1:').slice(0, -1)
-            this.transaction_details[index].delivery_status = this.common_service.get_delivery_status(this.transaction_details[index]['DeliveryStatus'], 'value');
-            this.transaction_details[index].delivery_badge_color = this.common_service.get_delivery_status(this.transaction_details[index]['DeliveryStatus'], 'class');
-            
-            this.transaction_details[index].total_packages = 0;
-            this.transaction_details[index].GrossWeight = 0;
-            this.transaction_details[index].CheckNo = '';
-            this.transaction_details[index].PaymentMethod = (this.transaction_details[index].PaymentMethod == 'CH') ? this.transaction_details[index].PaymentMethod : 'CA';
-            var d = new Date();
-            this.transaction_details[index].SignatureDate = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear()
-            if (this.transaction_details[index].Items.length > 0) {
-              for (let i in this.transaction_details[index].Items) {
-                this.transaction_details[index].total_packages = this.transaction_details[index].total_packages + this.transaction_details[index].Items[i]['Quantity']
-                this.transaction_details[index].GrossWeight = this.transaction_details[index].GrossWeight + parseInt(this.transaction_details[index].Items[i]['Weight1'])
-              }
-            }
-          }
-        } 
+  ngOnInit() {
+    this.show_loader = true;
+    
+    this.shared_service.loginValue(false);
+
+    this.login_logo = this.common_params.default_login_image
+    if (sessionStorage.general_setting != undefined) {
+      let general = JSON.parse(sessionStorage.general_setting);
+      if (general != undefined) {
+        this.login_logo = general.LoginScrLogo;
       }
-      this.show_loader = false;
-    }, error => {
-      this.show_loader = false;
-      this.common_service.show_sweet_alert('e', "", this.common_service.error_message);
+    }
+
+    this.service.get_config((config_data) => {
+      this.config_data = JSON.parse(config_data);
+      this.service.get_mod_list().subscribe(mod_response => {
+        let module_list = (mod_response['data'] !== undefined) ? mod_response['data'] : [];
+        sessionStorage.setItem("module_list", JSON.stringify(module_list));
+        this.module_id = this.common_params.get_module_id('Customer Portal');
+        this.show_loader  = false;
+      }, error => {
+        this.show_loader = false;
+
+      });
+
+      this.service.get_general_settings().subscribe(general_setting_response => {
+        if (general_setting_response != undefined && general_setting_response.data != undefined) {
+          sessionStorage.setItem("general_setting", JSON.stringify(general_setting_response.data[0]));
+          this.shared_service.GeneralValue(true);
+        }
+        this.show_loader = false;
+      }, error => {
+        this.show_loader = false;
+        this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
+      });
     });
   }
-  
-  show_transaction_details(activitydetailpopup , row_data){
-    this.selected_transaction = row_data
-    console.log('row_data ', row_data )
-    this.common_service.openModal(activitydetailpopup, 'modal-lg')
-  }
-  
-  close_transaction(){
-    this.common_service.closeModal('') 
-    setTimeout(() => {
-      this.selected_transaction = {};
-    }, 10);
-  }
-  
-  view_details(row_data){
-    this.common_service.change_route('delivery/delivery-detail/' + row_data.DocNum)
-  }
-  
-  search_document(search_string){
-    if (search_string!= ''){
-     this.show_loader = true;
-      this.get_delivery_app_data(search_string);
-      setTimeout(() => {
-        this.form_data.search_string = '';
-      }, 500);
-    } else {
-      this.common_service.show_sweet_alert('e', "Info", 'Please enter Delivery Number ');
 
+  on_application_click(type, popupobject) {
+    var router_link = ''; 
+    if(type == '1'){
+      router_link = 'application/new';
+    } else if (type == '2') {
+      this.common_service.openModal(popupobject, 'modal-md')
+      // router_link = 'application/resume';
+    }
+    
+    this.common_service.change_route(router_link)
+  }
+
+  onAutoPaySubmit(instantForm_valid) {
+
+  }
+  
+  OnResumeSubmit(isValid: Boolean) {
+    if (isValid) {
+      this.common_service.closeModal('')
+      let router_link = 'application/resume';
+      this.common_service.change_route(router_link)
     }
   }
 
+  
+ 
 }

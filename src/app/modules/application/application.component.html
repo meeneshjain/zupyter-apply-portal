@@ -1,0 +1,657 @@
+<div id="preloader" *ngIf="show_loader">
+   <div data-loader="dual-ring"></div>
+</div>
+<form id="delivery_form" method="post" #delivery_form="ngForm" (ngSubmit)="onSubmit(delivery_form.valid)">
+   <div id="content" class="py-4">
+      <div class="mt-1">
+         <div class="ml-5 mr-5 w-75 m-auto">
+            <div class="mx-auto my-5">
+               <div class="bg-light shadow-lg rounded-1 p-4 mt-5">
+                  <div class="row tablet-reserve">
+                     <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                        <div class="mb-2 d-flex align-items-center"> <a class=" text-center mx-auto" href="/"
+                              title="Zupyter Payment Portal"><img [src]="this.login_logo" alt="Zupyter Payment Portal"
+                                 class="logo_width" /></a>
+                        </div>
+                        <hr class="mt-1 mb-1">
+                        <ul class="nav nav-tabs step-anchor nav-fill">
+                           <ng-container *ngFor="let step of step_list">
+                              <li class="nav-item " [ngClass]="{'active': step.active == true}"><a class=""
+                                    [ngClass]="{'nav-link-active': step.active == true, 'nav-link-new': !step.active}"
+                                    href="javascript:;"><b> {{step.key}} </b><br><small> <b> {{step.value}} </b>
+                                    </small></a>
+                              </li>
+                           </ng-container>
+                        </ul>
+                        <div class="tab-pane step-content" *ngIf="current_step == 1">
+                           <div class="row mt-4">
+                              <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Business Name <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="text" class="form-control" id="checkNo" name="checkNo"
+                                       [(ngModel)]="form_data.CheckNo" #checkNo_o="ngModel" placeholder="Business Name">
+                                    <div class="invalid-error"
+                                       *ngIf="checkNo_o.touched && !checkNo_o.valid && checkNo_o.value!=''"> Business
+                                       Name is required
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Corporate or Legal Name <span
+                                             class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="checkNo" name="checkNo"
+                                       [(ngModel)]="form_data.CheckNo" #checkNo_o="ngModel" required
+                                       placeholder="Corporate or Legal Name">
+                                    <div class="invalid-error"
+                                       *ngIf="checkNo_o.touched && !checkNo_o.valid && checkNo_o.value!=''">
+                                       Corporate or Legal Name
+                                       is required
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+                                 <div class="form-group">
+                                    <label for="legal_dd"><b> Entity Type <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <select class="custom-select" id="legal_dd" name="legal_dd" required
+                                       [(ngModel)]="form_data.legal_dd" #legal_dd_obj="ngModel"
+                                       [ngClass]="{'validation-error':!legal_dd_obj.valid && (legal_dd_obj.touched || delivery_form.submitted)}">
+                                       <option value=""> --- Please Select --- </option>
+                                       <option *ngFor="let legal of this.legal_drop_down_list" [value]="legal.key">
+                                          {{legal.value}}
+                                       </option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+                                 <div class="form-group">
+                                    <label for="premises_leased"><b> Are Premises Leased <span
+                                             class="text-danger">*</span> </b> </label>
+                                    <select class="custom-select" id="premises_leased" name="premises_leased" required
+                                       [(ngModel)]="form_data.premises_leased" #premises_leased_obj="ngModel"
+                                       [ngClass]="{'validation-error':!premises_leased_obj.valid && (premises_leased_obj.touched || delivery_form.submitted)}">
+                                       <option value=""> --- Please Select --- </option>
+                                       <option *ngFor="let legal of this.premises_leased_list" [value]="legal.key">
+                                          {{legal.value}}
+                                       </option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="col-lg-4 col-md-4 col-lg-4 col-4">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Name of Landlord <span class="text-danger">*</span>
+                                       </b> </label>
+                                    <input type="text" class="form-control" required id="nameoflandlord"
+                                       name="nameoflandlord" [readonly]="form_data.premises_leased == 'No'"
+                                       [(ngModel)]="form_data.nameoflandlord" #nameoflandlord_o="ngModel"
+                                       placeholder="Name of Landlord">
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                 <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                       <h6>Ship To Address</h6>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                       <div class="form-group">
+                                          <label for="address1"><b> Address<span class="text-danger">*</span> </b>
+                                          </label>
+                                          <input type="text" [(ngModel)]="this.form_data.address_full"
+                                             #address_ship_to="ngModel" class="form-control" id="address1"
+                                             name="address1" required placeholder="Address 1">
+                                          <div class="invalid-error"
+                                             *ngIf="address_ship_to.touched && !address_ship_to.valid && address_ship_to.value!=''">
+                                             Address is required </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="city1"><b> City <span class="text-danger">*</span> </b></label>
+                                          <input name="city1" id="city1"
+                                             [(ngModel)]="this.form_data.ship_to_address.City" type="text"
+                                             #city_ship_to="ngModel" class="form-control" required placeholder="City">
+                                          <div class="invalid-error"
+                                             *ngIf="city_ship_to.touched && !city_ship_to.valid && city_ship_to.value!=''">
+                                             City is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="state1"><b> State <span class="text-danger">*</span> </b></label>
+                                          <input name="state1" id="state1"
+                                             [(ngModel)]="this.form_data.ship_to_address.State" type="text"
+                                             #state_ship_to="ngModel" class="form-control" required placeholder="State">
+                                          <div class="invalid-error"
+                                             *ngIf="state_ship_to.touched && !state_ship_to.valid && state_ship_to.value!=''">
+                                             State is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="zipCode1"><b> Zip Code<span class="text-danger">*</span>
+                                             </b></label>
+                                          <input name="zipCode1" id="zipCode1"
+                                             [(ngModel)]="this.form_data.ship_to_address.ZipCode" type="text"
+                                             #zipCode_ship_to="ngModel" class="form-control" required
+                                             placeholder="Zip Code">
+                                          <div class="invalid-error"
+                                             *ngIf="zipCode_ship_to.touched && !zipCode_ship_to.valid && zipCode_ship_to.value!=''">
+                                             Zip Code is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="inputCountry1"><b> Country <span class="text-danger">*</span>
+                                             </b></label>
+                                          <input name="inputCountry1" id="inputCountry1"
+                                             [(ngModel)]="this.form_data.ship_to_address.Country" type="text"
+                                             #inputCountry_ship_to="ngModel" class="form-control" required
+                                             placeholder="Country">
+                                          <div class="invalid-error"
+                                             *ngIf="inputCountry_ship_to.touched && !inputCountry_ship_to.valid && inputCountry_ship_to.value!=''">
+                                             Country is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                 <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                       <h6>Bill To Address</h6>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                       <div class="form-group">
+                                          <label for="address2"><b> Address<span class="text-danger">*</span> </b>
+                                          </label>
+                                          <input type="text" #address_bill_to="ngModel"
+                                             [(ngModel)]="this.form_data.address_full" class="form-control"
+                                             name="address2" id="address2" required placeholder="Address 1">
+                                          <div class="invalid-error"
+                                             *ngIf="address_bill_to.touched && !address_bill_to.valid && address_bill_to.value!=''">
+                                             Address is
+                                             required </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="city2"><b> City <span class="text-danger">*</span> </b></label>
+                                          <input name="city2" id="city2"
+                                             [(ngModel)]="this.form_data.bill_to_address.City" type="text"
+                                             #city_bill_to="ngModel" class="form-control" required placeholder="City">
+                                          <div class="invalid-error"
+                                             *ngIf="city_bill_to.touched && !city_bill_to.valid && city_bill_to.value!=''">
+                                             City is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="state2"><b> State <span class="text-danger">*</span> </b></label>
+                                          <input name="state2" id="state2"
+                                             [(ngModel)]="this.form_data.bill_to_address.State" type="text"
+                                             #state_bill_to="ngModel" class="form-control" required placeholder="State">
+                                          <div class="invalid-error"
+                                             *ngIf="state_bill_to.touched && !state_bill_to.valid && state_bill_to.value!=''">
+                                             State is required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="zipCode2"><b> Zip Code<span class="text-danger">*</span>
+                                             </b></label>
+                                          <input name="zipCode2" id="zipCode2"
+                                             [(ngModel)]="this.form_data.bill_to_address.ZipCode" type="text"
+                                             #zipCode_bill_to="ngModel" class="form-control" required
+                                             placeholder="Zip Code">
+                                          <div class="invalid-error"
+                                             *ngIf="zipCode_bill_to.touched && !zipCode_bill_to.valid && zipCode_bill_to.value!=''">
+                                             Zip Code is
+                                             required
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                       <div class="form-group">
+                                          <label for="inputCountry2"><b> Country <span class="text-danger">*</span>
+                                             </b></label>
+                                          <input name="inputCountry2" id="inputCountry2"
+                                             [(ngModel)]="this.form_data.bill_to_address.Country" type="text"
+                                             #inputCountry_bill_to="ngModel" class="form-control" required
+                                             placeholder="Country">
+                                          <div class="invalid-error"
+                                             *ngIf="inputCountry_bill_to.touched && !inputCountry_bill_to.valid && inputCountry_bill_to.value!=''">
+                                             Country is
+                                             required
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-3 col-md-3 col-lg-3 col-3">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Email <span class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="email" name="email" required
+                                       [(ngModel)]="form_data.email" #email_o="ngModel" placeholder="Email">
+                                    <div class="invalid-error"
+                                       *ngIf="email_o.touched && !email_o.valid && email_o.value!=''"> Email is
+                                       required
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-3 col-md-3 col-lg-3 col-3">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Business Phone <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="text" class="form-control" required id="businessphone"
+                                       name="businessphone" [(ngModel)]="form_data.businessphone"
+                                       #businessphone_o="ngModel" placeholder="Business Phone">
+                                    <div class="invalid-error"
+                                       *ngIf="businessphone_o.touched && !businessphone_o.valid && businessphone_o.value!=''">
+                                       Business Phone is required
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-3 col-md-3 col-lg-3 col-3">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Fax </b> </label>
+                                    <input type="text" class="form-control" id="fax" name="fax"
+                                       [(ngModel)]="form_data.fax" #fax_o="ngModel" placeholder="Fax">
+
+                                 </div>
+                              </div>
+                           </div>
+                           <br>
+                           <div class="row  mt-3">
+                              <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                                 <div class="pb-2 mb-2">
+                                    <div class="row">
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                          <div class="text-left pull-left float-left">
+                                             <button class="btn btn-primary" type="submit"><i
+                                                   class="fa fa-check-circle m-2"></i> Save & Continue</button>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                          <div class="text-right pull-right float-right">
+                                             <button class="btn btn-secondary mr-2" (click)="go_to_dashboard()"
+                                                type="button"> <i class="fa fa-arrow-left mr-2"></i> Previous</button>
+                                             <button class="btn btn-secondary ml-2" (click)="go_to_step(2)"
+                                                type="button"> Next <i class="ml-2 fa fa-arrow-right"></i></button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="tab-pane step-content" *ngIf="current_step == 2">
+                           <div class="row mt-4">
+                              <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                 <h4>Principal Owners / Contact Info:</h4>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Name of Corp Officer (1) <span
+                                             class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="nameCorpOfficer1"
+                                       name="nameCorpOfficer1" [(ngModel)]="form_data.nameCorp"
+                                       #nameCorpOfficer1_o="ngModel" placeholder="Name of Corp Officer (1)" required>
+                                    <div class="invalid-error"
+                                       *ngIf="nameCorpOfficer1_o.touched && !nameCorpOfficer1_o.valid && nameCorpOfficer1_o.value!=''">
+                                       Name of Corp Officer (1) is required </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> SS No. <span class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="SSNo1" name="SSNo1"
+                                       [(ngModel)]="form_data.SSNo1" #SSNo1_o="ngModel" required
+                                       placeholder="Corporate or Legal Name">
+                                    <div class="invalid-error"
+                                       *ngIf="SSNo1_o.touched && !SSNo1_o.valid && SSNo1_o.value!=''">
+                                       SS No. is required
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Telephone <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="text" class="form-control" id="telephone1" name="telephone1"
+                                       [(ngModel)]="form_data.nameCorp" #telephone1="ngModel" placeholder="Telephone">
+                                    <div class="invalid-error"
+                                       *ngIf="telephone1.touched && !telephone1.valid && telephone1.value!=''"> Name of
+                                       Corp Officer (1) is required </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Fax </b> </label>
+                                    <input type="text" class="form-control" id="fax1" name="fax1"
+                                       [(ngModel)]="form_data.fax1" #fax1_o="ngModel"
+                                       placeholder="Corporate or Legal Name">
+
+                                 </div>
+                              </div>
+                           </div>
+                           <hr class="mt-1 mb-1">
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Name of Corp Officer (2) </b> </label>
+                                    <input type="text" class="form-control" id="nameCorpOfficer2"
+                                       name="nameCorpOfficer2" [(ngModel)]="form_data.nameCorp"
+                                       #nameCorpOfficer2_o="ngModel" placeholder="Name of Corp Officer (2)">
+
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> SS No. </b> </label>
+                                    <input type="text" class="form-control" id="SSNo2" name="SSNo2"
+                                       [(ngModel)]="form_data.SSNo2" #SSNo2_o="ngModel" required
+                                       placeholder="Corporate or Legal Name">
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Telephone </b> </label>
+                                    <input type="text" class="form-control" id="telephone2" name="telephone2"
+                                       [(ngModel)]="form_data.nameCorp" #telephone2="ngModel" placeholder="Telephone">
+
+                                 </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Fax </b> </label>
+                                    <input type="text" class="form-control" id="fax2" name="fax2"
+                                       [(ngModel)]="form_data.fax2" #fax2_o="ngModel"
+                                       placeholder="Corporate or Legal Name">
+
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="row mt-4">
+                              <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                 <p class="border p-2 rounded">
+                                    The undersigned agrees that the information provided is for the purpose of opening
+                                    an account with Om Produce, and warrants that the information is true and correct.
+                                    The undersigned further authorizes inquiry as to all credit information and
+                                    references listed above and gives permission to obtain a credit report in connection
+                                    with this transaction for all legitimate purposes. All related terms and conditions
+                                    are defined in our invoice.
+                                 </p>
+                              </div>
+                           </div>
+
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <label for=""><b> Printed Name</b> <span class="text-danger">*</span></label>
+                                 <br>
+                                 <input type="text" class="form-control col-12 col-sm-12 col-md-12 col-lg-12"
+                                    id="signName" name="signName" [(ngModel)]="signature_name" #signName_o="ngModel"
+                                    placeholder="Enter your Name" (input)="generate_customer_sign()">
+                                 <div style="border:1px solid #ccc;" class="rounded-1 mt-2"
+                                    *ngIf="generated_signature_name== ''">
+                                    <ngx-signaturepad #signaturePad [options]="options" [width]="width"
+                                       [height]="height">
+                                    </ngx-signaturepad>
+                                 </div>
+                                 <div class="transaction-list mt-2" [hidden]="generated_signature_name== ''">
+                                    <div class="southam_signature rounded-1" id="generated_signature_id"
+                                       style=" font-family: 'Southam'; font-size: 55px; width: 100%; height: 130px; line-height: 100px; padding-left: 40px; background-color: white; color: black;">
+                                       {{generated_signature_name}}
+                                    </div>
+                                 </div>
+                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                                    Signature</button>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Signature Date </b> </label>
+                                    <input type="text" class="form-control" id="SignatureDate" readonly
+                                       name="SignatureDate" [(ngModel)]="this.form_data.SignatureDate"
+                                       #SignatureDate_o="ngModel" placeholder="MM/YY">
+
+                                 </div>
+                                 <br>
+
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Title (President, etc) <span
+                                             class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="title" name="title"
+                                       [(ngModel)]="form_data.title" #title_o="ngModel" required placeholder="Title">
+                                    <div class="invalid-error"
+                                       *ngIf="title_o.touched && !title_o.valid && title_o.value!=''">
+                                       Title is required
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="row mt-4">
+                              <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                                 <div class="text-center">
+                                    <b> PERSONAL GUARANTY</b>
+                                 </div>
+
+                                 <p class="border p-2 rounded">
+                                    The undersigned, for value received, hereby unconditionally guarantee(s) to Om
+                                    Produce, full payment of all sums due and owing, pursuant to the terms indicated.
+                                    The undersigned further guarantee(s) all renewals, additions, extension thereof.
+                                    The undersigned further agree(s), in the event legal action is instituted to enforce
+                                    collection, to pay reasonable attorney’s fees, and costs for such legal action. The
+                                    undersigned also agree(s) to submit to exclusive legal jurisdiction and venue in
+                                    Collin County, Texas. Upon payment in full of any invoices, this guarantee will
+                                    remain in effect and will apply to any and all purchases made thereafter.
+                                 </p>
+                              </div>
+                           </div>
+
+
+                           <div class="row">
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <label for=""><b> Printed Name</b> <span class="text-danger">*</span></label>
+                                 <br>
+                                 <input type="text" class="form-control col-12 col-sm-12 col-md-12 col-lg-12"
+                                    id="signName" name="signName" [(ngModel)]="signature_name" #signName_o="ngModel"
+                                    placeholder="Enter your Name" (input)="generate_customer_sign()">
+                                 <div style="border:1px solid #ccc;" class="rounded-1 mt-2"
+                                    *ngIf="generated_signature_name== ''">
+                                    <ngx-signaturepad #signaturePad [options]="options" [width]="width"
+                                       [height]="height">
+                                    </ngx-signaturepad>
+                                 </div>
+                                 <div class="transaction-list mt-2" [hidden]="generated_signature_name== ''">
+                                    <div class="southam_signature rounded-1" id="generated_signature_id"
+                                       style=" font-family: 'Southam'; font-size: 55px; width: 100%; height: 130px; line-height: 100px; padding-left: 40px; background-color: white; color: black;">
+                                       {{generated_signature_name}}
+                                    </div>
+                                 </div>
+                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                                    Signature</button>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-lg-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Signature Date </b> </label>
+                                    <input type="text" class="form-control" id="SignatureDate" readonly
+                                       name="SignatureDate" [(ngModel)]="this.form_data.SignatureDate"
+                                       #SignatureDate_o="ngModel" placeholder="MM/YY">
+
+                                 </div>
+                                 <br>
+
+                                 <div class="form-group">
+                                    <label for="accountName"><b> SS No. <span class="text-danger">*</span> </b> </label>
+                                    <input type="text" class="form-control" id="ssnoe" name="ssnoe"
+                                       [(ngModel)]="form_data.ssnoe" #ssnoe_o="ngModel" required
+                                       placeholder="Corporate or Legal Name">
+                                    <div class="invalid-error"
+                                       *ngIf="ssnoe_o.touched && !ssnoe_o.valid && ssnoe_o.value!=''">
+                                       SS No is required
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+
+
+
+                           <div class="row  mt-3">
+                              <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                                 <div class="pb-2 mb-2">
+                                    <div class="row">
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                          <div class="text-left pull-left float-left">
+                                             <button class="btn btn-primary" type="submit"><i
+                                                   class="fa fa-check-circle m-2"></i> Save & Continue</button>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                                          <div class="text-right pull-right float-right">
+                                             <button class="btn btn-secondary mr-2" (click)="go_to_step(1)"
+                                                type="button"> <i class="fa fa-arrow-left mr-2"></i> Previous</button>
+                                             <button class="btn btn-secondary ml-2" (click)="go_to_step(3)"
+                                                type="button"> Next <i class="ml-2 fa fa-arrow-right"></i></button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="tab-pane step-content" *ngIf="current_step == 3">
+                           <div class="row mt-2">
+                              <div class="col-md-6 col-lg-6-col-sm-6 col-6">
+                                 <a class="btn btn-primary mr-2 mt-3" download href="./assets/Texas-Resale-Certificate.pdf" target="_blank" > <i class="fa fa-download mr-2"></i>
+                                    Download Form</a>
+                                    <br>
+                                 <div class="text-hint text-secondary">
+                                    Download above form, fill it out and reupload
+                                 </div>
+                              </div>
+                              
+                              <div class="col-md-6 col-lg-6-col-sm-6 col-6">
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Upload Form <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="file" class="form-control" id="filelicense" name="filelicense" [(ngModel)]="form_data.filelicense"
+                                       #filelicense_o="ngModel" (change)="handleFormUpload($event)" placeholder="Select your license">
+                                 
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row mt-2">
+                              <div class="col-md-4 col-lg-4-col-sm-4 col-4">
+                                 <div class="text-center" *ngIf="attachment1!= ''">
+                                    <div style="position: relative">
+                                       <img class="img-thumbnail" src="{{attachment1}}" alt="" width="250">
+                                       <button class="btn btn-danger btn-sm mr-2" style="position: absolute; top: 4px; right: 50px" (click)="remove()" type="button"> <i
+                                             class="fa fa-trash"></i></button>
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Attachment 1 <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="file" class="form-control" id="filelicense" name="filelicense"
+                                       [(ngModel)]="form_data.filelicense" #filelicense_o="ngModel"
+                                       (change)="handleUpload(1, $event)" placeholder="Select your license">
+
+                                 </div>
+                              </div>
+                              <div class="col-md-4 col-lg-4-col-sm-4 col-4">
+                                 <div class="text-center" *ngIf="attachment2!= ''">
+                                    <div style="position: relative">
+                                       <img class="img-thumbnail" src="{{attachment2}}" alt="" width="250">
+                                       <button class="btn btn-danger btn-sm mr-2" style="position: absolute; top: 4px; right: 50px" (click)="remove()" type="button"> <i class="fa fa-trash"></i>
+                                          </button>
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Attachment 2 <span class="text-danger">*</span> </b>
+                                    </label>
+                                    <input type="file" class="form-control" id="filelicense" name="filelicense" [(ngModel)]="form_data.filelicense"
+                                       #filelicense_o="ngModel" (change)="handleUpload(2, $event)" placeholder="Select your license">
+                              
+                                 </div>
+                              </div>
+                              <div class="col-md-4 col-lg-4-col-sm-4 col-4">
+                                 <div class="text-center" *ngIf="attachment3!= ''">
+                                    <div style="position: relative">
+                                       
+                                    <img class="img-thumbnail" src="{{attachment3}}" alt="" width="250">
+                                    <button class="btn btn-danger btn-sm mr-2" (click)="remove()" type="button" style="position: absolute; top: 4px; right: 50px"> <i class="fa fa-trash "></i>
+                                       </button>
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label for="accountName"><b> Attachment 3  </b>
+                                    </label>
+                                    <input type="file" class="form-control" id="filelicense" name="filelicense" [(ngModel)]="form_data.filelicense"
+                                       #filelicense_o="ngModel" (change)="handleUpload(3, $event)" placeholder="Select your license">
+                              
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row  mt-3">
+                              <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                                 <div class="pb-2 mb-2">
+                                    <div class="row">
+                                       <div class="col-md-4 col-lg-4 col-sm-4 col-4">
+                                          <div class="text-left pull-left float-left">
+                                             <button class="btn btn-primary" type="submit"><i
+                                                   class="fa fa-check-circle m-2"></i> Save & Continue</button>
+                                                
+                                          </div>
+                                       </div>
+                                       <div class="col-md-4 col-lg-4 col-sm-4 col-4">
+                                          <div class="text-center">                                             
+                                             <button class="btn btn-primary ml-2" type="submit"><i class="fa fa-check-circle m-2"></i> Submit Application</button>
+                                          </div>
+                                          </div>
+                                       <div class="col-md-4 col-lg-4 col-sm-4 col-4">
+                                          <div class="text-right pull-right float-right">
+                                             <button class="btn btn-secondary mr-2" (click)="go_to_step(2)"
+                                                type="button"> <i class="fa fa-arrow-left mr-2"></i> Previous</button>
+
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+
+         </div>
+      </div>
+   </div>
+
+</form>

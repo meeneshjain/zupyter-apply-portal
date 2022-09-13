@@ -1,280 +1,100 @@
 <div id="preloader" *ngIf="show_loader">
    <div data-loader="dual-ring"></div>
 </div>
+<div id="content">
+   <div class="mt-2 pt-2">
+      <div class="login-signup-page mx-auto my-5">
+         
 
-<div id="content" class="py-4 ">
-   <div class="ml-5 mr-5 mb-5">
-      <div class="row tablet-reserve">
-         <!--          <app-siderbar fxLayout="column" class="col-lg-3 "></app-siderbar> -->
-
-         <!-- Middle Panel
-        ============================================= -->
-         <div class="col-lg-12">
-            <!-- <div class="row">
-               <div class="col-sm-6 col-md-6 col-lg-6">
-                  <div class="pull-left">
-                     <h4 class="font-weight-400 mb-3">Dashboard</h4>
-                  </div>
-               </div>
-               <div class="col-sm-6 col-md-6 col-lg-6">
-                  <div class="pull-right">
-                     <input type="text" class="form-control form-control-sm" id="search_string" name="search_string"
-                        [(ngModel)]="form_data.search_string"  #search_string_o="ngModel" placeholder="Search Document">
-                  </div>
-               </div>
-            </div> -->
-            <div class="row mb-2">
-               <div class="col-sm-8 col-md-8 col-lg-8 col-8">
-
-                  <input type="text" class="form-control  rounded-1" id="search_string" name="search_string"
-                     [(ngModel)]="form_data.search_string" #search_string_o="ngModel" placeholder="Search Delivery Number">
-
-               </div>
-               <div class="col-sm-4 col-md-4 col-lg-4 col-4">
-                  <button class="btn btn-primary " (click)="search_document(form_data.search_string)"> <b> <i
-                           class="fa fa-search mr-1"></i> Search </b></button>
-                  <button class="btn btn-primary float-right  ml-2" 
-                     (click)="this.transaction_details = []; form_data.search_string= '';"> <b> <i
-                           class="fa fa-trash  mr-1"></i> Clear </b></button>
-               </div>
-
+         <div class="bg-light shadow-lg rounded-1 p-4 mx-2 mt-5 ">
+            <div class="mb-2 mt-2 d-flex align-items-center"> <a class=" text-center mx-auto" href="/"
+                  title="Zupyter Payment Portal"><img [src]="this.login_logo" alt="Zupyter Payment Portal" class="logo_width" /></a>
+            </div>
+            <hr class="mt-1 mb-1">
+            <h2 class="font-weight-700 text-center">Welcome to Om Produce </h2>
+            <h4 class="font-weight-700 text-center om-color">Online Application System</h4>
+            <hr class="mt-1 mb-1">
+            <br>
+            <p class="lead text-center">Your information is safe with us.</p>
+            <br>
+            <div class="text-center">
+               <button type="button" class="btn btn-primary btn-block text-center m-auto   mr-2" (click)="on_application_click('1', '')">
+                  Start a new Application
+               </button>
             </div>
 
-            <!-- Recent Activity =============================== -->
-            <ng-container *ngIf="transaction_details.length > 0">
-               <div class="overflow-y-scroll ">
-                  <ng-container
-                     *ngFor="let row_data of this.transaction_details | filter : this.form_data.search_string; let i = index;">
-                     <div class="card border-black mb-3 rounded-1">
-                        <!-- <div class="card-header bg-transparent border-0 ">
-                           <div class="row">
-                              <div class="col-sm-6 col-md-6 col-lg-6">
-                                 <div class="pull-left">
-                                    <span class="d-block text-4">{{row_data.CardName}}</span>
-                                    <span class="text-muted">{{row_data.DocDate}}</span>
-                                 </div>
-                              </div>
-                              <div class="col-sm-6 col-md-6 col-lg-6">
-                                 <div class="pull-right float-right">
-                                    <div class="">
-                                       <span class="text-muted">Arrival Time : <span>
-                                             <b>{{row_data.ArrivalTime}} </b>
-                                          </span> </span>
-
-                                    </div>
-                                    <div class="">
-                                       <span class="text-muted">Status : <span class="text-success">
-                                             <b>{{this.common_service.get_delivery_status(row_data.DeliveryStatus, 'value')}}
-                                             </b>
-                                          </span> </span>
-
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div> -->
-                        <div class="card-body ">
-                           <div class="row">
-                              <div class="col-md-6 col-sm-6 col-lg-6 col-6 ">
-                                 <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="d-block float-left pull-left text-3 px-0 py-2">
-                                          <h3 class="text-5 font-weight-600 mb-1  "> <i class="fa fa-map"></i>
-                                             {{row_data.RouteName}} </h3>
-                                       </div>
-
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="float-right pull-right px-2 py-2 text-5">
-                                          <b> <i class="fa fa-file-alt"></i>
-                                             {{row_data.DocNum}}</b>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <hr class="mt-1 mb-1">
-
-                                 <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="d-block float-left pull-left text-3 px-0 py-2"> <i
-                                             class="fa fa-stop-circle text-5 mr-3"></i> <span
-                                             class="badge badge-black bg-black p-2 text-4 text-white">Stop
-                                             #{{row_data.StopNo}}</span> </div>
-
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-lg-6 col-6">
-                                       <div class="float-right pull-right px-2 py-2"> <span
-                                             class=" p-2 text-2 {{row_data.delivery_badge_color}}">{{row_data.delivery_status}}</span>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <hr class="mt-1 mb-1">
-                                 <div class="d-block text-3 transaction-item px-2 py-2"> <i
-                                       class="fa fa-building mr-2"></i> <b>
-                                       {{row_data.CardName}} </b></div>
-                                 <div class="d-block transaction-item px-2 py-2"> <i
-                                       class="fa fa-map-marker-alt mr-2"></i>
-                                    <b> {{row_data.ShipToAddress}} </b>
-                                 </div>
-                                 <div class="d-block text-3 transaction-item px-2 py-2"> <i class="fa fa-user mr-2"></i>
-                                    <b>
-                                       {{row_data.DefaultContactPerson}}
-                                    </b>
-                                 </div>
-                                 <div class="d-block text-3 transaction-item px-2 py-2"> <i
-                                       class="fa fa-phone mr-2"></i> <b>
-                                       {{row_data.DefaultPhone}}
-                                    </b></div>
-
-                              </div>
-                              <div class="col-md-6 col-sm-6 col-lg-6 col-6 border-left">
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-calendar-alt mr-2"></i> Delivery Date </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.DocDueDate}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div>
-                              <!--   <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Arrival Time </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.ArrivalTime}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Delivery Start Time </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.DeliveryStartTime}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div> 
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-clock mr-2"></i> Delivery End Time </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.DeliveryEndTime}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div> -->
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-list-alt mr-2"></i> Item Count </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.Items.length}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-boxes mr-2"></i> Total Packages </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.total_packages}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="transaction-list">
-                                    <div class="transaction-item px-2 py-2">
-                                       <div class="row align-items-center flex-row">
-                                          <div class="col col-sm-8  col-md-8 text-left">
-                                             <b> <i class="fa fa-balance-scale mr-2"></i> Gross Weight </b>
-                                          </div>
-                                          <div class="col col-sm-4 col-md-4"> <span
-                                                class="text-nowrap">{{row_data.GrossWeight}}</span>
-                                          </div>
-
-                                       </div>
-                                    </div>
-                                 </div>
-
-                                 <br>
-                                 <button class="btn btn-primary float-right pull-right" [disabled]="row_data.DeliveryStatus == 'D'" (click)="view_details(row_data)"> <b>
-                                       Start Delivery <i class="fa fa-truck  ml-2"></i></b></button>
-                              </div>
-
-                           </div>
-                           <!-- <div class="row">
-                              <div class="col-md-4 col-sm-4 col-lg-4">
-                                 <div class="">
-                                    <span class="text-muted">Payment Received : <span>
-                                          <b><span *ngIf="row_data.PaymentReceived == 'Y'">Yes</span> </b>
-                                          <b><span *ngIf="row_data.PaymentReceived == 'N'">No</span> </b>
-                                       </span> </span>
-                                 </div>
-                                 <div class="">
-                                    <span class="text-muted">Payment Method : <span>
-                                          <b>{{row_data.PaymentMethod}} </b>
-                                       </span> </span>
-                                 </div>
-                              </div>
-                              <div class="col-md-4 col-sm-4 col-lg-4">
-                                 <div class="">
-                                    <span class="text-muted">Stop No : <span>
-                                          <b>{{row_data.StopNo}} </b>
-                                       </span> </span>
-
-                                 </div>
-                              </div>
-                              <div class="col-md-4 col-sm-4 col-lg-4">
-                                 <div class="">
-                                    <span class="text-muted">Amount : <span>
-                                          <b *ngIf="row_data.PaymentAmount!=0">${{row_data.PaymentAmount}} </b>
-                                          <b *ngIf="row_data.PaymentAmount==0"> {{row_data.PaymentAmount}} </b>
-                                       </span> </span>
-                                 </div>
-                              </div>
-                           </div> -->
-
-
-                        </div>
-                        <!-- <div class="card-footer bg-transparent border-success">
-                           <div class="row">
-                              <div class="col-md-12 col-sm-12 col-lg-12">
-                                 <div class="text-center m-auto">
-                                    <a class="text-black" (click)="view_details(row_data)"> <b> View Details </b> <i
-                                          class="fa fa-arrow-right"></i> </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div> -->
-                     </div>
-                  </ng-container>
+            <br>
+            <hr class="mt-2 mb-2">
+            <br>
+            
+            <div class="text-center">
+               <button type="button" class="btn btn-primary btn-block text-center m-auto   mr-2" (click)="on_application_click('2', resume_popup)">
+                  Resume an existing Application
+               </button>
+            </div>
+            <br>
+            <p class="text-center">You will be asked for your email, phone number and zip code.</p>
+            <hr class="mt-1 mb-1">
+            <div class="alert bg-white text-black">
+               <div class="text-center">
+                  For furthur assitance contact a sales representative at
+                  <b><a href="tel:+1-(214)-233-3500" class="om-color" target="_blank" >+1-(214)-233-3500</a></b>
                </div>
-            </ng-container>
+            </div>
+            
          </div>
-         <!-- Middle Panel End -->
       </div>
    </div>
-</div>
+   
+   
+   <ng-template #resume_popup>
+      <div class="modal-header">
+         <h5 class="modal-title font-weight-400">Find Your Application</h5>
+         <button type="button" class="close font-weight-400" (click)="this.common_service.closeModal('')">
+            <span aria-hidden="true">&times;</span> </button>
+      </div>
+      <div class="modal-body p-4">
+         <form id="resumeForm" method="post" #resumeForm="ngForm" (ngSubmit)="OnResumeSubmit(resumeForm.valid)">
+            <div class="row">
+               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                  <div class="form-group">
+                     <label for="accountName"><b> Email <span class="text-danger">*</span> </b> </label>
+                     <input type="text" class="form-control" id="email" name="email" required
+                        [(ngModel)]="resume_form.email" #email_res_o="ngModel" placeholder="Email"
+                         [ngClass]="{'validation-error':!email_res_o.valid && (email_res_o.touched || resumeForm.submitted)}"
+                         >
+                     <div class="invalid-error" *ngIf="(email_res_o.touched || resumeForm.submitted) && !email_res_o.valid && email_res_o.value!=''">
+                        Email is
+                        required
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                  <div class="form-group">
+                     <label for="accountName"><b> Phone Number <span class="text-danger">*</span> </b>
+                     </label>
+                     <input type="text" class="form-control" required id="phone" name="phone"
+                        [(ngModel)]="resume_form.phone" #phone_o="ngModel" placeholder="Business Phone"
+                         [ngClass]="{'validation-error':!phone_o.valid && (phone_o.touched || resumeForm.submitted)}">
+                     <div class="invalid-error" *ngIf="(phone_o.touched || resumeForm.submitted) && !phone_o.valid && phone_o.value!=''">
+                        Business Phone is required
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                  <div class="form-group">
+                     <label for="accountName"><b> Zip Code </b> </label>
+                     <input type="text" class="form-control" id="ZipCode" name="ZipCode" [(ngModel)]="resume_form.ZipCode"
+                        #ZipCode_o="ngModel" placeholder="Zip Code">
+   
+                  </div>
+               </div>
+               
+               <hr class="mt-1 mb-1">
+               <button type="submit" class="btn btn-primary btn-block text-center m-auto   mr-2">
+                  Search
+               </button>
+            </div>
+         </form>
+      </div>
+   </ng-template>
