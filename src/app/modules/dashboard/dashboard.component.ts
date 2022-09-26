@@ -75,6 +75,8 @@ export class DashboardComponent implements OnInit {
         this.show_loader = false;
         this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
       });
+      
+    
     });
   }
 
@@ -83,8 +85,8 @@ export class DashboardComponent implements OnInit {
     if(type == '1'){
       router_link = 'application/new';
     } else if (type == '2') {
-      this.common_service.openModal(popupobject, 'modal-md')
-      // router_link = 'application/resume';
+     // this.common_service.openModal(popupobject, 'modal-md')
+       router_link = 'application/resume-app';
     }
     
     this.common_service.change_route(router_link)
@@ -96,9 +98,28 @@ export class DashboardComponent implements OnInit {
   
   OnResumeSubmit(isValid: Boolean) {
     if (isValid) {
-      this.common_service.closeModal('')
-      let router_link = 'application/resume';
-      this.common_service.change_route(router_link)
+      
+      this.show_loader = true;
+      this.service.get_application(-1, '', this.resume_form.email, this.resume_form.phone).subscribe(res => {
+        if (res['data'] != undefined && res['data'].length > 0){
+          let resume_id = res['data'][0]['Lead_id']
+          // this.common_service.show_sweet_alert('s', "Application found", "");
+          this.show_loader = false;
+          this.common_service.closeModal('')
+          let router_link = 'application/resume/' + resume_id;
+          this.common_service.change_route(router_link) 
+          
+        } else {
+          this.show_loader = false;
+          this.common_service.show_sweet_alert('e', "Error!", 'No application found');  
+        }
+        console.log('res ', res)
+
+      }, error => {
+        this.show_loader = false;
+        this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
+      });
+     
     }
   }
 

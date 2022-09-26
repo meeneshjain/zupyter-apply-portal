@@ -61,7 +61,7 @@
                      <label for="accountName"><b> Email <span class="text-danger">*</span> </b> </label>
                      <input type="text" class="form-control" id="email" name="email" required
                         [(ngModel)]="resume_form.email" #email_res_o="ngModel" placeholder="Email"
-                         [ngClass]="{'validation-error':!email_res_o.valid && (email_res_o.touched || resumeForm.submitted)}"
+                         [ngClass]="{'success-field':email_res_o.valid && email_res_o.value!='', 'validation-error':!email_res_o.valid && (email_res_o.touched || resumeForm.submitted)}"
                          >
                      <div class="invalid-error" *ngIf="(email_res_o.touched || resumeForm.submitted) && !email_res_o.valid && email_res_o.value!=''">
                         Email is
@@ -75,20 +75,20 @@
                      </label>
                      <input type="text" class="form-control" required id="phone" name="phone"
                         [(ngModel)]="resume_form.phone" #phone_o="ngModel" placeholder="Business Phone"
-                         [ngClass]="{'validation-error':!phone_o.valid && (phone_o.touched || resumeForm.submitted)}">
+                         [ngClass]="{'success-field':phone_o.valid && phone_o.value!='', 'validation-error':!phone_o.valid && (phone_o.touched || resumeForm.submitted)}">
                      <div class="invalid-error" *ngIf="(phone_o.touched || resumeForm.submitted) && !phone_o.valid && phone_o.value!=''">
                         Business Phone is required
                      </div>
                   </div>
                </div>
-               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+               <!-- <div class="col-lg-12 col-md-12 col-lg-12 col-12">
                   <div class="form-group">
                      <label for="accountName"><b> Zip Code </b> </label>
                      <input type="text" class="form-control" id="ZipCode" name="ZipCode" [(ngModel)]="resume_form.ZipCode"
                         #ZipCode_o="ngModel" placeholder="Zip Code">
    
                   </div>
-               </div>
+               </div> -->
                
                <hr class="mt-1 mb-1">
                <button type="submit" class="btn btn-primary btn-block text-center m-auto   mr-2">
