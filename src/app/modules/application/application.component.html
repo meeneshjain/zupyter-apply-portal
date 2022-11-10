@@ -9,9 +9,9 @@
                <div class="bg-light shadow-lg rounded-1 pt-2 pl-3 pr-3 pb-2">
                   <div class="row tablet-reserve">
                      <div class="col-lg-12 col-md-12 col-lg-12 col-12">
-                        <div class="mb-2 d-flex align-items-center"> <a class=" text-center mx-auto cursor-pointer" (click)="this.go_to_dashboard()"
-                              title="Zupyter Payment Portal"><img [src]="this.login_logo" alt="Zupyter Payment Portal"
-                                 class="logo_width" /></a>
+                        <div class="mb-2 d-flex align-items-center"> <a class=" text-center mx-auto cursor-pointer"
+                              (click)="this.go_to_dashboard()" title="Zupyter Payment Portal"><img
+                                 [src]="this.login_logo" alt="Zupyter Payment Portal" class="logo_width" /></a>
                         </div>
                         <hr class="mt-1 mb-1">
                         <ul class="nav nav-tabs step-anchor nav-fill">
@@ -95,7 +95,7 @@
                                           required [(ngModel)]="form_data.IsPremisesLeased"
                                           #IsPremisesLeased_obj="ngModel"
                                           [ngClass]="{'success-field':IsPremisesLeased_obj.valid && IsPremisesLeased_obj.value!='', 'validation-error':!IsPremisesLeased_obj.valid && (IsPremisesLeased_obj.touched || delivery_form.submitted)}">
-                                         
+
                                           <option *ngFor="let legal of this.premises_leased_list" [value]="legal.key">
                                              {{legal.value}}
                                           </option>
@@ -377,11 +377,12 @@
                                                    class="fa fa-check-circle m-2"></i>
                                                 Save & Continue</button>
                                           </div>
-                                        
+
                                           <div class="" [ngClass]="{'text-center': isDesktopDevice || isTablet}">
                                              <button class="btn btn-primary pl-3 pr-3 "
                                                 [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
-                                                type="submit"><i class="fa fa-check-circle m-2"></i> Save and Exit</button>
+                                                type="submit"><i class="fa fa-check-circle m-2"></i> Save and
+                                                Exit</button>
                                           </div>
                                        </div>
                                        <div class="col-md-6 col-lg-6 col-sm-6 col-12">
@@ -402,9 +403,9 @@
                                        <div class="col-md-12 col-lg-12 col-sm-12 col-12 ">
                                           <div class="text-center d-flex justify-content-center">
                                              <div class="alert alert-success w-25" role="alert">
-                                             <i class="fa fa-check-circle m-2"></i> {{this.success_msg}}
+                                                <i class="fa fa-check-circle m-2"></i> {{this.success_msg}}
                                              </div>
-                                           </div>
+                                          </div>
                                        </div>
                                     </div>
                                  </div>
@@ -418,8 +419,8 @@
                               </div>
                               <div class="col-lg-3 col-md-3 col-lg-3 col-12">
                                  <div class="form-group">
-                                    <label for="accountName"><b> Corp Officer (1) <span
-                                             class="text-danger">*</span> </b> </label>
+                                    <label for="accountName"><b> Corp Officer (1) <span class="text-danger">*</span>
+                                       </b> </label>
                                     <div class="input-group">
                                        <input type="text" class="form-control" id="nameCorpOfficer1"
                                           name="nameCorpOfficer1" [(ngModel)]="form_data.nameCorpOfficer1"
@@ -439,7 +440,8 @@
                                              class="ml-2 fa fa-question-circle"></i> </a> </label>
                                     <div class="input-group">
                                        <input type="password" class="form-control" id="SSNo1" name="SSNo1"
-                                          [(ngModel)]="form_data.SSNo1" #SSNo1_o="ngModel" required placeholder="SS No"  minlength="9" maxlength="9"
+                                          [(ngModel)]="form_data.SSNo1" #SSNo1_o="ngModel" required placeholder="SS No"
+                                          minlength="9" maxlength="9"
                                           [ngClass]="{'success-field':SSNo1_o.valid && SSNo1_o.value!='', 'validation-error':!SSNo1_o.valid && (SSNo1_o.touched || delivery_form.submitted)}">
                                     </div>
                                     <div class="invalid-error"
@@ -448,7 +450,7 @@
                                     </div>
                                  </div>
                               </div>
-                          
+
                               <div class="col-lg-3 col-md-3 col-lg-3 col-12">
                                  <div class="form-group">
                                     <label for="accountName"><b> Telephone <span class="text-danger">*</span> </b>
@@ -490,14 +492,16 @@
                                           popover="We will need to your SSN to obtain a credit bureau report to evaluate credit worthiness. Please note that this will be a soft enquiry."
                                           popoverTitle="Why do we need SSN?" placement="top"> <i
                                              class="ml-2 fa fa-question-circle"></i> </a> </label>
-                                    <input type="password" class="form-control" id="SSNo2" name="SSNo2" minlength="9" maxlength="9"  
-                                       [(ngModel)]="form_data.SSNo2" #SSNo2_o="ngModel" placeholder="SS No">
-                                       <div class="invalid-error" *ngIf="SSNo2_o.touched && !SSNo2_o.valid && SSNo2_o.value!=''">
-                                          Valid SS No. is required
-                                       </div>
+                                    <input type="password" class="form-control" id="SSNo2" name="SSNo2" minlength="9"
+                                       maxlength="9" [(ngModel)]="form_data.SSNo2" #SSNo2_o="ngModel"
+                                       placeholder="SS No">
+                                    <div class="invalid-error"
+                                       *ngIf="SSNo2_o.touched && !SSNo2_o.valid && SSNo2_o.value!=''">
+                                       Valid SS No. is required
+                                    </div>
                                  </div>
                               </div>
-                           
+
                               <div class="col-lg-3 col-md-3 col-lg-3 col-12">
                                  <div class="form-group">
                                     <label for="accountName"><b> Telephone </b> </label>
@@ -550,7 +554,7 @@
                                        {{form_data.generated_signature_name1 }}
                                     </div>
                                  </div>
-                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear(1)"> Clear
                                     Signature</button>
                               </div>
                               <div class="col-lg-6 col-md-6 col-lg-6 col-12">
@@ -558,7 +562,7 @@
                                     <label for="accountName"><b> Signature Date </b> </label>
                                     <input type="text" class="form-control" id="SignatureDate" readonly
                                        name="SignatureDate" [(ngModel)]="this.form_data.SignatureDate1"
-                                       #SignatureDate_o1="ngModel" placeholder="MM/YY">
+                                       #SignatureDate_o1="ngModel" placeholder="MM/DD/YY">
 
                                  </div>
                                  <br>
@@ -609,7 +613,7 @@
                                     (input)="generate_customer_sign(2)">
                                  <div style="border:1px solid #ccc;" class="rounded-1 mt-2"
                                     *ngIf="this.form_data.generated_signature_name2== ''">
-                                    <ngx-signaturepad #signaturePad [options]="options"
+                                    <ngx-signaturepad #signaturePad2 [options]="options"
                                        class="col-12 col-sm-12 col-md-12 col-lg-12" [height]="height">
                                     </ngx-signaturepad>
                                  </div>
@@ -620,7 +624,7 @@
                                        {{this.form_data.generated_signature_name2}}
                                     </div>
                                  </div>
-                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear()"> Clear
+                                 <button class="btn btn-danger btn-sm mt-2 " type="button" (click)="clear(2)"> Clear
                                     Signature</button>
                               </div>
                               <div class="col-lg-6 col-md-6 col-lg-6 col-12">
@@ -628,7 +632,7 @@
                                     <label for="SignatureDate2"><b> Signature Date </b> </label>
                                     <input type="text" class="form-control" id="SignatureDate2" readonly
                                        name="SignatureDate2" [(ngModel)]="this.form_data.SignatureDate2"
-                                       #SignatureDate_o2="ngModel" placeholder="MM/YY">
+                                       #SignatureDate_o2="ngModel" placeholder="MM/DD/YY">
 
                                  </div>
                                  <br>
@@ -641,7 +645,8 @@
                                     <div class="input-group">
 
                                        <input type="password" class="form-control" id="ssnoe" name="ssnoe"
-                                          [(ngModel)]="form_data.ssnoe" #ssnoe_o="ngModel" required placeholder="SS No." minlength="9" maxlength="9"
+                                          [(ngModel)]="form_data.ssnoe" #ssnoe_o="ngModel" required placeholder="SS No."
+                                          minlength="9" maxlength="9"
                                           [ngClass]="{'success-field':ssnoe_o.valid && ssnoe_o.value!='', 'validation-error':!ssnoe_o.valid && (ssnoe_o.touched || delivery_form.submitted)}">
                                     </div>
                                     <div class="invalid-error"
@@ -670,8 +675,9 @@
                                           </div>
                                           <div class="" [ngClass]="{'text-center': isDesktopDevice || isTablet}">
                                              <button class="btn btn-primary pl-3 pr-3 "
-                                                [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}" type="submit"><i
-                                                   class="fa fa-check-circle m-2"></i> Save and Exit</button>
+                                                [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
+                                                type="submit"><i class="fa fa-check-circle m-2"></i> Save and
+                                                Exit</button>
                                           </div>
                                        </div>
                                        <div class="col-md-6 col-lg-6 col-sm-6 col-12">
@@ -697,7 +703,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                    
+
                                  </div>
                               </div>
                            </div>
@@ -738,10 +744,10 @@
                                  <div class="form-group">
                                     <label for="accountName"><b> Upload Form <span class="text-danger">*</span> </b>
                                     </label>
-                                    <input type="file" class="form-control" id="UploadedForm" name="UploadedForm"
-                                       [(ngModel)]="form_data.UploadedForm" #UploadedForm_o="ngModel"
+                                    <input type="file" class="form-control" id=" " name="UploadedForm"
+                                       [(ngModel)]="form_data.UploadedFormObj" #UploadedForm_o="ngModel"
                                        (change)="handleUpload(4, $event)" placeholder="Select your license">
-
+                                    <div class="text-muted" *ngIf="inProgress3">File Uploading in progress <img src="./assets/images/progress.gif" class="ml-2 w-20px" alt="">  </div>
                                  </div>
                               </div>
                            </div>
@@ -767,9 +773,10 @@
                                        </b>
                                     </label>
                                     <input type="file" class="form-control" id="SalesTaxPermit" name="SalesTaxPermit"
-                                       [(ngModel)]="form_data.SalesTaxPermit" #SalesTaxPermit_o="ngModel"
+                                       [(ngModel)]="form_data.SalesTaxPermitObj" #SalesTaxPermit_o="ngModel"
                                        (change)="handleUpload(1, $event)" placeholder="Select your license">
-
+                                    <div class="text-muted" *ngIf="inProgress1">File Uploading in progress <img src="./assets/images/progress.gif"
+                                          class="ml-2 w-20px" alt=""> </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-6-col-sm-6 col-12">
@@ -788,10 +795,11 @@
                                        </b>
                                     </label>
                                     <input type="file" class="form-control" id="ExecutedDocuments"
-                                       name="ExecutedDocuments" [(ngModel)]="form_data.ExecutedDocuments"
+                                       name="ExecutedDocuments" [(ngModel)]="form_data.ExecutedDocumentsObj"
                                        #ExecutedDocuments_o="ngModel" (change)="handleUpload(2, $event)"
                                        placeholder="Select your license">
-
+                                    <div class="text-muted" *ngIf="inProgress2">File Uploading in progress <img src="./assets/images/progress.gif"
+                                          class="ml-2 w-20px" alt=""> </div>
                                  </div>
                               </div>
 

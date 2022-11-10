@@ -6,6 +6,7 @@ import { CommonService } from "src/app/core/services/common.service";
 import { MainService } from "src/app/core/services/main.service";
 import { SharedService } from "src/app/core/services/shared.service";
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
   public login_logo = '';
   public config_data;
   public module_id = 0;
-
+  favIcon: HTMLLinkElement = document.querySelector('#favIcon');
   public resume_form: any = {};
 
   constructor(
@@ -36,8 +37,20 @@ export class DashboardComponent implements OnInit {
     public common_service: CommonService,
     public service: MainService,
     public shared_service: SharedService,
+    private titleService: Title,
     private deviceService: DeviceDetectorService
-  ) { }
+  ) { 
+    this.shared_service.generalValueData.subscribe((obj) => {
+      if (obj == true) {
+        let general = JSON.parse(sessionStorage.general_setting);
+        if (general != undefined) {
+          this.login_logo = general.LoginScrLogo;
+          this.titleService.setTitle("Application portal | " + general.BrowserTabTitle);
+          // this.favIcon.href = './favicon_path_folder/favicon.ico';
+        }
+      } 
+    });
+  }
 
 
   ngOnInit() {
@@ -50,6 +63,8 @@ export class DashboardComponent implements OnInit {
       let general = JSON.parse(sessionStorage.general_setting);
       if (general != undefined) {
         this.login_logo = general.LoginScrLogo;
+        this.titleService.setTitle("Application portal | " + general.BrowserTabTitle);
+        // this.favIcon.href = './favicon_path_folder/favicon.ico';
       }
     }
 
@@ -75,8 +90,6 @@ export class DashboardComponent implements OnInit {
         this.show_loader = false;
         this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
       });
-      
-    
     });
   }
 

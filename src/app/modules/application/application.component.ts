@@ -19,6 +19,9 @@ export class ApplicationComponent implements OnInit {
 
   public common_params = new CommonFunctions();
   public show_loader = false;
+  public inProgress1 = false;
+  public inProgress2 = false;
+  public inProgress3 = false;
   public form_data: any = {};
   public delivery_data: any = {};
   public isMobile = this.deviceService.isMobile();
@@ -58,6 +61,7 @@ export class ApplicationComponent implements OnInit {
 
   public login_logo = '';
   @ViewChild('signaturePad', { static: false }) signaturePad;
+  @ViewChild('signaturePad2', { static: false }) signaturePad2;
 
   width: number = 285;
   height: number = 105;
@@ -221,11 +225,12 @@ export class ApplicationComponent implements OnInit {
           this.form_data.MapUrl = res['data'][0]['url'];
           this.form_data.PlaceId = res['data'][0]['place_id'];
           
+          var d = new Date();
+          let current_date = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear()
           if (this.form_data.Contacts.length > 0 ){
-            var d = new Date();
             let contact0 = (this.form_data.Contacts[0]!= undefined) ? this.form_data.Contacts[0] : {};
             let contact1 = (this.form_data.Contacts[1]!= undefined) ? this.form_data.Contacts[1] : {};
-            
+            console.log('contact1 ', contact1 )
             this.form_data.nameCorpOfficer1 = (contact0["CorpOfficer"]!= undefined) ? contact0["CorpOfficer"] : '';
             this.form_data.telephone1 = (contact0["Tel"]!= undefined) ? contact0["Tel"] : '';
             this.form_data.SSNo1 = (contact0["SSNo"]!= undefined) ? contact0["SSNo"] : '';
@@ -236,7 +241,7 @@ export class ApplicationComponent implements OnInit {
             
             this.form_data.title1 = (contact0["Title"]!= undefined) ? contact0["Title"] : '';
             this.form_data.Email1 = (contact0["Email"]!= undefined) ? contact0["Email"] : '';
-            this.form_data.SignatureDate1 = (contact0  != undefined && contact0['SignatureDate']!= '') ? contact0['SignatureDate'] : (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear()
+            this.form_data.SignatureDate1 = (contact0['SignatureDate']  != undefined && contact0['SignatureDate']!= '') ? contact0['SignatureDate'] : current_date
             
             
             this.form_data.nameCorpOfficer2 = (contact1["CorpOfficer"]!= undefined) ? contact1["CorpOfficer"] : '';
@@ -249,9 +254,13 @@ export class ApplicationComponent implements OnInit {
             
             this.form_data.title2 = (contact1["Title"]!= undefined) ? contact1["Title"] : '';
             this.form_data.Email2 = (contact1["Email"]!= undefined) ? contact1["Email"] : '';
-            this.form_data.SignatureDate2 = (contact1 != undefined && contact1['SignatureDate'] != '') ? contact1['SignatureDate'] : (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear()
+            this.form_data.SignatureDate2 = (contact1['SignatureDate'] != undefined && contact1['SignatureDate'] != '') ? contact1['SignatureDate'] : current_date
             
         
+          } else {
+            this.form_data.SignatureDate1 = current_date
+            this.form_data.SignatureDate2 = current_date
+
           }
           
           setTimeout(() => {
@@ -292,7 +301,39 @@ export class ApplicationComponent implements OnInit {
  
 
   handleUpload(type, event) {
-    const file = event.target.files[0];
+    let file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    if (type == 1) {
+      this.inProgress1 = true;
+    }
+    if (type == 2) {
+      this.inProgress2 = true;
+    }
+    if (type == 4) {
+      this.inProgress3 = true;
+      
+    }
+    this.service.upload_file(formData).subscribe((response: any) => {
+      if (response!= null ){
+        response = response.replace('"', ''); 
+        if (type == 1) {
+          this.inProgress1 = false;
+          this.form_data.SalesTaxPermit = response;
+        }
+        
+        if (type == 2) {
+          this.inProgress2 = false;
+          this.form_data.ExecutedDocuments = response;
+        }
+        
+        if (type == 4) {
+          this.inProgress3 = false;
+          this.form_data.UploadedForm = response;
+        }
+      }
+    });
+   /*  const file = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -304,16 +345,12 @@ export class ApplicationComponent implements OnInit {
       if (type == 2) {
         this.form_data.ExecutedDocuments = reader.result
       }
-
-      /*   if (type == 3) {
-          this.attachment3 = reader.result
-        } */
-
+ 
       if (type == 4) {
         this.form_data.UploadedForm = reader.result
       }
 
-    };
+    }; */
   }
 
   isEmpty() {
@@ -341,12 +378,23 @@ export class ApplicationComponent implements OnInit {
     console.log(JSON.stringify(data));
   }
 
-  clear() {
-    console.log('clear');
-    if (this.signaturePad != undefined) this.signaturePad.clear();
+  clear(type) {
 
-    this.generated_signature_name = '';
-    this.signature_name = '';
+    console.log('clear');
+
+    if (type == 1) {
+      if (this.signaturePad != undefined) this.signaturePad.clear();
+      this.form_data.signature_name1 = '';
+      this.form_data.generated_signature_name1 = '';
+    }
+
+    if (type == 2) {
+      if (this.signaturePad2 != undefined) this.signaturePad2.clear();
+      this.form_data.signature_name2 = '';
+      this.form_data.generated_signature_name2 = '';
+    }
+
+
   }
 
   onSubmit(isValid: Boolean, type) {

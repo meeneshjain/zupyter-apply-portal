@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { CommonFunctions } from "../helpers/common.functions";
-
+import { map } from 'rxjs/operators';
 @Injectable({
 	providedIn: 'root'
 })
@@ -442,7 +442,7 @@ export class MainService {
 			"BusinessName": row_data.BusinessName,
 			"LegalName": row_data.LegalName,
 			"EntityType": row_data.EntityType,
-			"IsPremisesLeased": row_data.EntityType,
+			"IsPremisesLeased": row_data.IsPremisesLeased,
 			"LandloadName": row_data.LandloadName,
 			"ShipToAddress": row_data.ship_to_address,
 			"ShipToCity": row_data.ship_to_address_City,
@@ -533,6 +533,16 @@ export class MainService {
 		};
 		return this.httpclient.post(this.config_file_data.service_url + "/cp/leads", data_object); // this.common_params.httpOptions
 	}
+	
+	upload_file(formData): Observable<any> {
+		this.config_file_data = JSON.parse(sessionStorage.getItem('system_config'));
+
+		return this.httpclient.post<any>(this.config_file_data.service_url + "/cp/leads/uploadfile", formData, {
+		//	reportProgress: true,
+		//	observe: 'events'
+		});
+	}
+	
 
 
 

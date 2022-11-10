@@ -308,3 +308,7 @@ a.nav-link-active {
 .w-90{
     width: 90% !important;
 }
+
+.w-20px{
+    width: 20px;
+}
