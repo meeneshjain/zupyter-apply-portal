@@ -10,6 +10,10 @@ import { DeviceDetectorService } from 'ngx-device-detector'
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
+
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
@@ -24,6 +28,7 @@ export class ApplicationComponent implements OnInit {
   public inProgress3 = false;
   public form_data: any = {};
   public delivery_data: any = {};
+  public general_settings: any = {};
   public isMobile = this.deviceService.isMobile();
   public isTablet = this.deviceService.isTablet();
   public isDesktopDevice = this.deviceService.isDesktop();
@@ -37,6 +42,35 @@ export class ApplicationComponent implements OnInit {
   public lead_id:any = -1;
   public show_success_msg:boolean = false;
   public success_msg: any = '';
+  public pdfsectionid = "html2Pdf";
+  public print_pdf:boolean = false
+  public allow_direct_download:any = '';
+  public config_data;
+  public module_id = 0;
+  public openPDF(): void {
+    this.print_pdf = true;
+    this.show_loader =true;
+    setTimeout(() => {
+      let DATA: any = document.getElementById(this.pdfsectionid);
+      html2canvas(DATA).then((canvas) => {
+        let fileWidth = 208;
+        let fileHeight = (canvas.height * fileWidth) / canvas.width;
+        console.log('fileHeight ', fileHeight )
+        const FILEURI = canvas.toDataURL('image/png');
+        let PDF = new jsPDF('p', 'mm', 'a4');
+        let position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+        let d = new Date().toLocaleDateString();
+        d = d.replace("/", "_")
+        let file_name = 'Om Produce Application_ '+ d +'.pdf';
+        PDF.save(file_name);
+        setTimeout(() => {
+          this.print_pdf = false;
+          this.show_loader = false;
+        }, 250);
+      });
+    }, 150);
+  }
   
   public legal_drop_down_list: any = [
     { "key": "LLC", "value": "LLC" },
@@ -63,7 +97,7 @@ export class ApplicationComponent implements OnInit {
   @ViewChild('signaturePad', { static: false }) signaturePad;
   @ViewChild('signaturePad2', { static: false }) signaturePad2;
 
-  width: number = 285;
+  width: number = 370;
   height: number = 105;
   public options: any = {
     backgroundColor: "rgb(255, 255, 255)",
@@ -159,7 +193,29 @@ export class ApplicationComponent implements OnInit {
   ) {
     this.delivery_data.Items = [];
     if (sessionStorage.module_list == undefined) {
-      this.go_to_dashboard()
+      this.service.get_config((config_data) => {
+        this.config_data = JSON.parse(config_data);
+        this.service.get_mod_list().subscribe(mod_response => {
+          let module_list = (mod_response['data'] !== undefined) ? mod_response['data'] : [];
+          sessionStorage.setItem("module_list", JSON.stringify(module_list));
+          this.module_id = this.common_params.get_module_id('Customer Portal');
+          this.show_loader = false;
+        }, error => {
+          this.show_loader = false;
+
+        });
+
+        this.service.get_general_settings().subscribe(general_setting_response => {
+          if (general_setting_response != undefined && general_setting_response.data != undefined) {
+            sessionStorage.setItem("general_setting", JSON.stringify(general_setting_response.data[0]));
+            this.shared_service.GeneralValue(true);
+          }
+          this.show_loader = false;
+        }, error => {
+          this.show_loader = false;
+          this.common_service.show_sweet_alert('e', "Error!", this.common_service.error_message);
+        });
+      });
     }
   }
 
@@ -169,17 +225,35 @@ export class ApplicationComponent implements OnInit {
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
     this.isDesktopDevice = this.deviceService.isDesktop();
+    
+    if (this.isTablet){
+      this.width = 370;
+      this.height = 105;
+    }
+    
+    if (this.isDesktopDevice) {
+      this.width = 600;
+      this.height = 105;
+    }
+    
+    if (this.isMobile) {
+      this.width = 285;
+      this.height = 105;
+    }
 
     this.login_logo = this.common_params.default_login_image
     if (sessionStorage.general_setting != undefined) {
       let general = JSON.parse(sessionStorage.general_setting);
       if (general != undefined) {
         this.login_logo = general.LoginScrLogo;
+        this.general_settings = general
       }
     }
     
     this.lead_id = this.ActivatedRoute.snapshot.paramMap.get('resume_id');
-    console.log('this.lead_id ', this.lead_id )
+    this.allow_direct_download = this.ActivatedRoute.snapshot.paramMap.get('download');
+    console.log('this.allow_direct_download ', this.allow_direct_download )
+    this.lead_id = this.common_params.decrypt(this.lead_id);
     if (this.lead_id != null) {
       this.show_loader = true;
       this.service.get_application(this.lead_id, '', '', '').subscribe(res => {
@@ -264,8 +338,12 @@ export class ApplicationComponent implements OnInit {
           }
           
           setTimeout(() => {
-            this.show_loader = false;
-          }, 5000);
+            if (this.allow_direct_download!= null && this.allow_direct_download == 'true'){
+              this.openPDF();
+            } else {
+              this.show_loader = false;
+            }
+          }, 1500);
         } else {
           this.show_loader = false;
           this.common_service.show_sweet_alert('e', "Error!", 'No application found');
@@ -497,7 +575,7 @@ export class ApplicationComponent implements OnInit {
         
       })
         .catch((error) => {
-          console.error('oops, something went wrong!', error);
+         //  console.error('oops, something went wrong!', error);
         });
     }, 250);
 

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-
+import * as CryptoJS from 'crypto-js';  
 
 export class CommonFunctions {
 	public href: any          = window.location.href;
@@ -169,19 +169,19 @@ export class CommonFunctions {
 		return output;
 	}
 	
-/* 	public angular_editor_config: AngularEditorConfig = {
-		editable: true,
-		spellcheck: true,
-		sanitize: false,
-		height: 'auto',
-		minHeight: '0',
-		maxHeight: 'auto',
-		placeholder: 'Enter text here...',
-		translate: 'no',
-		defaultParagraphSeparator: 'p',
-		defaultFontName: 'Arial',
-		toolbarHiddenButtons: [
-		['bold']
-		],
-	}; */
+	encrypt(string:any) {
+		string = string.toString();
+		console.log('string ', string )
+		let ciphertext = CryptoJS.AES.encrypt(string, '12345672323').toString();
+		ciphertext = ciphertext.toString().replace('+', 'xMl3Jk').replace('/', 'Por21Ld').replace('=', 'Ml32');
+		return ciphertext;
+	}
+	
+	decrypt(encryted_string:any){
+		let dataString = encryted_string.toString().replace('xMl3Jk', '+').replace('Por21Ld', '/').replace('Ml32', '=');
+		dataString = CryptoJS.AES.decrypt(dataString, '12345672323').toString(CryptoJS.enc.Utf8);
+		return dataString 
+	}
+	
+ 
 }

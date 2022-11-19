@@ -312,3 +312,12 @@ a.nav-link-active {
 .w-20px{
     width: 20px;
 }
+
+div {
+    page-break-inside: avoid
+}
+
+.custom-select{
+    background : none !important;
+    appearance: auto !important;   
+}

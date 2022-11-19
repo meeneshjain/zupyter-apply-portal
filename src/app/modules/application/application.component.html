@@ -1,20 +1,37 @@
 <div id="preloader" *ngIf="show_loader">
    <div data-loader="dual-ring"></div>
 </div>
+<!-- <button class="btn btn-success btn-block" (click)="openPDF()">Download PDF</button> -->
 <form id="delivery_form" method="post" #delivery_form="ngForm" (ngSubmit)="onSubmit(delivery_form.valid, 4)">
    <div id="content" class="py-2">
       <div class="mt-1">
          <div class="ml-5 mr-5 w-90 m-auto">
             <div class="mx-auto">
                <div class="bg-light shadow-lg rounded-1 pt-2 pl-3 pr-3 pb-2">
-                  <div class="row tablet-reserve">
+                  <div class="row tablet-reserve" id="html2Pdf">
                      <div class="col-lg-12 col-md-12 col-lg-12 col-12">
-                        <div class="mb-2 d-flex align-items-center"> <a class=" text-center mx-auto cursor-pointer"
-                              (click)="this.go_to_dashboard()" title="Zupyter Payment Portal"><img
-                                 [src]="this.login_logo" alt="Zupyter Payment Portal" class="logo_width" /></a>
+                        <div class="mb-2 d-flex align-items-center" [ngClass]="{'mb-2': this.print_pdf}"> <a
+                              class=" text-center mx-auto cursor-pointer" (click)="this.go_to_dashboard()"
+                              title="Zupyter Payment Portal"><img [src]="this.login_logo" alt="Zupyter Payment Portal"
+                                 class="logo_width" /></a>
                         </div>
+                        <hr>
+                        <div class="col-lg-12 col-md-12 col-lg-12 col-12">
+                           <div class="text-center">
+                              <span *ngIf="this.general_settings.CompanyName!= undefined" class="text-4"><b>{{this.general_settings.CompanyName}}</b></span>
+                              <br>
+                              <span *ngIf="this.general_settings.CompanyAddr!= undefined" class="text-3">{{this.general_settings.CompanyAddr}}</span>
+                              <br>
+                              <span *ngIf="this.general_settings.Phone1!= undefined" class="text-3">Tel : {{this.general_settings.Phone1}} <ng-container *ngIf="this.general_settings.Fax!= undefined"> | {{this.general_settings.Fax}}</ng-container></span>
+                              <br>
+                              <span *ngIf="this.general_settings.E_Mail!= undefined" class="text-3">Email :
+                                 {{this.general_settings.E_Mail}}</span>
+                           </div>
+                        </div>
+                        
+
                         <hr class="mt-1 mb-1">
-                        <ul class="nav nav-tabs step-anchor nav-fill">
+                        <ul class="nav nav-tabs step-anchor nav-fill" [hidden]="this.print_pdf == true">
                            <ng-container *ngFor="let step of step_list">
                               <li class="nav-item " [ngClass]="{'active': step.active == true}"><a class=""
                                     [ngClass]="{'nav-link-active': step.active == true, 'nav-link-new': !step.active}"
@@ -23,7 +40,8 @@
                               </li>
                            </ng-container>
                         </ul>
-                        <div class="tab-pane step-content" *ngIf="current_step == 1">
+                        <div class="tab-pane step-content" [ngClass]="{'mt-2': this.print_pdf}"
+                           *ngIf="this.print_pdf == true || current_step == 1">
                            <div class="row mt-4">
                               <div class="col-lg-4 col-md-4 col-lg-4 col-12">
                                  <div class="form-group">
@@ -35,10 +53,10 @@
                                           [(ngModel)]="this.form_data.BusinessName" class="form-control"
                                           id="BusinessName" name="BusinessName" required placeholder="Business Name"
                                           #BusinessName_o="ngModel"
-                                          [ngClass]="{'success-field':BusinessName_o.valid && BusinessName_o.value!='', 'validation-error':!BusinessName_o.valid && (BusinessName_o.touched || delivery_form.submitted)}" />
+                                          [ngClass]="{'success-field':BusinessName_o.valid && BusinessName_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !BusinessName_o.valid && (BusinessName_o.touched || delivery_form.submitted)}" />
                                     </div>
 
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="BusinessName_o.touched && !BusinessName_o.valid && BusinessName_o.value!=''">
                                        Business
                                        Name is required
@@ -53,9 +71,9 @@
                                        <input type="text" class="form-control" id="LegalName" name="LegalName"
                                           [(ngModel)]="form_data.LegalName" #LegalName_o="ngModel" required
                                           placeholder="Corporate or Legal Name"
-                                          [ngClass]="{'success-field':LegalName_o.valid && LegalName_o.value!='', 'validation-error':!LegalName_o.valid && (LegalName_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':LegalName_o.valid && LegalName_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !LegalName_o.valid && (LegalName_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!LegalName_o.valid && (LegalName_o.touched || delivery_form.submitted)">
                                        Corporate or Legal Name
                                        is required
@@ -70,14 +88,14 @@
                                     <div class="input-group">
                                        <select class="custom-select" id="EntityType" name="EntityType" required
                                           [(ngModel)]="form_data.EntityType" #EntityType_obj="ngModel"
-                                          [ngClass]="{'success-field':EntityType_obj.valid && EntityType_obj.value!='', 'validation-error':!EntityType_obj.valid && (EntityType_obj.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':EntityType_obj.valid && EntityType_obj.value!='' && !print_pdf, 'validation-error': !print_pdf && !EntityType_obj.valid && (EntityType_obj.touched || delivery_form.submitted)}">
                                           <option value=""> --- Please Select --- </option>
                                           <option *ngFor="let legal of this.legal_drop_down_list" [value]="legal.key">
                                              {{legal.value}}
                                           </option>
                                        </select>
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!EntityType_obj.valid && (EntityType_obj.touched || delivery_form.submitted)">
                                        Entity Type
                                        is required
@@ -94,14 +112,14 @@
                                        <select class="custom-select" id="IsPremisesLeased" name="IsPremisesLeased"
                                           required [(ngModel)]="form_data.IsPremisesLeased"
                                           #IsPremisesLeased_obj="ngModel"
-                                          [ngClass]="{'success-field':IsPremisesLeased_obj.valid && IsPremisesLeased_obj.value!='', 'validation-error':!IsPremisesLeased_obj.valid && (IsPremisesLeased_obj.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':IsPremisesLeased_obj.valid && IsPremisesLeased_obj.value!='' && !print_pdf, 'validation-error': !print_pdf && !IsPremisesLeased_obj.valid && (IsPremisesLeased_obj.touched || delivery_form.submitted)}">
 
                                           <option *ngFor="let legal of this.premises_leased_list" [value]="legal.key">
                                              {{legal.value}}
                                           </option>
                                        </select>
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!IsPremisesLeased_obj.valid && (IsPremisesLeased_obj.touched || delivery_form.submitted)">
                                        Are Premises Leased
                                        is required
@@ -118,8 +136,8 @@
                                        name="LandloadName" [readonly]="form_data.IsPremisesLeased == 'N'"
                                        [(ngModel)]="form_data.LandloadName" #LandloadName_o="ngModel"
                                        placeholder="Name of Landlord"
-                                       [ngClass]="{'success-field':LandloadName_o.valid && LandloadName_o.value!='', 'validation-error':form_data.IsPremisesLeased == 'Y' && !LandloadName_o.valid && (LandloadName_o.touched || delivery_form.submitted)}">
-                                    <div class="invalid-error"
+                                       [ngClass]="{'success-field':LandloadName_o.valid && LandloadName_o.value!='' && !print_pdf, 'validation-error': !print_pdf && form_data.IsPremisesLeased == 'Y' && !LandloadName_o.valid && (LandloadName_o.touched || delivery_form.submitted)}">
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="form_data.IsPremisesLeased == 'Y' && !LandloadName_o.valid && (LandloadName_o.touched || delivery_form.submitted)">
                                        Are Premises Leased
                                        is required
@@ -143,10 +161,10 @@
                                                 [(ngModel)]="this.form_data.ship_to_address" class="form-control"
                                                 id="address1" name="address1" required placeholder="Address 1"
                                                 #address_ship_to="ngModel"
-                                                [ngClass]="{'success-field':address_ship_to.valid && address_ship_to.value!='', 'validation-error':!address_ship_to.valid && (address_ship_to.touched || delivery_form.submitted)}" />
+                                                [ngClass]="{'success-field':address_ship_to.valid && address_ship_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !address_ship_to.valid && (address_ship_to.touched || delivery_form.submitted)}" />
                                           </div>
 
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!address_ship_to.valid && (address_ship_to.touched || delivery_form.submitted)">
                                              Address is required </div>
 
@@ -159,9 +177,9 @@
                                              <input name="city1" id="city1"
                                                 [(ngModel)]="this.form_data.ship_to_address_City" type="text"
                                                 #city_ship_to="ngModel" class="form-control" required placeholder="City"
-                                                [ngClass]="{'success-field':city_ship_to.valid && city_ship_to.value!='', 'validation-error':!city_ship_to.valid && (city_ship_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':city_ship_to.valid && city_ship_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !city_ship_to.valid && (city_ship_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!city_ship_to.valid && (city_ship_to.touched || delivery_form.submitted)">
                                              City is required
                                           </div>
@@ -175,9 +193,9 @@
                                                 [(ngModel)]="this.form_data.ship_to_address_State" type="text"
                                                 #state_ship_to="ngModel" class="form-control" required
                                                 placeholder="State"
-                                                [ngClass]="{'success-field':state_ship_to.valid && state_ship_to.value!='', 'validation-error':!state_ship_to.valid && (state_ship_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':state_ship_to.valid && state_ship_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !state_ship_to.valid && (state_ship_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!state_ship_to.valid && (state_ship_to.touched || delivery_form.submitted)">
                                              State is required
                                           </div>
@@ -194,9 +212,9 @@
                                                 [(ngModel)]="this.form_data.ship_to_address_ZipCode" type="text"
                                                 #zipCode_ship_to="ngModel" class="form-control" required
                                                 placeholder="Zip Code"
-                                                [ngClass]="{'success-field':zipCode_ship_to.valid && zipCode_ship_to.value!='', 'validation-error':!zipCode_ship_to.valid && (zipCode_ship_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':zipCode_ship_to.valid && zipCode_ship_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !zipCode_ship_to.valid && (zipCode_ship_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!zipCode_ship_to.valid && (zipCode_ship_to.touched || delivery_form.submitted)">
                                              Zip Code is required
                                           </div>
@@ -212,9 +230,9 @@
                                                 [(ngModel)]="this.form_data.ship_to_address_Country" type="text"
                                                 #inputCountry_ship_to="ngModel" class="form-control" required
                                                 placeholder="Country"
-                                                [ngClass]="{'success-field':inputCountry_ship_to.valid && inputCountry_ship_to.value!='', 'validation-error':!inputCountry_ship_to.valid && (inputCountry_ship_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':inputCountry_ship_to.valid && inputCountry_ship_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !inputCountry_ship_to.valid && (inputCountry_ship_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!inputCountry_ship_to.valid && (inputCountry_ship_to.touched || delivery_form.submitted)">
                                              Country is required
                                           </div>
@@ -237,9 +255,9 @@
                                                 [(ngModel)]="this.form_data.bill_to_address" class="form-control"
                                                 id="address2" name="address2" required placeholder="Address 2"
                                                 #address_bill_to="ngModel"
-                                                [ngClass]="{'success-field':address_bill_to.valid && address_bill_to.value!='', 'validation-error':!address_bill_to.valid && (address_bill_to.touched || delivery_form.submitted)}" />
+                                                [ngClass]="{'success-field':address_bill_to.valid && address_bill_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !address_bill_to.valid && (address_bill_to.touched || delivery_form.submitted)}" />
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!address_bill_to.valid && (address_bill_to.touched || delivery_form.submitted)">
                                              Address is required </div>
 
@@ -252,9 +270,9 @@
                                              <input name="city2" id="city2"
                                                 [(ngModel)]="this.form_data.bill_to_address_City" type="text"
                                                 #city_bill_to="ngModel" class="form-control" required placeholder="City"
-                                                [ngClass]="{'success-field':city_bill_to.valid && city_bill_to.value!='', 'validation-error':!city_bill_to.valid && (city_bill_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':city_bill_to.valid && city_bill_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !city_bill_to.valid && (city_bill_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!city_bill_to.valid && (city_bill_to.touched || delivery_form.submitted)">
                                              City is required
                                           </div>
@@ -268,9 +286,9 @@
                                                 [(ngModel)]="this.form_data.bill_to_address_State" type="text"
                                                 #state_bill_to="ngModel" class="form-control" required
                                                 placeholder="State"
-                                                [ngClass]="{'success-field':state_bill_to.valid && state_bill_to.value!='', 'validation-error':!state_bill_to.valid && (state_bill_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':state_bill_to.valid && state_bill_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !state_bill_to.valid && (state_bill_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!state_bill_to.valid && (state_bill_to.touched || delivery_form.submitted)">
                                              State is required
                                           </div>
@@ -285,9 +303,9 @@
                                                 [(ngModel)]="this.form_data.bill_to_address_ZipCode" type="text"
                                                 #zipCode_bill_to="ngModel" class="form-control" required
                                                 placeholder="Zip Code"
-                                                [ngClass]="{'success-field':zipCode_bill_to.valid && zipCode_bill_to.value!='', 'validation-error':!zipCode_bill_to.valid && (zipCode_bill_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':zipCode_bill_to.valid && zipCode_bill_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !zipCode_bill_to.valid && (zipCode_bill_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!zipCode_bill_to.valid && (zipCode_bill_to.touched || delivery_form.submitted)">
                                              Zip Code is
                                              required
@@ -303,9 +321,9 @@
                                                 [(ngModel)]="this.form_data.bill_to_address_Country" type="text"
                                                 #inputCountry_bill_to="ngModel" class="form-control" required
                                                 placeholder="Country"
-                                                [ngClass]="{'success-field':inputCountry_bill_to.valid && inputCountry_bill_to.value!='', 'validation-error':!inputCountry_bill_to.valid && (inputCountry_bill_to.touched || delivery_form.submitted)}">
+                                                [ngClass]="{'success-field':inputCountry_bill_to.valid && inputCountry_bill_to.value!='' && !print_pdf, 'validation-error': !print_pdf && !inputCountry_bill_to.valid && (inputCountry_bill_to.touched || delivery_form.submitted)}">
                                           </div>
-                                          <div class="invalid-error"
+                                          <div class="invalid-error" [hidden]="this.print_pdf == true"
                                              *ngIf="!inputCountry_bill_to.valid && (inputCountry_bill_to.touched || delivery_form.submitted)">
                                              Country is
                                              required
@@ -322,9 +340,9 @@
                                     <div class="input-group">
                                        <input type="text" class="form-control" id="email" name="email" required
                                           [(ngModel)]="form_data.email" #email_o="ngModel" placeholder="Email"
-                                          [ngClass]="{'success-field':email_o.valid && email_o.value!='', 'validation-error':!email_o.valid && (email_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':email_o.valid && email_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !email_o.valid && (email_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!email_o.valid && (email_o.touched || delivery_form.submitted)"> Email is
                                        required
                                     </div>
@@ -338,9 +356,9 @@
                                        <input type="text" class="form-control" required id="businessphone"
                                           name="businessphone" [(ngModel)]="form_data.businessphone"
                                           #businessphone_o="ngModel" placeholder="Business Phone"
-                                          [ngClass]="{'success-field':businessphone_o.valid && businessphone_o.value!='', 'validation-error':!businessphone_o.valid && (businessphone_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':businessphone_o.valid && businessphone_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !businessphone_o.valid && (businessphone_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!businessphone_o.valid && (businessphone_o.touched || delivery_form.submitted)">
                                        Phone is required
                                     </div>
@@ -364,7 +382,7 @@
                               </div>
                            </div>
                            <br>
-                           <div class="row">
+                           <div class="row" [hidden]="print_pdf == true">
                               <div class="col-md-12 col-lg-12 col-sm-12 col-12">
                                  <div class="pb-2 mb-2">
                                     <div class="row">
@@ -412,7 +430,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="tab-pane step-content" *ngIf="current_step == 2">
+                        <div class="tab-pane step-content" *ngIf="this.print_pdf == true || current_step == 2">
                            <div class="row mt-4">
                               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
                                  <h4>Principal Owners / Contact Info:</h4>
@@ -425,9 +443,9 @@
                                        <input type="text" class="form-control" id="nameCorpOfficer1"
                                           name="nameCorpOfficer1" [(ngModel)]="form_data.nameCorpOfficer1"
                                           #nameCorpOfficer1_o="ngModel" placeholder="Name of Corp Officer (1)" required
-                                          [ngClass]="{'success-field':nameCorpOfficer1_o.valid && nameCorpOfficer1_o.value!='', 'validation-error':!nameCorpOfficer1_o.valid && (nameCorpOfficer1_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':nameCorpOfficer1_o.valid && nameCorpOfficer1_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !nameCorpOfficer1_o.valid && (nameCorpOfficer1_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!nameCorpOfficer1_o.valid && (nameCorpOfficer1_o.touched || delivery_form.submitted)">
                                        Corp Officer (1) is required </div>
                                  </div>
@@ -442,9 +460,9 @@
                                        <input type="password" class="form-control" id="SSNo1" name="SSNo1"
                                           [(ngModel)]="form_data.SSNo1" #SSNo1_o="ngModel" required placeholder="SS No"
                                           minlength="9" maxlength="9"
-                                          [ngClass]="{'success-field':SSNo1_o.valid && SSNo1_o.value!='', 'validation-error':!SSNo1_o.valid && (SSNo1_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':SSNo1_o.valid && SSNo1_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !SSNo1_o.valid && (SSNo1_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="SSNo1_o.touched && !SSNo1_o.valid && SSNo1_o.value!=''">
                                        Valid SS No. is required
                                     </div>
@@ -459,9 +477,9 @@
                                        <input type="text" class="form-control" id="telephone1" name="telephone1"
                                           [(ngModel)]="form_data.telephone1" #telephone1="ngModel" required
                                           placeholder="Telephone"
-                                          [ngClass]="{'success-field':telephone1.valid && telephone1.value!='', 'validation-error':!telephone1.valid && (telephone1.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':telephone1.valid && telephone1.value!='' && !print_pdf, 'validation-error': !print_pdf && !telephone1.valid && (telephone1.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!telephone1.valid && (telephone1.touched || delivery_form.submitted)">
                                        Telephone is required </div>
                                  </div>
@@ -495,7 +513,7 @@
                                     <input type="password" class="form-control" id="SSNo2" name="SSNo2" minlength="9"
                                        maxlength="9" [(ngModel)]="form_data.SSNo2" #SSNo2_o="ngModel"
                                        placeholder="SS No">
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="SSNo2_o.touched && !SSNo2_o.valid && SSNo2_o.value!=''">
                                        Valid SS No. is required
                                     </div>
@@ -544,7 +562,7 @@
                                  <div style="border:1px solid #ccc;" class="rounded-1 mt-2"
                                     *ngIf="form_data.generated_signature_name1 == ''">
                                     <ngx-signaturepad #signaturePad [options]="options"
-                                       class="col-12 col-sm-12 col-md-12 col-lg-12" [height]="height">
+                                       class="col-12 col-sm-12 col-md-12 col-lg-12" [height]="height" [width]="width">
                                     </ngx-signaturepad>
                                  </div>
                                  <div class="transaction-list mt-2"
@@ -573,9 +591,9 @@
                                     <div class="input-group">
                                        <input type="text" class="form-control" id="title" name="title"
                                           [(ngModel)]="form_data.title1" #title_o="ngModel" required placeholder="Title"
-                                          [ngClass]="{'success-field':title_o.valid && title_o.value!='', 'validation-error':!title_o.valid && (title_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':title_o.valid && title_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !title_o.valid && (title_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!title_o.valid && (title_o.touched || delivery_form.submitted)">
                                        Title is required
                                     </div>
@@ -614,7 +632,7 @@
                                  <div style="border:1px solid #ccc;" class="rounded-1 mt-2"
                                     *ngIf="this.form_data.generated_signature_name2== ''">
                                     <ngx-signaturepad #signaturePad2 [options]="options"
-                                       class="col-12 col-sm-12 col-md-12 col-lg-12" [height]="height">
+                                       class="col-12 col-sm-12 col-md-12 col-lg-12" [height]="height" [width]="width">
                                     </ngx-signaturepad>
                                  </div>
                                  <div class="transaction-list mt-2"
@@ -647,9 +665,9 @@
                                        <input type="password" class="form-control" id="ssnoe" name="ssnoe"
                                           [(ngModel)]="form_data.ssnoe" #ssnoe_o="ngModel" required placeholder="SS No."
                                           minlength="9" maxlength="9"
-                                          [ngClass]="{'success-field':ssnoe_o.valid && ssnoe_o.value!='', 'validation-error':!ssnoe_o.valid && (ssnoe_o.touched || delivery_form.submitted)}">
+                                          [ngClass]="{'success-field':ssnoe_o.valid && ssnoe_o.value!='' && !print_pdf, 'validation-error': !print_pdf && !ssnoe_o.valid && (ssnoe_o.touched || delivery_form.submitted)}">
                                     </div>
-                                    <div class="invalid-error"
+                                    <div class="invalid-error" [hidden]="this.print_pdf == true"
                                        *ngIf="!ssnoe_o.valid && (ssnoe_o.touched || delivery_form.submitted)">
                                        SS No is required
                                     </div>
@@ -661,7 +679,7 @@
 
 
                            <div class="row mt-3">
-                              <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                              <div class="col-md-12 col-lg-12 col-sm-12 col-12" [hidden]="print_pdf == true">
                                  <div class="pb-2 mb-2">
                                     <div class="row">
                                        <div class="col-md-6 col-lg-6 col-sm-6 col-12">
@@ -678,6 +696,11 @@
                                                 [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
                                                 type="submit"><i class="fa fa-check-circle m-2"></i> Save and
                                                 Exit</button>
+
+                                             <button type="button" class="btn btn-primary pl-3 pr-3 "
+                                                (click)="openPDF()"
+                                                [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
+                                                type="submit"><i class="fa fa-download m-2"></i> Download Application</button>
                                           </div>
                                        </div>
                                        <div class="col-md-6 col-lg-6 col-sm-6 col-12">
@@ -709,7 +732,7 @@
                            </div>
 
                         </div>
-                        <div class="tab-pane step-content" *ngIf="current_step == 3">
+                        <div class="tab-pane step-content" [ngClass]="{'mb-5': this.print_pdf}" *ngIf="current_step == 3" [hidden]="print_pdf == true">
                            <div class="row mt-3">
                               <div class="col-lg-12 col-md-12 col-lg-12 col-12">
                                  <div class="text-center">
@@ -747,7 +770,8 @@
                                     <input type="file" class="form-control" id=" " name="UploadedForm"
                                        [(ngModel)]="form_data.UploadedFormObj" #UploadedForm_o="ngModel"
                                        (change)="handleUpload(4, $event)" placeholder="Select your license">
-                                    <div class="text-muted" *ngIf="inProgress3">File Uploading in progress <img src="./assets/images/progress.gif" class="ml-2 w-20px" alt="">  </div>
+                                    <div class="text-muted" *ngIf="inProgress3">File Uploading in progress <img
+                                          src="./assets/images/progress.gif" class="ml-2 w-20px" alt=""> </div>
                                  </div>
                               </div>
                            </div>
@@ -758,7 +782,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="row mt-2">
+                           <div class="row mt-2" style="margin-bottom: 40px!important;">
                               <div class="col-md-6 col-lg-6-col-sm-6 col-12">
                                  <div class="text-center" *ngIf="form_data.SalesTaxPermit!= ''">
                                     <div style="position: relative">
@@ -775,8 +799,8 @@
                                     <input type="file" class="form-control" id="SalesTaxPermit" name="SalesTaxPermit"
                                        [(ngModel)]="form_data.SalesTaxPermitObj" #SalesTaxPermit_o="ngModel"
                                        (change)="handleUpload(1, $event)" placeholder="Select your license">
-                                    <div class="text-muted" *ngIf="inProgress1">File Uploading in progress <img src="./assets/images/progress.gif"
-                                          class="ml-2 w-20px" alt=""> </div>
+                                    <div class="text-muted" *ngIf="inProgress1">File Uploading in progress <img
+                                          src="./assets/images/progress.gif" class="ml-2 w-20px" alt=""> </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-6-col-sm-6 col-12">
@@ -798,17 +822,18 @@
                                        name="ExecutedDocuments" [(ngModel)]="form_data.ExecutedDocumentsObj"
                                        #ExecutedDocuments_o="ngModel" (change)="handleUpload(2, $event)"
                                        placeholder="Select your license">
-                                    <div class="text-muted" *ngIf="inProgress2">File Uploading in progress <img src="./assets/images/progress.gif"
-                                          class="ml-2 w-20px" alt=""> </div>
+                                    <div class="text-muted" *ngIf="inProgress2">File Uploading in progress <img
+                                          src="./assets/images/progress.gif" class="ml-2 w-20px" alt=""> </div>
                                  </div>
                               </div>
 
                            </div>
+
                            <div class="row mt-3">
-                              <div class="col-md-12 col-lg-12 col-sm-12 col-12">
+                              <div class="col-md-12 col-lg-12 col-sm-12 col-12" [hidden]="print_pdf == true">
                                  <div class="pb-2 mb-2">
                                     <div class="row">
-                                       <div class="col-md-4 col-lg-4 col-sm-4 col-12">
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-12">
                                           <div class=""
                                              [ngClass]="{'text-left pull-left float-left': isDesktopDevice || isTablet}">
                                              <button class="btn btn-primary p-2 pt-3 pb-3" type="button"
@@ -818,16 +843,19 @@
                                                 Save & Continue</button>
 
                                           </div>
-                                       </div>
-                                       <div class="col-md-4 col-lg-4 col-sm-4 col-12">
+
                                           <div class="" [ngClass]="{'text-center': isDesktopDevice || isTablet}">
                                              <button class="btn btn-primary p-2 pt-3 pb-3 "
+                                             [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
+                                             type="submit"><i class="fa fa-check-circle m-2"></i> Submit
+                                             Application</button>
+                                             <button type="button" class="btn btn-primary p-2 pt-3 pb-3"
+                                                (click)="openPDF()"
                                                 [ngClass]="{'ml-2': isDesktopDevice || isTablet, 'mb-2 btn-block' : isMobile}"
-                                                type="submit"><i class="fa fa-check-circle m-2"></i> Submit
-                                                Application</button>
+                                                type="submit"><i class="fa fa-download m-2"></i> Download Application</button>
                                           </div>
                                        </div>
-                                       <div class="col-md-4 col-lg-4 col-sm-4 col-12">
+                                       <div class="col-md-6 col-lg-6 col-sm-6 col-12">
                                           <div class=""
                                              [ngClass]="{'text-right pull-right float-right': isDesktopDevice || isTablet}">
                                              <button class="btn btn-secondary mr-2"

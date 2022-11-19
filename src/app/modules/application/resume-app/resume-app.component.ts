@@ -65,7 +65,8 @@ export class ResumeAppComponent implements OnInit {
             let resume_id = res['data'][0]['Lead_id']
             // this.common_service.show_sweet_alert('s', "Application found", "");
             this.show_loader = false;
-            let router_link = 'application/resume/' + resume_id;
+            let enrypted_resume_id = this.common_params.encrypt(resume_id);
+            let router_link = 'application/resume/' + enrypted_resume_id;
             this.common_service.change_route(router_link)
   
           } else {

@@ -22,6 +22,12 @@ const routes: Routes = [
     component: ApplicationComponent,
     pathMatch: 'full'
   },
+  {
+    path: 'resume/:resume_id/:download',
+    // redirectTo: 'dashboard',
+    component: ApplicationComponent,
+    pathMatch: 'full'
+  },
   // { path: 'dashboard', component: DashboardComponent },
 ];
 
